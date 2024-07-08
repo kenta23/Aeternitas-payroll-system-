@@ -68,7 +68,7 @@ class LoginController extends Controller
 
             $dt         = Carbon::now();
             $todayDate  = $dt->toDayDateTimeString();
-            
+
             if (Auth::attempt(['email' => $username,'password' => $password,'status' =>'Active'])) {
                 /** get session */
                 $user = Auth::User();
@@ -85,7 +85,7 @@ class LoginController extends Controller
 
                 $updateLastLogin = ['last_login' => $todayDate,];
                 User::where('email',$username)->update($updateLastLogin);
-                
+
                 Toastr::success('Login successfully :)','Success');
                 return redirect()->intended('home');
             } else {
@@ -103,22 +103,21 @@ class LoginController extends Controller
     /** logout and forget session */
     public function logout(Request $request)
     {
-        $dt         = Carbon::now();
-        $todayDate  = $dt->toDayDateTimeString();
+        $todayDate = Carbon::now()->format('Y-m-d H:i:s');
 
-        $activityLog = ['name'=> Session::get('name'),'email'=> Session::get('email'),'description' => 'Has log out','date_time'=> $todayDate,];
+        $activityLog = [
+            'name'=> Session::get('name'),
+            'email'=> Session::get('email'),
+            'description' => 'Has log out',
+            'date_time'=> $todayDate,
+        ];
         DB::table('activity_logs')->insert($activityLog);
         // forget login session
-        $request->session()->forget('name');
-        $request->session()->forget('email');
-        $request->session()->forget('user_id');
-        $request->session()->forget('join_date');
-        $request->session()->forget('phone_number');
-        $request->session()->forget('status');
-        $request->session()->forget('role_name');
-        $request->session()->forget('avatar');
-        $request->session()->forget('position');
-        $request->session()->forget('department');
+        // Clear session data
+    $request->session()->forget([
+        'name', 'email', 'user_id', 'join_date', 'phone_number', 'status',
+        'role_name', 'avatar', 'position', 'department'
+    ]);
         $request->session()->flush();
         Auth::logout();
         Toastr::success('Logout successfully :)','Success');
