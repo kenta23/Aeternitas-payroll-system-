@@ -1326,13 +1326,8 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .header {
-	background: #f43b48;
-	background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+    background-color: #32AFF6;
 	border-bottom: 1px solid transparent;
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 	height: 60px;
 	left: 0;
 	position: fixed;
@@ -1348,6 +1343,7 @@ table.dataTable thead > tr > td.sorting {
 	text-align: center;
 	width: 230px;
 	z-index: 1;
+    background: #1D6690;
 	transition: all 0.2s ease-in-out;
 }
 .header .header-left .logo {
@@ -1494,9 +1490,8 @@ table.dataTable thead > tr > td.sorting {
 /*-----------------
 	9. Sidebar
 -----------------------*/
-
 .sidebar {
-    background-color: #34444c;
+    background: linear-gradient(to bottom, #0F6296, #134261);;
     border-right: 1px solid transparent;
     bottom: 0;
     left: 0;

@@ -36,7 +36,6 @@ class HomeController extends Controller
         $todayDate = $dt->toDayDateTimeString();
         return view('dashboard.emdashboard',compact('todayDate'));
     }
-
     public function generatePDF(Request $request)
     {
         // $data = ['title' => 'Welcome to ItSolutionStuff.com'];
