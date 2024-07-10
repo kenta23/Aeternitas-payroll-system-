@@ -9,61 +9,92 @@ use App\Models\Employee;
 use App\Models\department;
 use App\Models\User;
 use App\Models\module_permission;
+use App\Models\positionType;
 
 class EmployeeController extends Controller
 {
     /** all employee card view */
     public function cardAllEmployee(Request $request)
     {
+        $position = positionType::all();
+
         $users = DB::table('users')
                     ->join('employees','users.user_id','employees.employee_id')
                     ->select('users.*','employees.birth_date', 'employees.gender','employees.company')
-                    ->get(); 
+                    ->get();
         $userList = DB::table('users')->get();
         $permission_lists = DB::table('permission_lists')->get();
-        return view('employees.allemployeecard',compact('users','userList','permission_lists'));
+
+
+        return view('employees.allemployeecard',compact('users','userList','permission_lists', 'position'));
     }
 
     /** all employee list */
     public function listAllEmployee()
     {
+        $position = positionType::all();
         $users = DB::table('users')
                     ->join('employees','users.user_id', 'employees.employee_id')
                     ->select('users.*','employees.birth_date','employees.gender','employees.company')
                     ->get();
         $userList = DB::table('users')->get();
+
         $permission_lists = DB::table('permission_lists')->get();
-        return view('employees.employeelist',compact('users','userList','permission_lists'));
+        return view('employees.employeelist',compact('users','userList','permission_lists', 'position'));
     }
 
     /** save data employee */
     public function saveRecord(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string|max:255',
+            'firstname'   => 'required|string|max:255',
+            'lastname'    => 'required|string|max:255',
             'email'       => 'required|string|email',
             'birthDate'   => 'required|string|max:255',
             'gender'      => 'required|string|max:255',
             'employee_id' => 'required|string|max:255',
-            'company'     => 'required|string|max:255',
+            'position'    => 'required|string|max:255',
         ]);
-
+ 
         DB::beginTransaction();
         try{
-
             $employees = Employee::where('email', '=',$request->email)->first();
             if ($employees === null)
             {
 
                 $employee = new Employee;
-                $employee->name         = $request->name;
-                $employee->email        = $request->email;
-                $employee->birth_date   = $request->birthDate;
-                $employee->gender       = $request->gender;
-                $employee->employee_id  = $request->employee_id;
-                $employee->company      = $request->company;
-                $employee->save();
-    
+                $employee->first_name           = $request->firstname;
+                $employee->last_name            = $request->lastname;
+                $employee->email                = $request->email;
+                $employee->birth_date           = $request->birthDate;
+                $employee->gender               = $request->gender;
+                $employee->employee_id          = $request->employee_id;
+                $employee->position             = $request->position;
+                $employee->phone_number         = $request->phone_number;
+                $employee->current_address      = $request->current_address;
+                $employee->pay_type             = $request->pay_type;
+                $employee->per_day              = $request->per_day;
+                $employee->basic_pay            = $request->basic_pay;
+                $employee->per_month            = $request->per_month;
+                $employee->sss_number           = $request->sss_number;
+                $employee->philhealth_number    = $request->philhealth_number;
+                $employee->pagibig_number       = $request->pagibig_number;
+                $employee->tin_number           = $request->tin_number;
+                $employee->monthly_compensation = $request->monthly_compensation;
+                $employee->number_dependents    = $request->number_dependents;
+                $employee->name_dependents      = $request->name_dependents;
+                
+                // Emergency contact
+                $employee->emergency_name           = $request->emergency_name;
+                $employee->emergency_phonenumber    = $request->emergency_phonenumber;
+                $employee->emergency_relationship   = $request->emergency_relationship;
+                $employee->emergency_address        = $request->emergency_address;
+                
+                // Separation details
+                $employee->seperation_date          = $request->seperation_date;
+                $employee->seperation_reason        = $request->seperation_reason;
+                $employee->seperation_remarks       = $request->seperation_remarks;
+
                 for($i=0;$i<count($request->id_count);$i++)
                 {
                     $module_permissions = [
@@ -79,7 +110,7 @@ class EmployeeController extends Controller
                     ];
                     DB::table('module_permissions')->insert($module_permissions);
                 }
-                
+
                 DB::commit();
                 Toastr::success('Add new employee successfully :)','Success');
                 return redirect()->route('all/employee/card');
@@ -94,7 +125,7 @@ class EmployeeController extends Controller
             return redirect()->back();
         }
     }
-    
+
     /** view edit record */
     public function viewRecord($employee_id)
     {
@@ -148,7 +179,7 @@ class EmployeeController extends Controller
 
             User::where('id',$request->id)->update($updateUser);
             Employee::where('id',$request->id)->update($updateEmployee);
-        
+
             DB::commit();
             Toastr::success('updated record successfully :)','Success');
             return redirect()->route('all/employee/card');
@@ -257,7 +288,7 @@ class EmployeeController extends Controller
     {
         $users = DB::table('users')
                     ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.company')->get(); 
+                    ->select('users.*','employees.birth_date','employees.gender','employees.company')->get();
         $permission_lists = DB::table('permission_lists')->get();
         $userList         = DB::table('users')->get();
 
@@ -329,7 +360,7 @@ class EmployeeController extends Controller
     /** employee profile with all controller user */
     public function profileEmployee($user_id)
     {
-        $user = DB::table('users') 
+        $user = DB::table('users')
                 ->leftJoin('personal_information as pi','pi.user_id','users.user_id')
                 ->leftJoin('profile_information as pr','pr.user_id','users.user_id')
                 ->leftJoin('user_emergency_contacts as ue','ue.user_id','users.user_id')
@@ -378,7 +409,7 @@ class EmployeeController extends Controller
                 $department = new department;
                 $department->department = $request->department;
                 $department->save();
-    
+
                 DB::commit();
                 Toastr::success('Add new department successfully :)','Success');
                 return redirect()->back();
@@ -405,7 +436,7 @@ class EmployeeController extends Controller
                 'department'=>$request->department,
             ];
             department::where('id',$request->id)->update($department);
-        
+
             DB::commit();
             Toastr::success('updated record successfully :)','Success');
             return redirect()->back();
@@ -417,13 +448,13 @@ class EmployeeController extends Controller
     }
 
     /** delete record department */
-    public function deleteRecordDepartment(Request $request) 
+    public function deleteRecordDepartment(Request $request)
     {
         try {
             department::destroy($request->id);
             Toastr::success('Department deleted successfully :)','Success');
             return redirect()->back();
-        
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Department delete fail :)','Error');

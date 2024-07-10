@@ -20,6 +20,13 @@
 		<link rel="stylesheet" href="{{ URL::to('assets/css/select2.min.css') }}">
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
+         <!--font family -->
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link
+             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+             rel="stylesheet">
+
 		{{-- message toastr --}}
 		<link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
 		<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
@@ -83,7 +90,7 @@
                         </div>
                     </li>
                     <!-- /Flag -->
-				
+
 					<!-- Notifications -->
 					<li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -169,7 +176,7 @@
 						</div>
 					</li>
 					<!-- /Notifications -->
-					
+
 					<!-- Message Notifications -->
 					<li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -296,7 +303,7 @@
                         <i class="fa fa-ellipsis-v"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="profile.html">My Profile</a> 
+                        <a class="dropdown-item" href="profile.html">My Profile</a>
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
                 </div>
