@@ -2040,11 +2040,7 @@ table.dataTable thead > tr > td.sorting {
 	margin-bottom: 25px;
 }
 .account-box .account-btn {
-	background: #32AFF6;
-	background: -moz-linear-gradient(left, #32AFF6 0%, #111b74 100%);
-	background: -webkit-linear-gradient(left, #32AFF6 0%, #111b74 100%);;
-	background: -ms-linear-gradient(left, #32AFF6 0%, #111b74 100%);
-	background: linear-gradient(to right, #32AFF6 0%, #111b74 100%);
+	background-color: #32AFF6;
 	border: 0;
     border-radius: 8px;
     display: block;
