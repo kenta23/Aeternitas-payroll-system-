@@ -20,7 +20,7 @@ class EmployeeController extends Controller
 
         $users = DB::table('users')
                     ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date', 'employees.gender','employees.company')
+                    ->select('users.*','employees.birth_date', 'employees.gender','employees.position')
                     ->get();
         $userList = DB::table('users')->get();
         $permission_lists = DB::table('permission_lists')->get();
@@ -49,79 +49,61 @@ class EmployeeController extends Controller
         $request->validate([
             'firstname'   => 'required|string|max:255',
             'lastname'    => 'required|string|max:255',
-            'email'       => 'required|string|email',
-            'birthDate'   => 'required|string|max:255',
+            'email'       => 'required|string|email|max:255|unique:employees,email', // Ensure email is unique
+            'birthDate'   => 'required|date',
             'gender'      => 'required|string|max:255',
-            'employee_id' => 'required|string|max:255',
             'position'    => 'required|string|max:255',
+            'phone'       => 'required|string|regex:/^[0-9]{10,15}$/',
+            'emergency_name' => 'required|string|max:255',
+            'emergency_phonenumber' => 'required|string|regex:/^[0-9]{10,15}$/',
+            'emergency_relationship' => 'required|string|max:255',
+            'emergency_address' => 'required|string|max:255',
+        ], [
+            'phone.regex' => 'The phone number format is invalid.',
+            'emergency_phonenumber.regex' => 'The emergency phone number format is invalid.',
         ]);
- 
-        DB::beginTransaction();
-        try{
-            $employees = Employee::where('email', '=',$request->email)->first();
-            if ($employees === null)
-            {
 
+
+
+        try {
+            $employee = Employee::where('email', '=', $request->email)->first();
+
+            if (!$employee) {
                 $employee = new Employee;
+
                 $employee->first_name           = $request->firstname;
                 $employee->last_name            = $request->lastname;
                 $employee->email                = $request->email;
                 $employee->birth_date           = $request->birthDate;
                 $employee->gender               = $request->gender;
-                $employee->employee_id          = $request->employee_id;
                 $employee->position             = $request->position;
-                $employee->phone_number         = $request->phone_number;
+                $employee->phone_number         = $request->phone;
                 $employee->current_address      = $request->current_address;
-                $employee->pay_type             = $request->pay_type;
-                $employee->per_day              = $request->per_day;
-                $employee->basic_pay            = $request->basic_pay;
-                $employee->per_month            = $request->per_month;
-                $employee->sss_number           = $request->sss_number;
-                $employee->philhealth_number    = $request->philhealth_number;
-                $employee->pagibig_number       = $request->pagibig_number;
-                $employee->tin_number           = $request->tin_number;
-                $employee->monthly_compensation = $request->monthly_compensation;
-                $employee->number_dependents    = $request->number_dependents;
-                $employee->name_dependents      = $request->name_dependents;
-                
+
                 // Emergency contact
                 $employee->emergency_name           = $request->emergency_name;
                 $employee->emergency_phonenumber    = $request->emergency_phonenumber;
                 $employee->emergency_relationship   = $request->emergency_relationship;
                 $employee->emergency_address        = $request->emergency_address;
+
                 
-                // Separation details
-                $employee->seperation_date          = $request->seperation_date;
-                $employee->seperation_reason        = $request->seperation_reason;
-                $employee->seperation_remarks       = $request->seperation_remarks;
+                $employee = new hrdepartment();
+                $employee->fill($validatedData);
+                $employee->custom_id = $newId;
+                $employee->save();
 
-                for($i=0;$i<count($request->id_count);$i++)
-                {
-                    $module_permissions = [
-                        'employee_id' => $request->employee_id,
-                        'module_permission' => $request->permission[$i],
-                        'id_count'          => $request->id_count[$i],
-                        'read'              => $request->read[$i],
-                        'write'             => $request->write[$i],
-                        'create'            => $request->create[$i],
-                        'delete'            => $request->delete[$i],
-                        'import'            => $request->import[$i],
-                        'export'            => $request->export[$i],
-                    ];
-                    DB::table('module_permissions')->insert($module_permissions);
-                }
 
-                DB::commit();
-                Toastr::success('Add new employee successfully :)','Success');
+
+                Toastr::success('Add new employee successfully :)', 'Success');
                 return redirect()->route('all/employee/card');
             } else {
                 DB::rollback();
-                Toastr::error('Add new employee exits :)','Error');
+                Toastr::error('Employee already exists', 'Error');
                 return redirect()->back();
             }
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Add new employee fail :)','Error');
+            Toastr::error('Add new employee failed :)', 'Error');
             return redirect()->back();
         }
     }
@@ -150,7 +132,7 @@ class EmployeeController extends Controller
                 'birth_date'=>$request->birth_date,
                 'gender'=>$request->gender,
                 'employee_id'=>$request->employee_id,
-                'company'=>$request->company,
+                'position'=>$request->position,
             ];
 
             // update table user

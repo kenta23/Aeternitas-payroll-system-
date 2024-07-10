@@ -135,8 +135,13 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="email" id="email" name="email" placeholder="Auto email" readonly>
+                                        <label class="col-form-label">Email</label>
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ old('email') }}" placeholder="Email" />
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -144,7 +149,7 @@
                                     <div class="form-group">
                                         <label>Birth Date</label>
                                         <div class="cal-icon">
-                                            <input class="form-control datetimepicker @error('birthDate') is-invalid @enderror" type="text" id="birthDate" name="birthDate" value="{{ old('birthDate') }}">
+                                            <input class="form-control datetimepicker  @error('birthDate') is-invalid @enderror" type="text" id="birthDate" name="birthDate" value="{{ old('birthDate') }}">
                                             @error('birthDate')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -191,7 +196,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Position</label>
-                                        <select class="select select2s-hidden-accessible @error('position') is-invalid @enderror" style="width: 100%;" tabindex="-1" aria-hidden="true" id="position" name="position">
+                                        <select class="select form-control select2s-hidden-accessible @error('position') is-invalid @enderror" style="width: 100%;" tabindex="-1" aria-hidden="true" id="position" name="position">
                                             <option value="">-- Select --</option>
                                             @foreach ($position as $key => $pos)
                                                 <option value="{{ $pos->position }}" {{ old('company') == $pos->position ? 'selected' : '' }}>{{ $pos->position }}</option>
@@ -205,65 +210,81 @@
                                  </div>
                               </div>
 
+                              <div class="col-sm-6">
+                                <div class="form-group">
+                                     <label class="col-form-label">Phone number</label>
+                                     <input type="number" value="{{ old('phone')}}" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" maxlength="11">
+                                    @error('phone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                             </div>
+                          </div>
+
+
+                     </div>
+                     <!--EMERGENCY CONTACT -->
+                          <h3>Emergency Contact</h3>
+                           <div class="row">
+                               <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emergency_name" class="col-form-label">Name</label>
+                                        <input type="text" class="form-control @error('emergency_name') is-invalid @enderror" name="emergency_name" id="emergency_name">
+                                        @error('emergency_name')
+                                          <span class="invalid-feedback" role="alert">
+                                              <strong>{{ $message }}</strong>
+                                          </span>
+                                       @enderror
+                                    </div>
+                               </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="emergency_contact" class="col-form-label">Contact no</label>
+                                    <input type="number" value="{{ old('emergency_phonenumber') }}" class="form-control @error('emergency_phonenumber') is-invalid @enderror" name="emergency_phonenumber" id="emergency_phonenumber" maxlength="11">
+                                    @error('emergency_phonenumber')
+                                      <span class="invalid-feedback" role="alert">
+                                          <strong>{{ $message }}</strong>
+                                      </span>
+                                   @enderror
+                                </div>
+                           </div>
+
+                           <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="emergency_relationship" class="col-form-label">Relationship</label>
+                                <input type="text" class="form-control @error('emergency_relationship') is-invalid @enderror" name="emergency_relationship" id="emergency_relationship">
+                                @error('emergency_relationship')
+                                  <span class="invalid-feedback" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                  </span>
+                               @enderror
                             </div>
-                        {{--   <div class="table-responsive m-t-15">
-                                <table class="table table-striped custom-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Module Permission</th>
-                                            <th class="text-center">Read</th>
-                                            <th class="text-center">Write</th>
-                                            <th class="text-center">Create</th>
-                                            <th class="text-center">Delete</th>
-                                            <th class="text-center">Import</th>
-                                            <th class="text-center">Export</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                          <?php
-                                            $key = 0;
-                                            $key1 = 0;
-                                        ?>
-                                    @foreach ($permission_lists as $lists )
-                                        <tr>
-                                            <td>{{ $lists->permission_name }}</td>
-                                            <input type="hidden" name="permission[]" value="{{ $lists->permission_name }}">
-                                            <input type="hidden" name="id_count[]" value="{{ $lists->id }}">
-                                            <td class="text-center">
-                                                <input type="checkbox" class="option-input checkbox read{{ ++$key }}" id="read" name="read[]" value="Y"{{ $lists->read =="Y" ? 'checked' : ''}} >
-                                                <input type="checkbox" class="option-input checkbox read{{ ++$key1 }}" id="read" name="read[]" value="N" {{ $lists->read =="N" ? 'checked' : ''}}>
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="checkbox" class="option-input checkbox write{{ ++$key }}" id="write" name="write[]" value="Y" {{ $lists->write =="Y" ? 'checked' : ''}}>
-                                                <input type="checkbox" class="option-input checkbox write{{ ++$key1 }}" id="write" name="write[]" value="N" {{ $lists->write =="N" ? 'checked' : ''}}>
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="checkbox" class="option-input checkbox create{{ ++$key }}" id="create" name="create[]" value="Y" {{ $lists->create =="Y" ? 'checked' : ''}}>
-                                                <input type="checkbox" class="option-input checkbox create{{ ++$key1 }}" id="create" name="create[]" value="N" {{ $lists->create =="N" ? 'checked' : ''}}>
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="checkbox" class="option-input checkbox delete{{ ++$key }}" id="delete" name="delete[]" value="Y" {{ $lists->delete =="Y" ? 'checked' : ''}}>
-                                                <input type="checkbox" class="option-input checkbox delete{{ ++$key1 }}" id="delete" name="delete[]" value="N" {{ $lists->delete =="N" ? 'checked' : ''}}>
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="checkbox" class="option-input checkbox import{{ ++$key }}" id="import" name="import[]" value="Y" {{ $lists->import =="Y" ? 'checked' : ''}}>
-                                                <input type="checkbox" class="option-input checkbox import{{ ++$key1 }}" id="import" name="import[]" value="N" {{ $lists->import =="N" ? 'checked' : ''}}>
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="checkbox" class="option-input checkbox export{{ ++$key }}" id="export" name="export[]" value="Y" {{ $lists->export =="Y" ? 'checked' : ''}}>
-                                                <input type="checkbox" class="option-input checkbox export{{ ++$key1 }}" id="export" name="export[]" value="N" {{ $lists->export =="N" ? 'checked' : ''}}>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        --}}
+
+                       </div>
+
+                       <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="emergency_address" class="col-form-label">Address</label>
+                            <input type="text" class="form-control @error('emergency_address') is-invalid @enderror" name="emergency_address" id="emergency_address">
+                            @error('emergency_address')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                           @enderror
+                        </div>
+
+                   </div>
+                     </div>
+
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -272,10 +293,27 @@
     </div>
     <!-- /Page Wrapper -->
     @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>;
+    <script>
+
+        $(document).ready(function() {
+            $('#phone').on('input', function() {
+                if (this.value.length > 11) {
+                    this.value = this.value.slice(0, 11);
+                }
+            });
+
+            $('#emergency_contact').on('input', function() {
+                if (this.value.length > 11) {
+                    this.value = this.value.slice(0, 11);
+                }
+            });
+        });
+
+
+    </script>
 
     <script>
-         $(document).ready(function() {
+    $(document).ready(function() {
     $('#employeeForm').on('submit', function(e) {
         e.preventDefault();
         $.ajax({
@@ -285,7 +323,7 @@
             success: function(response) {
                 // Close the modal if the submission is successful
                 if(response.success) {
-                    $('#myModal').modal('hide');
+                    $('#add_employee').modal('hide');
                     // Optionally, show a success message
                     alert('Form submitted successfully!');
                 } else {
@@ -315,21 +353,6 @@
     </script>
 
     <script>
-        $("input:checkbox").on('click', function()
-        {
-            var $box = $(this);
-            if ($box.is(":checked"))
-            {
-                var group = "input:checkbox[class='" + $box.attr("class") + "']";
-                $(group).prop("checked", false);
-                $box.prop("checked", true);
-            } else {
-                $box.prop("checked", false);
-            }
-        });
-    </script>
-
-    <script>
         $(document).ready(function() {
             $('.select2s-hidden-accessible').select2({
                 closeOnSelect: false
@@ -339,11 +362,11 @@
 
     <script>
         // select auto id and email
-        $('#name').on('change',function()
+       /* $('#name').on('change',function()
         {
             $('#employee_id').val($(this).find(':selected').data('employee_id'));
             $('#email').val($(this).find(':selected').data('email'));
-        });
+        }); */
     </script>
     @endsection
 

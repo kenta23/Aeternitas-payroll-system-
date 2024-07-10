@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateEmployeesTable extends Migration
 {
     /**
-     * Run the migrations. 
+     * Run the migrations.
      *
      * @return void
      */
@@ -37,9 +37,9 @@ class CreateEmployeesTable extends Migration
             $table->string('name_dependents')->nullable();
 
 
-            //emergency contact 
+            //emergency contact
             $table->string('emergency_name')->nullable();
-            $table->integer('emergency_phonenumber')->nullable(); 
+            $table->integer('emergency_phonenumber')->nullable();
             $table->string('emergency_relationship')->nullable();
             $table->mediumText('emergency_address')->nullable();
 
@@ -48,12 +48,9 @@ class CreateEmployeesTable extends Migration
             $table->mediumText('seperation_reason')->nullable();
             $table->mediumText('seperation_remarks')->nullable();
 
-
-
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

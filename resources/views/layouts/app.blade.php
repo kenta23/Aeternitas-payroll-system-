@@ -24,7 +24,7 @@
 
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
- 
+
         {{-- message toastr --}}
         <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
         <script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
@@ -66,8 +66,10 @@
 		<script src="{{ URL::to('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 		<!-- Custom JS -->
 		<script src="{{ URL::to('assets/js/app.js') }}"></script>
+        <!-- Add jQuery and Bootstrap JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         @yield('script')
-
 
     </body>
 </html>
