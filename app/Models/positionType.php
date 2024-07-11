@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class positionType extends Model
 {
     use HasFactory;
-
+    protected $table ='position_types';
     protected $fillable = [
          'position'
     ];

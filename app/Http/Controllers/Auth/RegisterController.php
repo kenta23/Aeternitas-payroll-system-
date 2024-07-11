@@ -44,7 +44,9 @@ class RegisterController extends Controller
                 'password'  => Hash::make($request->password),
             ]);
             Toastr::success('Create new account successfully :)','Success');
-            return redirect('login');
+
+            return redirect('/home');
+
         }catch(\Exception $e) {
             \Log::info($e);
             DB::rollback();

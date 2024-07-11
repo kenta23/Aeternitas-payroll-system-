@@ -17,6 +17,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'user_id',
@@ -65,10 +67,10 @@ class User extends Authenticatable
             } else {
                 $nextID = 1;
             }
-            $model->user_id = 'KH_' . sprintf("%04s", $nextID);
+            $model->user_id = 'PH_' . sprintf("%04s", $nextID);
             while (self::where('user_id', $model->user_id)->exists()) {
                 $nextID++;
-                $model->user_id = 'KH_' . sprintf("%04s", $nextID);
+                $model->user_id = 'PH_' . sprintf("%04s", $nextID);
             }
         });
     }

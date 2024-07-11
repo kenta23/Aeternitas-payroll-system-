@@ -22,91 +22,126 @@ class EmployeeController extends Controller
                     ->join('employees','users.user_id','employees.employee_id')
                     ->select('users.*','employees.birth_date', 'employees.gender','employees.position')
                     ->get();
-        $userList = DB::table('users')->get();
-        $permission_lists = DB::table('permission_lists')->get();
+
+        $employeeList = Employee::all();
+        //$permission_lists = DB::table('permission_lists')->get();
 
 
-        return view('employees.allemployeecard',compact('users','userList','permission_lists', 'position'));
+        return view('employees.allemployeecard',compact('employeeList', 'position',));
     }
 
     /** all employee list */
     public function listAllEmployee()
     {
         $position = positionType::all();
+
         $users = DB::table('users')
                     ->join('employees','users.user_id', 'employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                    ->select('users.*','employees.birth_date','employees.gender','employees.position')
                     ->get();
         $userList = DB::table('users')->get();
 
         $permission_lists = DB::table('permission_lists')->get();
-        return view('employees.employeelist',compact('users','userList','permission_lists', 'position'));
+        return view('employees.employeelist',compact('users','userList', 'position', 'permission_lists'));
     }
 
     /** save data employee */
-    public function saveRecord(Request $request)
-    {
-        $request->validate([
-            'firstname'   => 'required|string|max:255',
-            'lastname'    => 'required|string|max:255',
-            'email'       => 'required|string|email|max:255|unique:employees,email', // Ensure email is unique
-            'birthDate'   => 'required|date',
-            'gender'      => 'required|string|max:255',
-            'position'    => 'required|string|max:255',
-            'phone'       => 'required|string|regex:/^[0-9]{10,15}$/',
-            'emergency_name' => 'required|string|max:255',
-            'emergency_phonenumber' => 'required|string|regex:/^[0-9]{10,15}$/',
-            'emergency_relationship' => 'required|string|max:255',
-            'emergency_address' => 'required|string|max:255',
-        ], [
-            'phone.regex' => 'The phone number format is invalid.',
-            'emergency_phonenumber.regex' => 'The emergency phone number format is invalid.',
+public function saveRecord(Request $request)
+  {
+    /*  $validatedData = $request->validate([
+        'firstname'              => 'required|string|max:255',
+        'lastname'               => 'required|string|max:255',
+        'email'                  => 'required|string|email|max:255|unique:employees,email',
+        'birthDate'              => 'required|date',
+        'gender'                 => 'required|string|max:255',
+        'position'               => 'required|string|max:255',
+        'phone'                  => 'nullable|string|max:11',
+        'emergency_name'         => 'required|string|max:255',
+        'emergency_phonenumber'  => 'nullable|string|max:11',
+        'emergency_relationship' => 'required|string|max:255',
+        'emergency_address'      => 'required|string|max:255',
+        'current_address'        => 'required|string|max:255',
+    ]);
+
+    try {
+        $employee = new Employee;
+
+        $employee->first_name           = $request->firstname;
+        $employee->last_name            = $request->lastname;
+        $employee->email                = $request->email;
+        $employee->birth_date           = $request->birthDate;
+        $employee->gender               = $request->gender;
+        $employee->position             = $request->position;
+        $employee->phone_number         = $request->phone;
+        $employee->current_address      = $request->current_address;
+
+        // Emergency contact
+        $employee->emergency_name           = $request->emergency_name;
+        $employee->emergency_phonenumber    = $request->emergency_phonenumber;
+        $employee->emergency_relationship   = $request->emergency_relationship;
+        $employee->emergency_address        = $request->emergency_address;
+    */
+    //try {
+        \Log::info('Request data:', $request->all());
+
+        $validatedData = $request->validate([
+         'first_name' => 'required|string|max:255',
+         'last_name' => 'required|string|max:255',
+         'email' => 'required|string|email|max:255|unique:employees,email',
+         'birth_date' => 'required|date',
+         'gender' => 'required|string',
+         'position' => 'required|string',
+         'phone_number' => 'nullable|string|regex:/^9[0-9]{9}$/',
+         'current_address' => 'nullable|string',
+         'emergency_name' => 'required|string',
+         'emergency_phonenumber' => 'nullable|string|regex:/^9[0-9]{9}$/',
+         'emergency_relationship' => 'required|string',
+         'emergency_address' => 'required|string',
         ]);
 
+        // Generate custom ID
+        $latestEmployee = Employee::latest()->first();
+        $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
+        $newId = 'PH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
 
+       /* $employeeData = [
+        'employee_id' => $newId,
+        'first_name' => $validatedData['first_name'],
+        'last_name' => $validatedData['last_name'],
+        'email' => $validatedData['email'],
+        'birth_date' => $validatedData['birth_date'],
+        'gender' => $validatedData['gender'],
+        'position' => $validatedData['position'],
+        'phone_number' => $validatedData['phone_number'] ?? NULL,
+        'current_address' => $validatedData['current_address'] ?? NULL,
+        'emergency_name' => $validatedData['emergency_name'],
+        'emergency_phonenumber' => $validatedData['emergency_phonenumber'],
+        'emergency_relationship' => $validatedData['emergency_relationship'],
+        'emergency_address' => $validatedData['emergency_address'],
+        ]; */
 
-        try {
-            $employee = Employee::where('email', '=', $request->email)->first();
+        $employee = new Employee;
+        $employee->fill($validatedData);
+        $employee->employee_id = $newId;
+        $employee->save();
 
-            if (!$employee) {
-                $employee = new Employee;
+        Toastr::success('Add new employee successfully :)', 'Success');
+        //return redirect()->route('all/employee/card');
 
-                $employee->first_name           = $request->firstname;
-                $employee->last_name            = $request->lastname;
-                $employee->email                = $request->email;
-                $employee->birth_date           = $request->birthDate;
-                $employee->gender               = $request->gender;
-                $employee->position             = $request->position;
-                $employee->phone_number         = $request->phone;
-                $employee->current_address      = $request->current_address;
-
-                // Emergency contact
-                $employee->emergency_name           = $request->emergency_name;
-                $employee->emergency_phonenumber    = $request->emergency_phonenumber;
-                $employee->emergency_relationship   = $request->emergency_relationship;
-                $employee->emergency_address        = $request->emergency_address;
-
-                
-                $employee = new hrdepartment();
-                $employee->fill($validatedData);
-                $employee->custom_id = $newId;
-                $employee->save();
-
-
-
-                Toastr::success('Add new employee successfully :)', 'Success');
-                return redirect()->route('all/employee/card');
-            } else {
-                DB::rollback();
-                Toastr::error('Employee already exists', 'Error');
-                return redirect()->back();
-            }
-        } catch (\Exception $e) {
-            DB::rollback();
-            Toastr::error('Add new employee failed :)', 'Error');
-            return redirect()->back();
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'data' => $employee]);
+        } else {
+            return redirect()->route('all/employee/card')->with('success', 'Employee created successfully.');
         }
-    }
+        
+        
+     /*catch(\Exception $e){
+
+        Toastr::error('Add new employee fail :)','Error');
+        return redirect()->back();
+    }*/
+}
+
 
     /** view edit record */
     public function viewRecord($employee_id)
@@ -195,7 +230,7 @@ class EmployeeController extends Controller
     {
         $users = DB::table('users')
                     ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.company')->get();
+                    ->select('users.*','employees.birth_date','employees.gender','employees.position')->get();
         $permission_lists = DB::table('permission_lists')->get();
         $userList = DB::table('users')->get();
 
@@ -204,7 +239,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')->get();
         }
         // search by name
@@ -212,7 +247,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('users.name','LIKE','%'.$request->name.'%')->get();
         }
         // search by name
@@ -220,7 +255,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
         }
 
@@ -229,7 +264,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
                         ->where('users.name','LIKE','%'.$request->name.'%')
                         ->get();
@@ -239,7 +274,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date', 'employees.gender', 'employees.company')
+                        ->select('users.*','employees.birth_date', 'employees.gender', 'employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
         }
@@ -248,7 +283,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('users.name','LIKE','%'.$request->name.'%')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
         }
@@ -257,7 +292,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
                         ->where('users.name','LIKE','%'.$request->name.'%')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
@@ -270,7 +305,7 @@ class EmployeeController extends Controller
     {
         $users = DB::table('users')
                     ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.company')->get();
+                    ->select('users.*','employees.birth_date','employees.gender','employees.position')->get();
         $permission_lists = DB::table('permission_lists')->get();
         $userList         = DB::table('users')->get();
 
@@ -279,7 +314,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')->get();
         }
         // search by name
@@ -287,7 +322,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('users.name','LIKE','%'.$request->name.'%')->get();
         }
         // search by name
@@ -295,7 +330,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
         }
 
@@ -304,7 +339,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
                         ->where('users.name','LIKE','%'.$request->name.'%')->get();
         }
@@ -313,7 +348,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
         }
@@ -322,7 +357,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('users.name','LIKE','%'.$request->name.'%')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
         }
@@ -331,7 +366,7 @@ class EmployeeController extends Controller
         {
             $users = DB::table('users')
                         ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.company')
+                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
                         ->where('employee_id','LIKE','%'.$request->employee_id.'%')
                         ->where('users.name','LIKE','%'.$request->name.'%')
                         ->where('users.position','LIKE','%'.$request->position.'%')->get();
