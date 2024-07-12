@@ -289,7 +289,7 @@
 
     <script>
     $(document).ready(function() {
-    $('#employeeForm').on('submit', function(e) {
+   /* $('#employeeForm').on('submit', function(e) {
         e.preventDefault();
         $.ajax({
             url: $(this).attr('action'),
@@ -309,7 +309,7 @@
                 displayErrors(errors);
             }
         });
-    });
+    }); */
 
     function displayErrors(errors) {
         $('.error').remove();

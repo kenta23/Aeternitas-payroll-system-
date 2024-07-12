@@ -1,11 +1,11 @@
 
 @extends('layouts.master')
 @section('content')
-  
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <div class="content container-fluid">
-        
+
             <!-- Page Header -->
             <div class="page-header">
                 <div class="row">
@@ -19,18 +19,18 @@
                 </div>
             </div>
             <!-- /Page Header -->
-            
+
             <!-- Search Filter -->
             <div class="row filter-row">
-                <div class="col-sm-6 col-md-3">  
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus">
                         <input type="text" class="form-control floating">
                         <label class="focus-label">Employee Name</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3"> 
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
+                        <select class="select floating">
                             <option>-</option>
                             <option>Jan</option>
                             <option>Feb</option>
@@ -48,9 +48,9 @@
                         <label class="focus-label">Select Month</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3"> 
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
+                        <select class="select floating">
                             <option>-</option>
                             <option>2019</option>
                             <option>2018</option>
@@ -61,12 +61,12 @@
                         <label class="focus-label">Select Year</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3">  
-                    <a href="#" class="btn btn-success btn-block"> Search </a>  
-                </div>     
+                <div class="col-sm-6 col-md-3">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
             </div>
             <!-- /Search Filter -->
-            
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive">
@@ -122,7 +122,7 @@
                                     <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
                                     <td>
                                         <div class="half-day">
-                                            <span class="first-off"><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></span> 
+                                            <span class="first-off"><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></span>
                                             <span class="first-off"><i class="fa fa-close text-danger"></i></span>
                                         </div>
                                     </td>
@@ -141,7 +141,7 @@
                                     <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
                                     <td>
                                         <div class="half-day">
-                                            <span class="first-off"><i class="fa fa-close text-danger"></i></span> 
+                                            <span class="first-off"><i class="fa fa-close text-danger"></i></span>
                                             <span class="first-off"><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></span>
                                         </div>
                                     </td>
@@ -504,7 +504,7 @@
             </div>
         </div>
         <!-- /Page Content -->
-        
+
         <!-- Attendance Modal -->
         <div class="modal custom-modal fade" id="attendance_info" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -610,7 +610,7 @@
             </div>
         </div>
         <!-- /Attendance Modal -->
-        
+
     </div>
     <!-- Page Wrapper -->
 @endsection

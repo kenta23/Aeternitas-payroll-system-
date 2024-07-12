@@ -7,6 +7,9 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Models\LeavesAdmin;
 use DB;
 use DateTime;
+use App\Http\Controllers\Employee;
+use App\Models\AttendanceModel;
+use Carbon\Carbon;
 
 class LeavesController extends Controller
 {
@@ -43,7 +46,7 @@ class LeavesController extends Controller
             $leaves->day           = $days;
             $leaves->leave_reason  = $request->leave_reason;
             $leaves->save();
-            
+
             DB::commit();
             Toastr::success('Create new Leaves successfully :)','Success');
             return redirect()->back();
@@ -93,13 +96,33 @@ class LeavesController extends Controller
             LeavesAdmin::destroy($request->id);
             Toastr::success('Leaves admin deleted successfully :)','Success');
             return redirect()->back();
-        
+
         } catch(\Exception $e) {
 
             DB::rollback();
             Toastr::error('Leaves admin delete fail :)','Error');
             return redirect()->back();
         }
+    }
+
+    //ADDING EMPLOYEE'S ATTENDANCE
+    public function addAttendance(Request $request) {
+        dd($request);
+       /* $validatedData = $request->validated();
+
+        $employee = Employee::find($request->employee_id);
+
+
+        $attendance = new AttendanceModel([
+            'name' => "{$employee->first_name} {$employee->last_name}",
+            'time_in' => $request->time_in,
+            'time_out' => $request->time_out,
+        ]);
+
+         //$employee
+        $employee->attendances()->save($attendance);
+        Toastr::success('Attendance added','Success');
+        return redirect()->back()->with('success', 'Attendance recorded successfully.'); */
     }
 
     /** leaveSettings page */
@@ -117,7 +140,16 @@ class LeavesController extends Controller
     /** attendance employee */
     public function AttendanceEmployee()
     {
-        return view('employees.attendanceemployee');
+        $employees = DB::table('employees')->get();
+       // $getEmployee = $employees->get();
+        
+        //DATE FUNCTION
+        $currentDate = \Carbon\Carbon::now()->format('F j, Y l');
+
+        //get the real time data
+        $currentTime = Carbon::now()->format('g:i A');
+
+        return view('employees.attendanceemployee', compact('employees', 'currentDate', 'currentTime'));
     }
 
     /** leaves Employee */

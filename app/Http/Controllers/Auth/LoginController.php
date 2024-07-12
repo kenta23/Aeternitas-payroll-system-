@@ -90,7 +90,7 @@ class LoginController extends Controller
                 return redirect()->intended('home');
             } else {
                 Toastr::error('fail, WRONG USERNAME OR PASSWORD :)','Error');
-                return redirect('login');
+                return redirect('/');
             }
         }catch(\Exception $e) {
             \Log::info($e);
@@ -121,7 +121,7 @@ class LoginController extends Controller
         $request->session()->flush();
         Auth::logout();
         Toastr::success('Logout successfully :)','Success');
-        return redirect('login');
+        return redirect('/');
     }
 
 }

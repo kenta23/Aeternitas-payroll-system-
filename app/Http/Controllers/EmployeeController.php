@@ -48,39 +48,6 @@ class EmployeeController extends Controller
     /** save data employee */
 public function saveRecord(Request $request)
   {
-    /*  $validatedData = $request->validate([
-        'firstname'              => 'required|string|max:255',
-        'lastname'               => 'required|string|max:255',
-        'email'                  => 'required|string|email|max:255|unique:employees,email',
-        'birthDate'              => 'required|date',
-        'gender'                 => 'required|string|max:255',
-        'position'               => 'required|string|max:255',
-        'phone'                  => 'nullable|string|max:11',
-        'emergency_name'         => 'required|string|max:255',
-        'emergency_phonenumber'  => 'nullable|string|max:11',
-        'emergency_relationship' => 'required|string|max:255',
-        'emergency_address'      => 'required|string|max:255',
-        'current_address'        => 'required|string|max:255',
-    ]);
-
-    try {
-        $employee = new Employee;
-
-        $employee->first_name           = $request->firstname;
-        $employee->last_name            = $request->lastname;
-        $employee->email                = $request->email;
-        $employee->birth_date           = $request->birthDate;
-        $employee->gender               = $request->gender;
-        $employee->position             = $request->position;
-        $employee->phone_number         = $request->phone;
-        $employee->current_address      = $request->current_address;
-
-        // Emergency contact
-        $employee->emergency_name           = $request->emergency_name;
-        $employee->emergency_phonenumber    = $request->emergency_phonenumber;
-        $employee->emergency_relationship   = $request->emergency_relationship;
-        $employee->emergency_address        = $request->emergency_address;
-    */
     //try {
         \Log::info('Request data:', $request->all());
 
@@ -133,8 +100,8 @@ public function saveRecord(Request $request)
         } else {
             return redirect()->route('all/employee/card')->with('success', 'Employee created successfully.');
         }
-        
-        
+
+
      /*catch(\Exception $e){
 
         Toastr::error('Add new employee fail :)','Error');

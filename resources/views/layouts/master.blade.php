@@ -40,7 +40,7 @@
 	<script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
 </head>
 
-<body>
+<body style="position: relative;">
 	@yield('style')
 	<style>
 		.invalid-feedback{
@@ -365,6 +365,7 @@
 	<script src="{{ URL::to('assets/js/jquery.validate.js') }}"></script>
 	<!-- Custom JS -->
 	<script src="{{ URL::to('assets/js/app.js') }}"></script>
+
 	@yield('script')
 </body>
 </html>

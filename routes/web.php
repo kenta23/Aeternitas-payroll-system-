@@ -25,7 +25,7 @@ Route::get('/', function () {
     return view('home.homepage');
 });
 
-Route::group(['middleware'=>'auth'],function() 
+Route::group(['middleware'=>'auth'],function()
 {
     Route::get('home',function()
     {
@@ -209,6 +209,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('attendance/employee/page', 'AttendanceEmployee')->middleware('auth')->name('attendance/employee/page');
         Route::get('form/shiftscheduling/page', 'shiftScheduLing')->middleware('auth')->name('form/shiftscheduling/page');
         Route::get('form/shiftlist/page', 'shiftList')->middleware('auth')->name('form/shiftlist/page');
+        Route::post('/attendance/add', 'addAttendance')->middleware('auth')->name('attendance/add');
     });
 
     // ------------------------ form payroll  ----------------------------//

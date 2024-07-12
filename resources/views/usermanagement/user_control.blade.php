@@ -24,15 +24,15 @@
 
             <!-- Search Filter -->
             <div class="row filter-row">
-                <div class="col-sm-6 col-md-3">  
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus">
                         <input type="text" class="form-control floating" id="user_name" name="user_name">
                         <label class="focus-label">User Name</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3"> 
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating" id="type_role"> 
+                        <select class="select floating" id="type_role">
                             <option selected disabled>-- Select Role Name --</option>
                             @foreach ($role_name as $name)
                                 <option value="{{ $name->role_type }}">{{ $name->role_type }}</option>
@@ -41,9 +41,9 @@
                         <label class="focus-label">Role Name</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3"> 
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating" id="type_status"> 
+                        <select class="select floating" id="type_status">
                             <option selected disabled> --Select --</option>
                             @foreach ($status_user as $status )
                             <option value="{{ $status->type_name }}">{{ $status->type_name }}</option>
@@ -53,8 +53,8 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-3">  
-                    <button type="sumit" class="btn btn-success btn-block btn_search"> Search </button>  
+                <div class="col-sm-6 col-md-3">
+                    <button type="sumit" class="btn btn-success btn-block btn_search"> Search </button>
                 </div>
             </div>
 
@@ -102,20 +102,20 @@
                     <div class="modal-body">
                         <form action="{{ route('user/add/save') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Full Name</label>
                                         <input class="form-control @error('name') is-invalid @enderror" type="text" id="" name="name" value="{{ old('name') }}" placeholder="Enter Name">
                                     </div>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Emaill Address</label>
                                     <input class="form-control" type="email" id="" name="email" placeholder="Enter Email">
                                 </div>
                             </div>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <label>Role Name</label>
                                     <select class="select" name="role_name" id="role_name">
                                         <option selected disabled> --Select --</option>
@@ -124,7 +124,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Position</label>
                                     <select class="select" name="position" id="position">
                                         <option selected disabled> --Select --</option>
@@ -135,14 +135,14 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Phone</label>
                                         <input class="form-control" type="tel" id="" name="phone" placeholder="Enter Phone">
                                     </div>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Department</label>
                                     <select class="select" name="department" id="department">
                                         <option selected disabled> --Select --</option>
@@ -152,8 +152,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <label>Status</label>
                                     <select class="select" name="status" id="status">
                                         <option selected disabled> --Select --</option>
@@ -162,20 +162,20 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Photo</label>
                                     <input class="form-control" type="file" id="image" name="image">
                                 </div>
                             </div>
                             <br>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password</label>
                                         <input type="password" class="form-control" name="password" placeholder="Enter Password">
                                     </div>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Repeat Password</label>
                                     <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password">
                                 </div>
@@ -189,7 +189,7 @@
             </div>
         </div>
         <!-- /Add User Modal -->
-				
+
         <!-- Edit User Modal -->
         <div id="edit_user" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md" role="document">
@@ -205,20 +205,20 @@
                         <form action="{{ route('update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="user_id" id="e_id" value="">
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Name</label>
                                         <input class="form-control" type="text" name="name" id="e_name" value="" />
                                     </div>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Email</label>
                                     <input class="form-control" type="text" name="email" id="e_email" value=""/>
                                 </div>
                             </div>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <label>Role Name</label>
                                     <select class="select" name="role_name" id="e_role_name">
                                         @foreach ($role_name as $role )
@@ -226,7 +226,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Position</label>
                                     <select class="select" name="position" id="e_position">
                                         @foreach ($position as $positions )
@@ -236,14 +236,14 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Phone</label>
                                         <input class="form-control" type="text" id="e_phone_number" name="phone" placeholder="Enter Phone">
                                     </div>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Department</label>
                                     <select class="select" name="department" id="e_department">
                                         @foreach ($department as $departments )
@@ -252,8 +252,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <label>Status</label>
                                     <select class="select" name="status" id="e_status">
                                         @foreach ($status_user as $status )
@@ -261,7 +261,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Photo</label>
                                     <input class="form-control" type="file" id="image" name="images">
                                     <input type="hidden" name="hidden_image" id="e_image" value="">
@@ -279,7 +279,7 @@
             </div>
         </div>
         <!-- /Edit Salary Modal -->
-				
+
         <!-- Delete User Modal -->
         <div class="modal custom-modal fade" id="delete_user" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -315,9 +315,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            
+
             table = $('#userDataList').DataTable({
-                
+
                 lengthMenu: [
                     [10, 25, 50, 100,150],
                     [10, 25, 50, 100,150]
@@ -345,7 +345,7 @@
                         data.type_status = type_status;
                     }
                 },
-                
+
                 columns: [{
                         data: 'no',
                         name: 'no',

@@ -1,14 +1,19 @@
 
 @extends('layouts.master')
 @section('content')
-   
+@section('style')
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
+   <style>
+
+    </style>
+@endsection
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
         <div class="content container-fluid">
             <!-- Page Header -->
             <div class="page-header">
-                <div class="row">
+                <div class="grid row gap-3">
                     <div class="col-sm-12">
                         <h3 class="page-title">Attendance</h3>
                         <ul class="breadcrumb">
@@ -16,11 +21,99 @@
                             <li class="breadcrumb-item active">Attendance</li>
                         </ul>
                     </div>
+
+                    <div class="col-sm-12 mt-4">
+                        <div>
+                             <h3 class="font-semibold">{{ $currentDate }}</h3>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <!-- /Page Header -->
 
-            <div class="row">
+
+        {{-- message --}}
+       {!! Toastr::message() !!}
+
+            <!--ADD ATTENDANCE -->
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add_attendance"><i class="fa fa-plus"></i> Add Attendance</a>
+<!-- Add Attendance -->
+<div id="add_attendance" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Attendance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="attendance" action="{{ route('attendance/add') }}"  method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee name:</label>
+                                <select class="select form-control @error('employee') is-invalid @enderror" style="width: 100%;" id="employee" name="employee">
+                                    <option value="">-- Select --</option>
+                                    @foreach ($employees as $e)
+                                        <option value="{{ $e->employee_id }}" {{ old('employee') == $e->employee_id ? 'selected' : '' }}>{{ $e->first_name . ' ' . $e->last_name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('employee')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Time in</label>
+                                <select class="select form-control @error('time-in') is-invalid @enderror" style="width: 100%;" id="time-in" name="time-in">
+                                    <option value="">-- Select --</option>
+
+                                        <option value="{{ $currentTime }}" {{ old('time-in') == $currentTime ? 'selected' : '' }}>{{ $currentTime }}</option>
+                                </select>
+
+                                @error('time-in')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Time out</label>
+                                <input class="form-control
+                                @error('time-out') is-invalid @enderror" type="time" id="time-out" name="time-out" value="{{ old('time-out') }}">
+
+                                @error('time-out')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+            <!--ADD ATTENDANCE -->
+            <div class="row mt-md-5">
                 <div class="col-md-4">
                     <div class="card punch-status">
                         <div class="card-body">
@@ -150,7 +243,7 @@
 
             <!-- Search Filter -->
             <div class="row filter-row">
-                <div class="col-sm-3">  
+                <div class="col-sm-3">
                     <div class="form-group form-focus">
                         <div class="cal-icon">
                             <input type="text" class="form-control floating datetimepicker">
@@ -158,9 +251,9 @@
                         <label class="focus-label">Date</label>
                     </div>
                 </div>
-                <div class="col-sm-3"> 
+                <div class="col-sm-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
+                        <select class="select floating">
                             <option>-</option>
                             <option>Jan</option>
                             <option>Feb</option>
@@ -178,9 +271,9 @@
                         <label class="focus-label">Select Month</label>
                     </div>
                 </div>
-                <div class="col-sm-3"> 
+                <div class="col-sm-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
+                        <select class="select floating">
                             <option>-</option>
                             <option>2019</option>
                             <option>2018</option>
@@ -191,12 +284,12 @@
                         <label class="focus-label">Select Year</label>
                     </div>
                 </div>
-                <div class="col-sm-3">  
-                    <a href="#" class="btn btn-success btn-block"> Search </a>  
-                </div>     
+                <div class="col-sm-3">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
             </div>
             <!-- /Search Filter -->
-            
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive">
@@ -242,9 +335,28 @@
         </div>
         <!-- /Page Content -->
 
-   
+
     </div>
     <!-- /Page Wrapper -->
+
     @section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var employeeSelect = document.getElementById('employee');
+            var hiddenEmployeeId = document.getElementById('employee_id');
+
+            // Update hidden field when the page loads, in case of form repopulation
+            if (employeeSelect.value) {
+                hiddenEmployeeId.value = employeeSelect.value;
+            }
+
+            // Add event listener to update hidden input on change
+            employeeSelect.addEventListener('change', function () {
+                hiddenEmployeeId.value = this.value;
+            });
+        });
+    </script>
+
     @endsection
+
 @endsection

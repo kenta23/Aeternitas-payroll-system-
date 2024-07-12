@@ -385,10 +385,12 @@ textarea.form-control {
 select.form-control[multiple] option, select.form-control[size] option {
     border-radius: 3px;
     padding: 7px 12px;
+	color: #000;
 }
 select.form-control[multiple], select.form-control[size] {
     height: 200px;
     padding: 7px;
+	color: #000;
 }
 
 /*-----------------
@@ -556,6 +558,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .text-lg {
 	font-size:1.25rem !important;
+
 }
 .text-xl {
 	font-size:1.5rem !important;
@@ -654,16 +657,16 @@ table.dataTable thead > tr > td.sorting {
 	border: 1px solid #482fe9;
 }
 .btn-primary {
-	background-color: #f43b48;
-	border: 1px solid #f43b48;
+	background-color: #1D6690;
+	border: 1px solid #1D6690;
 }
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary.active,
 .btn-primary:active,
 .open > .dropdown-toggle.btn-primary {
-	background-color: #f10e1d;
-	border: 1px solid #f10e1d;
+	background-color: #32AFF6;
+	border: 1px solid #32AFF6;
 }
 .btn-primary.active.focus,
 .btn-primary.active:focus,
@@ -674,14 +677,14 @@ table.dataTable thead > tr > td.sorting {
 .open > .dropdown-toggle.btn-primary.focus,
 .open > .dropdown-toggle.btn-primary:focus,
 .open > .dropdown-toggle.btn-primary:hover {
-	background-color: #f10e1d;
-	border: 1px solid #f10e1d;
+	background-color: #32AFF6;
+	border: 1px solid #32AFF6;
 }
 .btn-primary.active:not(:disabled):not(.disabled),
 .btn-primary:active:not(:disabled):not(.disabled),
 .show > .btn-primary.dropdown-toggle {
-	background-color: #f10e1d;
-	border-color: #f10e1d;
+	background-color: #1D6690;
+	border-color: #1D6690;
 	color: #fff;
 }
 .btn-primary.active:focus:not(:disabled):not(.disabled),
@@ -690,9 +693,17 @@ table.dataTable thead > tr > td.sorting {
 	box-shadow: unset;
 }
 .btn-primary.disabled, .btn-primary:disabled {
-    background-color: #f43b48;
-    border-color: #f43b48;
+    background-color: #1D6690;
+    border-color: #1D6690;
     color: #fff;
+}
+.btn_search{
+	background-color: #1D6690;
+	color: white;
+}
+.btn_search:hover{
+	background-color: #32AFF6;
+	color: white;
 }
 .btn-success {
 	background-color: #55ce63;
@@ -1418,19 +1429,32 @@ table.dataTable thead > tr > td.sorting {
 .custom-modal .modal-body {
     padding: 30px;
 }
-.custom-modal .close {
-    background-color: #a0a0a0;
+/** close btn ng signin at register **/
+.custom-modal1 .close{
+	background-color: #a0a0a0;
     border-radius: 50%;
     color: #fff;
-    font-size: 13px;
     height: 20px;
     line-height: 20px;
     margin: 0;
     opacity: 1;
     padding: 0;
     position: absolute;
-    right: 10px;
-    top: 10px;
+    width: 20px;
+
+}
+.custom-modal .close {
+    background-color: #a0a0a0;
+    border-radius: 50%;
+    color: #fff;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    opacity: 1;
+	top: 10px;
+	right: 10px;
+    padding: 0;
+    position: absolute;
     width: 20px;
     z-index: 99;
 }
@@ -1451,7 +1475,7 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .header {
-    background-color: #32AFF6;
+    background-color: #1D6690;
 	border-bottom: 1px solid transparent;
 	height: 60px;
 	left: 0;
@@ -1944,8 +1968,7 @@ table.dataTable thead > tr > td.sorting {
 	margin-bottom: 20px;
 }
 .add-btn {
-    background-color: #f43b48;
-    border: 1px solid #f43b48;
+    background-color: #1D6690;
     border-radius: 50px;
     color: #fff;
     float: right;
@@ -1955,8 +1978,7 @@ table.dataTable thead > tr > td.sorting {
 .add-btn:hover,
 .add-btn:focus,
 .add-btn:active {
-	background-color: #f10e1d;
-	border: 1px solid #f10e1d;
+	background-color: #32AFF6;
     color: #fff;
 }
 .add-btn i {
@@ -2020,6 +2042,7 @@ table.dataTable thead > tr > td.sorting {
     margin: 0 auto;
     overflow: hidden;
     width: 450px;
+	position: relative;
 }
 
 .account-wrapper {
@@ -2035,6 +2058,12 @@ table.dataTable thead > tr > td.sorting {
     place-items: center;
     justify-content: center;
     background-color: #134261;
+}
+
+.row .card1{
+	color: #32AFF6;
+	background: linear-gradient(to right, #32AFF6 0%, #1D6690 100%);
+	border:none;
 }
 .account-box .form-group {
 	margin-bottom: 25px;
@@ -2127,7 +2156,7 @@ table.dataTable thead > tr > td.sorting {
 .dash-widget-icon {
 	background-color: rgba(244, 59, 72, 0.2);
 	border-radius: 100%;
-	color: #f43b48;
+	color: white;
 	display: inline-block;
 	float: left;
 	font-size: 30px;
@@ -2139,6 +2168,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .dash-widget-info {
 	text-align: right;
+	color: white;
 }
 .dash-widget-info > h3 {
 	font-size: 30px;
@@ -2291,10 +2321,12 @@ table.dataTable thead > tr > td.sorting {
     border: 1px solid #c2c0c0;
     border-radius: 0.25rem;
     height: 44px;
+	color: #000;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow {
 	height: 42px;
 	right: 7px;
+	color: #000;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
 	border-color: #ccc transparent transparent;
@@ -2324,6 +2356,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
 	background-color: var(--light-primary);
+	color: #000;
 }
 
 /*-----------------
@@ -3291,6 +3324,7 @@ table.dataTable thead > tr > td.sorting {
 	top: -20px;
 	font-size: 12px;
 	z-index: 1;
+
 }
 .form-focus .select2-container .select2-selection--single {
 	border: 1px solid #e3e3e3;

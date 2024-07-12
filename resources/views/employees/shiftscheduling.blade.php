@@ -4,7 +4,7 @@
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <div class="content container-fluid">
-        
+
             <!-- Page Header -->
             <div class="page-header">
                 <div class="row">
@@ -28,16 +28,16 @@
             <!-- Content Starts -->
             <!-- Search Filter -->
             <div class="row filter-row">
-                <div class="col-sm-6 col-md-3">  
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus">
                         <input type="text" class="form-control floating">
                         <label class="focus-label">Employee</label>
                     </div>
                 </div>
-                
-                <div class="col-sm-6 col-md-3"> 
+
+                <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
+                        <select class="select floating">
                             <option>All Department</option>
                             <option value="1">Finance</option>
                             <option value="2">Finance and Management</option>
@@ -47,7 +47,7 @@
                         <label class="focus-label">Department</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-2">  
+                <div class="col-sm-6 col-md-2">
                     <div class="form-group form-focus focused">
                         <div class="cal-icon">
                             <input class="form-control floating datetimepicker" type="text">
@@ -55,7 +55,7 @@
                         <label class="focus-label">From</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-2">  
+                <div class="col-sm-6 col-md-2">
                     <div class="form-group form-focus focused">
                         <div class="cal-icon">
                             <input class="form-control floating datetimepicker" type="text">
@@ -63,9 +63,9 @@
                         <label class="focus-label">To</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-2">  
-                    <a href="#" class="btn btn-success btn-block"> Search </a>  
-                </div>     
+                <div class="col-sm-6 col-md-2">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
             </div>
             <!-- Search Filter -->
 
@@ -172,7 +172,7 @@
                                             <a href="profile.html">Richard Miles <span>Web Developer</span></a>
                                         </h2>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -218,7 +218,7 @@
                                             </a>
                                         </div>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -251,7 +251,7 @@
                                             <a href="profile.html">John Smith <span>Android Developer</span></a>
                                         </h2>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -329,7 +329,7 @@
                                             <a href="profile.html">Mike Litorus <span>IOS Developer</span></a>
                                         </h2>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -375,7 +375,7 @@
                                             </a>
                                         </div>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -408,7 +408,7 @@
                                             <a href="profile.html">Wilmer Deluna <span>Team Leader</span></a>
                                         </h2>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -486,7 +486,7 @@
                                             <a href="profile.html">Jeffrey Warden <span>Web Developer</span></a>
                                         </h2>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -532,7 +532,7 @@
                                             </a>
                                         </div>
                                     </td>
-                                    
+
                                     <td>
                                         <div class="user-add-shedule-list">
                                             <a href="#" data-toggle="modal" data-target="#add_schedule">
@@ -645,7 +645,7 @@
 
         </div>
         <!-- /Page Content -->
-     
+
         <!-- Add Schedule Modal -->
         <div id="add_schedule" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -775,7 +775,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>
                             </div>
@@ -785,7 +785,7 @@
             </div>
         </div>
         <!-- /Add Schedule Modal -->
-        
+
         <!-- Edit Schedule Modal -->
         <div id="edit_schedule" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -906,19 +906,19 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group wday-box">
-                                        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="monday" class="days recurring" checked="" onclick="return false;"><span class="checkmark">M</span></label>
-        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="tuesday" class="days recurring" checked="" onclick="return false;"><span class="checkmark">T</span></label>
-                                        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="wednesday" class="days recurring" checked="" onclick="return false;"><span class="checkmark">W</span></label>
-                                        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="thursday" class="days recurring" checked="" onclick="return false;"><span class="checkmark">T</span></label>
-                                        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="friday" class="days recurring" checked="" onclick="return false;"><span class="checkmark">F</span></label>
-                                        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="saturday" class="days recurring" onclick="return false;"><span class="checkmark">S</span></label>
-                                        
+
                                             <label class="checkbox-inline"><input type="checkbox" name="week_days[]" value="sunday" class="days recurring" onclick="return false;"><span class="checkmark">S</span></label>
                                     </div>
                                 </div>
@@ -953,7 +953,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>
                             </div>

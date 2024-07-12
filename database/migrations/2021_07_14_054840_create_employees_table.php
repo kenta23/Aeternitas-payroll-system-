@@ -35,18 +35,18 @@ class CreateEmployeesTable extends Migration
             $table->integer('monthly_compensation')->nullable();
             $table->integer('number_dependents')->nullable();
             $table->string('name_dependents')->nullable();
-    
+
             // Emergency contact
             $table->string('emergency_name');
             $table->string('emergency_phonenumber')->nullable();
             $table->string('emergency_relationship');
             $table->mediumText('emergency_address');
-    
+
             // Separation
             $table->timestamp('separation_date')->nullable();
             $table->mediumText('separation_reason')->nullable();
             $table->mediumText('separation_remarks')->nullable();
-    
+
             $table->timestamps();
         });
     }

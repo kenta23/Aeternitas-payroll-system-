@@ -41,4 +41,9 @@ class Employee extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }
