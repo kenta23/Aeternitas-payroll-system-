@@ -18,6 +18,7 @@ class Employee extends Model
         'gender',
         'employee_id',
         'position',
+        'department_id',
         'phone_number',
         'current_address',
         'pay type',
@@ -44,6 +45,11 @@ class Employee extends Model
 
     public function attendances()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(AttendanceModel::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(department::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
 use Illuminate\Http\Request;
 use DB;
 use Brian2694\Toastr\Facades\Toastr;
@@ -9,6 +10,7 @@ use App\Models\Employee;
 use App\Models\department;
 use App\Models\User;
 use App\Models\module_permission;
+use App\Models\permission_list;
 use App\Models\positionType;
 
 class EmployeeController extends Controller
@@ -18,16 +20,16 @@ class EmployeeController extends Controller
     {
         $position = positionType::all();
 
-        $users = DB::table('users')
+        /*$users = DB::table('users')
                     ->join('employees','users.user_id','employees.employee_id')
                     ->select('users.*','employees.birth_date', 'employees.gender','employees.position')
-                    ->get();
+                    ->get(); */
 
-        $employeeList = Employee::all();
+        $employees = Employee::all();
+        $departments = department::all();
         //$permission_lists = DB::table('permission_lists')->get();
 
-
-        return view('employees.allemployeecard',compact('employeeList', 'position',));
+        return view('employees.allemployeecard',compact('employees', 'position','departments'));
     }
 
     /** all employee list */
@@ -58,6 +60,7 @@ public function saveRecord(Request $request)
          'birth_date' => 'required|date',
          'gender' => 'required|string',
          'position' => 'required|string',
+         'department_id' => 'required|exists:departments,id',
          'phone_number' => 'nullable|string|regex:/^9[0-9]{9}$/',
          'current_address' => 'nullable|string',
          'emergency_name' => 'required|string',
@@ -71,28 +74,13 @@ public function saveRecord(Request $request)
         $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
         $newId = 'PH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
 
-       /* $employeeData = [
-        'employee_id' => $newId,
-        'first_name' => $validatedData['first_name'],
-        'last_name' => $validatedData['last_name'],
-        'email' => $validatedData['email'],
-        'birth_date' => $validatedData['birth_date'],
-        'gender' => $validatedData['gender'],
-        'position' => $validatedData['position'],
-        'phone_number' => $validatedData['phone_number'] ?? NULL,
-        'current_address' => $validatedData['current_address'] ?? NULL,
-        'emergency_name' => $validatedData['emergency_name'],
-        'emergency_phonenumber' => $validatedData['emergency_phonenumber'],
-        'emergency_relationship' => $validatedData['emergency_relationship'],
-        'emergency_address' => $validatedData['emergency_address'],
-        ]; */
 
         $employee = new Employee;
         $employee->fill($validatedData);
         $employee->employee_id = $newId;
         $employee->save();
 
-        Toastr::success('Add new employee successfully :)', 'Success');
+        Toastr::success('Successully Added employee', 'Success');
         //return redirect()->route('all/employee/card');
 
         if ($request->wantsJson()) {
@@ -100,8 +88,6 @@ public function saveRecord(Request $request)
         } else {
             return redirect()->route('all/employee/card')->with('success', 'Employee created successfully.');
         }
-
-
      /*catch(\Exception $e){
 
         Toastr::error('Add new employee fail :)','Error');
@@ -113,15 +99,20 @@ public function saveRecord(Request $request)
     /** view edit record */
     public function viewRecord($employee_id)
     {
-        $permission = DB::table('employees')
+       /* $permission = DB::table('employees')
             ->join('module_permissions','employees.employee_id','module_permissions.employee_id')
-            ->select('employees.*','module_permissions.*')->where('employees.employee_id',$employee_id)->get();
-        $employees = DB::table('employees')->where('employee_id',$employee_id)->get();
-        return view('employees.edit.editemployee',compact('employees','permission'));
+            ->select('employees.*','module_permissions.*')->where('employees.employee_id',$employee_id)->get(); */
+
+        $employees = Employee::with('department')->where('employee_id', $employee_id)->get();
+
+        $position = positionType::all();
+        $departments = department::all();
+
+        return view('employees.edit.editemployee',compact('employees', 'position', 'departments'));
     }
 
     /** update record employee */
-    public function updateRecord( Request $request)
+    public function updateRecord( EmployeeRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -129,23 +120,24 @@ public function saveRecord(Request $request)
             // update table Employee
             $updateEmployee = [
                 'id'=>$request->id,
-                'name'=>$request->name,
+                'first_name'=>$request->firstname,
+                'last_name'=>$request->lastname,
                 'email'=>$request->email,
-                'birth_date'=>$request->birth_date,
+                'birth_date'=>$request->birthdate,
                 'gender'=>$request->gender,
-                'employee_id'=>$request->employee_id,
                 'position'=>$request->position,
+                'department_id'=>$request->department_id,
             ];
 
             // update table user
-            $updateUser = [
+           /* $updateUser = [
                 'id'=>$request->id,
                 'name'=>$request->name,
                 'email'=>$request->email,
-            ];
+            ]; */
 
             // update table module_permissions
-            for($i = 0;$i<count($request->id_permission);$i++)
+           /* for($i = 0;$i<count($request->id_permission);$i++)
             {
                 $UpdateModule_permissions = [
                     'employee_id' => $request->employee_id,
@@ -159,14 +151,16 @@ public function saveRecord(Request $request)
                     'export'            => $request->export[$i],
                 ];
                 module_permission::where('id',$request->id_permission[$i])->update($UpdateModule_permissions);
-            }
+            } */
 
-            User::where('id',$request->id)->update($updateUser);
+            //User::where('id',$request->id)->update($updateUser);
+
             Employee::where('id',$request->id)->update($updateEmployee);
 
             DB::commit();
             Toastr::success('updated record successfully :)','Success');
             return redirect()->route('all/employee/card');
+
         }catch(\Exception $e){
             DB::rollback();
             Toastr::error('updated record fail :)','Error');
@@ -195,76 +189,33 @@ public function saveRecord(Request $request)
     /** employee search */
     public function employeeSearch(Request $request)
     {
-        $users = DB::table('users')
-                    ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.position')->get();
-        $permission_lists = DB::table('permission_lists')->get();
-        $userList = DB::table('users')->get();
+        $query = Employee::query();
+        $position = positionType::all();
 
-        // search by id
-        if($request->employee_id)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')->get();
-        }
-        // search by name
-        if($request->name)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('users.name','LIKE','%'.$request->name.'%')->get();
-        }
-        // search by name
-        if($request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
+        if ($request->filled('employee_id')) {
+            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
         }
 
-        // search by name and id
-        if($request->employee_id && $request->name)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
-                        ->get();
+        if ($request->filled('name')) {
+            $fullname = trim($request->name);
+            $parts = explode(' ', $fullname);
+            $firstname = $parts[0];
+            $lastname = isset($parts[1]) ? $parts[1] : '';
+
+            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
+                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
         }
-        // search by position and id
-        if($request->employee_id && $request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date', 'employees.gender', 'employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
+
+        if ($request->filled('position')) {
+            $query->where('position', 'LIKE', '%' . $request->position . '%');
         }
-        // search by name and position
-        if($request->name && $request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
-        }
-        // search by name and position and id
-        if($request->employee_id && $request->name && $request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
-        }
-        return view('employees.allemployeecard',compact('users','userList','permission_lists'));
+
+        $employees = $query->get();
+
+        // Return the rendered view as JSON for AJAX
+        $html = view('employees.employee_list', ['employees' => $employees])->render();
+
+        return view('employees.allemployeecard', ['employees' => $employees, 'position' => $position])->render();
     }
 
     /** list search employee */

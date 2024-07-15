@@ -9,6 +9,7 @@ use DB;
 use DateTime;
 use App\Http\Controllers\Employee;
 use App\Models\AttendanceModel;
+use App\Models\Employee as ModelsEmployee;
 use Carbon\Carbon;
 
 class LeavesController extends Controller
@@ -107,22 +108,23 @@ class LeavesController extends Controller
 
     //ADDING EMPLOYEE'S ATTENDANCE
     public function addAttendance(Request $request) {
-        dd($request);
-       /* $validatedData = $request->validated();
+        //dd($request);
+        //$validatedData = $request->validated();
 
-        $employee = Employee::find($request->employee_id);
+        $employee = ModelsEmployee::where('employee_id', $request->employee)->get();
 
 
         $attendance = new AttendanceModel([
-            'name' => "{$employee->first_name} {$employee->last_name}",
+            'name' => "{$employee[0]->first_name} {$employee[0]->last_name}",
             'time_in' => $request->time_in,
             'time_out' => $request->time_out,
         ]);
 
          //$employee
         $employee->attendances()->save($attendance);
+
         Toastr::success('Attendance added','Success');
-        return redirect()->back()->with('success', 'Attendance recorded successfully.'); */
+        return redirect()->back()->with('success', 'Attendance recorded successfully.');
     }
 
     /** leaveSettings page */
@@ -140,16 +142,17 @@ class LeavesController extends Controller
     /** attendance employee */
     public function AttendanceEmployee()
     {
-        $employees = DB::table('employees')->get();
+        $employees = ModelsEmployee::all();
        // $getEmployee = $employees->get();
-        
+        $attendances = AttendanceModel::with('employees')->get();
+
         //DATE FUNCTION
         $currentDate = \Carbon\Carbon::now()->format('F j, Y l');
 
         //get the real time data
         $currentTime = Carbon::now()->format('g:i A');
 
-        return view('employees.attendanceemployee', compact('employees', 'currentDate', 'currentTime'));
+        return view('employees.attendanceemployee', compact('employees', 'currentDate', 'currentTime', 'attendances'));
     }
 
     /** leaves Employee */

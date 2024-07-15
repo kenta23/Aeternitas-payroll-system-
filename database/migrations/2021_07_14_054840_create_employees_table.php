@@ -22,6 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->string('gender');
             $table->string('employee_id')->nullable();
             $table->string('position');
+            $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->string('phone_number')->nullable();
             $table->mediumText('current_address')->nullable();
             $table->integer('pay_type')->nullable();
@@ -55,6 +56,7 @@ class CreateEmployeesTable extends Migration
      *
      * @return void
      */
+    
     public function down()
     {
         Schema::dropIfExists('employees');

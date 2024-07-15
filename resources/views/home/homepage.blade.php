@@ -55,6 +55,10 @@
      @guest
      <a href="#" data-toggle="modal" data-target="#login" class="btn text-lg">Sign in</a>
 
+
+     {{-- message --}}
+     {!! Toastr::message() !!}
+
      <!-- Add Login Modal -->
      <div id="login" class="modal custom-modal fade" role="dialog">
          <div class="modal-dialog modal-dialog-centered modal-lg">

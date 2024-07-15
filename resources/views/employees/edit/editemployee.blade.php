@@ -30,14 +30,27 @@
                         <div class="card-header">
                             <h4 class="card-title mb-0">Employee edit</h4>
                         </div>
+
                         <div class="card-body">
                             <form action="{{ route('all/employee/update') }}" method="POST">
                                 @csrf
-                                <input type="hidden" class="form-control" id="id" name="id" value="{{ $employees[0]->id }}">
+                                <input type="text" class="form-control" id="id" name="id" value="{{ $employees[0]->id }}" readonly>
+
                                 <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Full Name</label>
+                                    <label class="col-form-label col-md-2">Employee ID</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" id="name" name="name" value="{{ $employees[0]->name }}">
+                                        <input type="text" class="form-control" id="employee_id" name="employee_id" value="{{ $employees[0]->employee_id }}" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">First name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="name" name="firstname" value="{{ $employees[0]->first_name }}">
+                                    </div>
+                                    <label class="col-form-label col-md-2">Last name</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="name" name="lastname" value="{{ $employees[0]->last_name }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -49,7 +62,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Birth Date</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control datetimepicker" id="birth_date" name="birth_date" value="{{ $employees[0]->birth_date }}">
+                                        <input type="text" class="form-control datetimepicker" id="birth_date" name="birthdate" value="{{ $employees[0]->birth_date }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -62,20 +75,40 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Employee ID</label>
+                                    <label class="col-form-label col-md-2">Position</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" id="employee_id" name="employee_id" value="{{ $employees[0]->employee_id }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Line Manager</label>
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" id="company" name="company" value="{{ $employees[0]->company }}">
+                                        <select class="select form-control" id="position" name="position">
+                                            <option value="{{ $employees[0]->position }}" {{ ( $employees[0]->position == $employees[0]->position) ? 'selected' : '' }}>{{ $employees[0]->position }} </option>
+                                            @foreach ($position as $pos)
+                                                <option value="{{ $pos->position }}">{{ $pos->position }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
 
+
                                 <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Department</label>
+                                    <div class="col-md-10">
+                                        <select class="select form-control @error('department') is-invalid @enderror" style="width: 100%;" id="department" name="department_id">
+                                            <option value="">-- Select --</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{ $department->id }}" {{ $employees[0]->department_id == $department->id ? 'selected' : '' }}>
+                                                    {{ $department->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('department')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                               {{--- <div class="form-group row">
                                     <label class="col-form-label col-md-2">Employee Permission</label>
                                     <div class="col-md-10">
                                         <div class="table-responsive m-t-15">
@@ -96,6 +129,7 @@
                                                     $key = 0;
                                                     $key1 = 0;
                                                     ?>
+
                                                     @foreach ($permission as $items )
                                                     <tr>
                                                         <td>{{ $items->module_permission }}</td>
@@ -131,11 +165,11 @@
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2"></label>
                                     <div class="col-md-10">
-                                        <button type="submit" class="btn btn-primary submit-btn">Update</button>
+                                        <button type="submit" class="btn btn-primary submit-btn" id="updateBtn">Update</button>
                                     </div>
                                 </div>
                             </form>
@@ -145,7 +179,7 @@
             </div>
         </div>
         <!-- /Page Content -->
-        
+
     </div>
     <!-- /Page Wrapper -->
     @section('script')

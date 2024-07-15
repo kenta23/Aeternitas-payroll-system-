@@ -339,6 +339,7 @@
 
 	<!-- jQuery -->
 	<script src="{{ URL::to('assets/js/jquery-3.5.1.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<!-- Bootstrap Core JS -->
 	<script src="{{ URL::to('assets/js/popper.min.js') }}"></script>

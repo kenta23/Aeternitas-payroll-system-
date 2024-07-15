@@ -36,7 +36,7 @@
 			<!-- /Page Header -->
 
             <!-- Search Filter -->
-            <form action="{{ route('all/employee/search') }}" method="POST">
+            <form id='searchEmployee' action="{{ route('all/employee/search') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
                     <div class="col-sm-6 col-md-3">
@@ -58,38 +58,24 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <button type="sumit" class="btn btn-success btn-block"> Search </button>
+                        <button type="submit" class="btn btn-success btn-block" id="searchBtn"> Search </button>
                     </div>
                 </div>
             </form>
             <!-- Search Filter -->
 
 
+
+
             {{-- message --}}
             {!! Toastr::message() !!}
-           <div class="row staff-grid-row">
-                @foreach ($employeeList as $employee )
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="{{ url('employee/profile/'.$employee->employee_id) }}" class="avatar">
-                                {{--<img class="user-profile" src="{{ URL::to('/assets/images/'. $lists->avatar) }}" alt="{{ $lists->avatar }}" alt="{{ $lists->avatar }}"> --}}
-                                <p>{{ $employee->first_name }}</p>
-                            </a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{{ url('all/employee/view/edit/'.$employee->employee_id) }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="{{url('all/employee/delete/'.$employee->employee_id)}}"onclick="return confirm('Are you sure to want to delete it?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{ $employee->first_name }} {{ $employee->last_name }}</a></h4>
-                        <div class="small text-muted">{{ $employee->position }}</div>
-                    </div>
-                </div>
-                @endforeach
+
+         <!--EMPLOYEE LIST -->
+            <div class="row staff-grid-row" id="employeeList">
+                  @include('employees.employee_list', ['employees' => $employees])
             </div>
+           <!--EMPLOYEE LIST -->
+
         </div>
         <!-- /Page Content -->
 
@@ -197,6 +183,23 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        <label class="col-form-label">Department</label>
+                                        <select class="select form-control @error('department_id') is-invalid @enderror" style="width: 100%;" id="department" name="department_id">
+                                            <option value="">-- Select --</option>
+                                            @foreach ($departments as $dep)
+                                                <option value="{{ $dep->id }}" {{ old('department_id') == $dep->id ? 'selected' : '' }}>{{ $dep->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('department_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         <label class="col-form-label">Phone number</label>
                                         <input type="number" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" id="phone_number" value="{{ old('phone_number') }}">
                                         @error('phone_number')
@@ -283,9 +286,31 @@
                 }
             });
         });
-
-
     </script>
+
+ <script>
+    $(document).ready(function() {
+        $('#searchBtn').on('click', function() {
+            var employee_id = $('#employee_id').val();
+            var name = $('#name').val();
+            var position = $('#position').val();
+
+            $.ajax({
+                url: "{{ route('all/employee/search') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    employee_id: employee_id,
+                    name: name,
+                    position: position
+                },
+                success: function(response) {
+                    $('#employeeList').html(response.html);
+                }
+            });
+        });
+    });
+  </script>
 
     <script>
     $(document).ready(function() {

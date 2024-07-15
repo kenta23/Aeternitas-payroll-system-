@@ -89,13 +89,13 @@ class LoginController extends Controller
                 Toastr::success('Login successfully :)','Success');
                 return redirect()->intended('home');
             } else {
-                Toastr::error('fail, WRONG USERNAME OR PASSWORD :)','Error');
+                Toastr::error('Authentication failed','Error');
                 return redirect('/');
             }
         }catch(\Exception $e) {
             \Log::info($e);
             DB::rollback();
-            Toastr::error('Add new employee fail :)','Error');
+            Toastr::error('Something went wrong','Error');
             return redirect()->back();
         }
     }

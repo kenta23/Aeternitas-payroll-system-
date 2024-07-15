@@ -58,7 +58,7 @@
                                 <select class="select form-control @error('employee') is-invalid @enderror" style="width: 100%;" id="employee" name="employee">
                                     <option value="">-- Select --</option>
                                     @foreach ($employees as $e)
-                                        <option value="{{ $e->employee_id }}" {{ old('employee') == $e->employee_id ? 'selected' : '' }}>{{ $e->first_name . ' ' . $e->last_name }}</option>
+                                        <option value="{{ $e->employee_id }}" {{ old('employee_id') == $e->employee_id ? 'selected' : '' }}>{{ $e->first_name . ' ' . $e->last_name }}</option>
                                     @endforeach
                                 </select>
 
@@ -296,10 +296,11 @@
                         <table class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Date </th>
-                                    <th>Punch In</th>
-                                    <th>Punch Out</th>
+                                    <th>Employee ID</th>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>In</th>
+                                    <th>Out</th>
                                     <th>Production</th>
                                     <th>Break</th>
                                     <th>Overtime</th>
@@ -307,22 +308,15 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
-                                    <td>19 Feb 2019</td>
-                                    <td>10 AM</td>
-                                    <td>7 PM</td>
-                                    <td>9 hrs</td>
-                                    <td>1 hrs</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>20 Feb 2019</td>
-                                    <td>10 AM</td>
-                                    <td>7 PM</td>
-                                    <td>9 hrs</td>
-                                    <td>1 hrs</td>
-                                    <td>0</td>
+                                    @foreach ($attendances as $a)
+                                       <td>{{$a->employee_id }}</td>
+                                       <td>{{$a->created_at}}</td>
+                                       <td>{{$a->name}}</td>
+                                       <td>{{$a->time_in}}</td>
+                                       <td>{{$a->time_out}}</td>
+                                       <td>0</td>
+                                       <td>0</td>
+                                    @endforeach
                                 </tr>
                             </tbody>
                         </table>
