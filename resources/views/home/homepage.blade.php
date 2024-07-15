@@ -42,6 +42,28 @@
         transition: ease-in-out;
         color:white;
      }
+    .close{
+        position: absolute;
+        top: 10px;
+        right:  10px;
+        font-size: 1.5rem;
+     }
+     .account-footer p{
+        color: black;
+     }
+
+     .custom-modal1 .modal-content{
+        border: 0;
+        background: transparent;
+     }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000; /* Ensure it's above other elements */
+    }
   </style>
 
 @endsection
@@ -55,26 +77,18 @@
      @guest
      <a href="#" data-toggle="modal" data-target="#login" class="btn text-lg">Sign in</a>
 
-
-     {{-- message --}}
-     {!! Toastr::message() !!}
-
      <!-- Add Login Modal -->
-     <div id="login" class="modal custom-modal fade" role="dialog">
+     <div id="login" class="modal custom-modal1 fade" role="dialog">
          <div class="modal-dialog modal-dialog-centered modal-lg">
              <div class="modal-content">
-                 <div class="modal-header text-black-50">
-                     <h5 class="modal-title">Account Login</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
-
                  <div class="modal-body">
                      <div class="container">
                          <div class="account-box">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                              <div class="account-wrapper">
-                                 <h3 class="account-title">Login</h3>
+                                 <h3 class="account-title text-black-50">Account Login</h3>
                                  <p class="account-subtitle">Access to our dashboard</p>
                                  <!-- Account Form -->
                                  <form method="POST" action="{{ route('login') }}">
@@ -89,18 +103,23 @@
                                          @enderror
                                      </div>
                                      <div class="form-group">
-                                         <div class="row">
-                                             <div class="col">
-                                                 <label>Password</label>
-                                             </div>
-                                         </div>
-                                         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
-                                         @error('password')
-                                             <span class="invalid-feedback" role="alert">
-                                                 <strong>{{ $message }}</strong>
-                                             </span>
-                                         @enderror
-                                     </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Password</label>
+                                            </div>
+                                        </div>
+                                        <div class="position-relative">
+                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
+                                            <span class="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color:black;">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                      <div class="form-group">
                                          <div class="row">
                                              <div class="col">
@@ -130,21 +149,17 @@
      </div>
 
      <!-- Add Register Modal -->
-     <div id="register" class="modal custom-modal fade" role="dialog">
+     <div id="register" class="modal custom-modal1 fade" role="dialog">
          <div class="modal-dialog modal-dialog-centered modal-lg">
              <div class="modal-content">
-                 <div class="modal-header text-black-50">
-                     <h5 class="modal-title">Account Register</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
-
                  <div class="modal-body">
                      <div class="container">
                          <div class="account-box">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                              <div class="account-wrapper">
-                                 <h3 class="account-title">Register</h3>
+                                 <h3 class="account-title text-black-50">Account Register</h3>
                                  <p class="account-subtitle">Access to our dashboard</p>
 
                                  <!-- Account Form -->
@@ -169,20 +184,26 @@
                                          @enderror
                                      </div>
                                      <input type="hidden" class="image" name="image" value="photo_defaults.jpg">
-                                     <div class="form-group">
-                                         <label>Password</label>
-                                         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
-                                         @error('password')
-                                             <span class="invalid-feedback" role="alert">
-                                                 <strong>{{ $message }}</strong>
-                                             </span>
-                                         @enderror
-                                     </div>
-                                     <div class="form-group">
-                                         <label><strong>Repeat Password</strong></label>
-                                         <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password">
-                                     </div>
-                                     <div class="form-group text-center">
+                                     <div class="form-group position-relative">
+                                        <label>Password</label>
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
+                                        <span class="toggle-password" style="position: absolute; right: 10px; top: 70%; transform: translateY(-50%); cursor: pointer; color:black;">
+                                            <i class="fa fa-eye"></i>
+                                        </span>
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group position-relative">
+                                        <label>Confirm Password</label>
+                                        <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
+                                        <span class="toggle-password" style="position: absolute; right: 10px; top: 70%; transform: translateY(-50%); cursor: pointer; color:black;">
+                                            <i class="fa fa-eye"></i>
+                                        </span>
+                                    </div>
+                                    <div class="form-group text-center">
                                          <button class="btn btn-primary account-btn" type="submit">Register</button>
                                      </div>
                                      <div class="account-footer">
@@ -201,6 +222,14 @@
 @section('script')
 <script>
     $(document).ready(function() {
+        // Function to hide modals and their backdrops
+        function hideModalsAndBackdrop() {
+            $('.modal').modal('hide');
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        }
+
         $('#openRegisterModal').click(function() {
             $('#login').modal('hide');
             $('#login').on('hidden.bs.modal', function () {
@@ -214,6 +243,28 @@
             $('#register').on('hidden.bs.modal', function () {
                 $('#login').modal('show');
                 $('#register').off('hidden.bs.modal');
+            });
+        });
+
+        $('#register').on('hidden.bs.modal', function () {
+            hideModalsAndBackdrop();
+        });
+
+        // Also ensure the login modal closes properly
+        $('#login').on('hidden.bs.modal', function () {
+            hideModalsAndBackdrop();
+        });
+
+        // for password-toggle-icon
+        const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+        togglePasswordIcons.forEach(icon => {
+            icon.addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
             });
         });
     });
