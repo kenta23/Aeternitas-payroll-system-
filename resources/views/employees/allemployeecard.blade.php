@@ -10,6 +10,7 @@
          }
     </style>
     @endsection
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->

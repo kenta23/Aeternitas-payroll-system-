@@ -38,6 +38,7 @@
 
             <!--ADD ATTENDANCE -->
             <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add_attendance"><i class="fa fa-plus"></i> Add Attendance</a>
+
 <!-- Add Attendance -->
 <div id="add_attendance" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -52,7 +53,7 @@
                 <form id="attendance" action="{{ route('attendance/add') }}"  method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="col-form-label">Employee name:</label>
                                 <select class="select form-control @error('employee') is-invalid @enderror" style="width: 100%;" id="employee" name="employee">
@@ -72,30 +73,44 @@
 
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="col-form-label">Time in</label>
-                                <select class="select form-control @error('time-in') is-invalid @enderror" style="width: 100%;" id="time-in" name="time-in">
+                                <label for="time_in" class="col-form-label">Time In</label>
+                                <select class="select form-control @error('time_in') is-invalid @enderror" style="width: 100%;" id="time_in" name="time_in">
                                     <option value="">-- Select --</option>
-
-                                        <option value="{{ $currentTime }}" {{ old('time-in') == $currentTime ? 'selected' : '' }}>{{ $currentTime }}</option>
+                                    <option value="{{ $currentTime }}" {{ old('time_in') == $currentTime ? 'selected' : '' }}>{{ $currentTime }}</option>
                                 </select>
-
-                                @error('time-in')
+                                @error('time_in')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
+
                         </div>
 
 
 
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for='time_out' class="col-form-label">Time out</label>
+                                    <input class="form-control
+                                    @error('time_out') is-invalid @enderror" type="time" id="time_out" name="time_out" value="{{ old('time-_out') }}">
+
+                                    @error('time_out')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                         </div>
+
+
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="col-form-label">Time out</label>
+                                <label class="col-form-label">Overtime</label>
                                 <input class="form-control
-                                @error('time-out') is-invalid @enderror" type="time" id="time-out" name="time-out" value="{{ old('time-out') }}">
+                                @error('overtime') is-invalid @enderror" type="number" id="overtime" name="overtime" value="{{ old('overtime') }}">
 
-                                @error('time-out')
+                                @error('overtime')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -111,138 +126,13 @@
             </div>
         </div>
     </div>
-</div>
+ </div>
             <!--ADD ATTENDANCE -->
-            <div class="row mt-md-5">
-                <div class="col-md-4">
-                    <div class="card punch-status">
-                        <div class="card-body">
-                            <h5 class="card-title">Timesheet <small class="text-muted">11 Mar 2019</small></h5>
-                            <div class="punch-det">
-                                <h6>Punch In at</h6>
-                                <p>Wed, 11th Mar 2019 10.00 AM</p>
-                            </div>
-                            <div class="punch-info">
-                                <div class="punch-hours">
-                                    <span>3.45 hrs</span>
-                                </div>
-                            </div>
-                            <div class="punch-btn-section">
-                                <button type="button" class="btn btn-primary punch-btn">Punch Out</button>
-                            </div>
-                            <div class="statistics">
-                                <div class="row">
-                                    <div class="col-md-6 col-6 text-center">
-                                        <div class="stats-box">
-                                            <p>Break</p>
-                                            <h6>1.21 hrs</h6>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-6 text-center">
-                                        <div class="stats-box">
-                                            <p>Overtime</p>
-                                            <h6>3 hrs</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card att-statistics">
-                        <div class="card-body">
-                            <h5 class="card-title">Statistics</h5>
-                            <div class="stats-list">
-                                <div class="stats-info">
-                                    <p>Today <strong>3.45 <small>/ 8 hrs</small></strong></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 31%" aria-valuenow="31" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="stats-info">
-                                    <p>This Week <strong>28 <small>/ 40 hrs</small></strong></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 31%" aria-valuenow="31" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="stats-info">
-                                    <p>This Month <strong>90 <small>/ 160 hrs</small></strong></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 62%" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="stats-info">
-                                    <p>Remaining <strong>90 <small>/ 160 hrs</small></strong></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 62%" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="stats-info">
-                                    <p>Overtime <strong>4</strong></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 22%" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card recent-activity">
-                        <div class="card-body">
-                            <h5 class="card-title">Today Activity</h5>
-                            <ul class="res-activity-list">
-                                <li>
-                                    <p class="mb-0">Punch In at</p>
-                                    <p class="res-activity-time">
-                                        <i class="fa fa-clock-o"></i>
-                                        10.00 AM.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p class="mb-0">Punch Out at</p>
-                                    <p class="res-activity-time">
-                                        <i class="fa fa-clock-o"></i>
-                                        11.00 AM.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p class="mb-0">Punch In at</p>
-                                    <p class="res-activity-time">
-                                        <i class="fa fa-clock-o"></i>
-                                        11.15 AM.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p class="mb-0">Punch Out at</p>
-                                    <p class="res-activity-time">
-                                        <i class="fa fa-clock-o"></i>
-                                        1.30 PM.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p class="mb-0">Punch In at</p>
-                                    <p class="res-activity-time">
-                                        <i class="fa fa-clock-o"></i>
-                                        2.00 PM.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p class="mb-0">Punch Out at</p>
-                                    <p class="res-activity-time">
-                                        <i class="fa fa-clock-o"></i>
-                                        7.30 PM.
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Search Filter -->
-            <div class="row filter-row">
+
+
+     <!-- Search Filter -->
+            <div class="row filter-row mt-4">
                 <div class="col-sm-3">
                     <div class="form-group form-focus">
                         <div class="cal-icon">
@@ -307,17 +197,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    @foreach ($attendances as $a)
+                                @foreach ($attendances as $a)
+                                    <tr>
                                        <td>{{$a->employee_id }}</td>
                                        <td>{{$a->created_at}}</td>
                                        <td>{{$a->name}}</td>
                                        <td>{{$a->time_in}}</td>
                                        <td>{{$a->time_out}}</td>
                                        <td>0</td>
-                                       <td>0</td>
-                                    @endforeach
-                                </tr>
+                                       <td>1</td>
+                                       <td>{{$a->overtime}}</td>
+                                    </tr>
+                                 @endforeach
                             </tbody>
                         </table>
                     </div>

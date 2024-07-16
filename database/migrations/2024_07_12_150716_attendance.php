@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->time('time_in')->nullable();
-            $table->string('time_out')->nullable();
+            $table->time('time_out')->nullable();
+            $table->integer('overtime')->nullable();
             $table->timestamps();
         });
     }

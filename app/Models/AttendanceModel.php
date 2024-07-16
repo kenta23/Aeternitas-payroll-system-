@@ -16,6 +16,7 @@ class AttendanceModel extends Model
          'employee_id',
          'time_in',
          'time_out',
+         'overtime',
     ];
 
 

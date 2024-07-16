@@ -29,10 +29,10 @@ class CreateEmployeesTable extends Migration
             $table->integer('per_day')->nullable();
             $table->integer('basic_pay')->nullable();
             $table->integer('per_month')->nullable();
-            $table->integer('sss_number')->nullable();
-            $table->integer('philhealth_number')->nullable();
-            $table->integer('pagibig_number')->nullable();
-            $table->integer('tin_number')->nullable();
+            $table->string('sss_number')->nullable();
+            $table->string('philhealth_number')->nullable();
+            $table->string('pagibig_number')->nullable();
+            $table->string('tin_number')->nullable();
             $table->integer('monthly_compensation')->nullable();
             $table->integer('number_dependents')->nullable();
             $table->string('name_dependents')->nullable();

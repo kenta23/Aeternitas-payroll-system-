@@ -91,7 +91,8 @@
 			<!-- Header Menu -->
 			<ul class="nav user-menu text-dark">
 				<!-- Search -->
-				<!--> <li class="nav-item">
+
+				{{-- <li class="nav-item">
 					<div class="top-nav-search">
 						<a href="javascript:void(0);" class="responsive-search"> <i class="fa fa-search"></i> </a>
 						<form action="search.html">
@@ -102,6 +103,7 @@
 						</form>
 					</div>
 				</li>
+                --}}
 				<!-- /Search -->
 
 			   <!-- Flag -->
@@ -296,6 +298,7 @@
 						<div class="topnav-dropdown-footer"> <a href="chat.html">View all Messages</a> </div>
 					</div>
 				</li>
+
 				<!-- /Message Notifications -->
 				<li class="nav-item dropdown has-arrow main-drop">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">

@@ -107,24 +107,45 @@ class LeavesController extends Controller
     }
 
     //ADDING EMPLOYEE'S ATTENDANCE
-    public function addAttendance(Request $request) {
-        //dd($request);
+    public function addAttendance(Request $request)
+    {
+        //dd($request->all());
         //$validatedData = $request->validated();
+        /*$request->validate([
+            'name' => 'required|string|max:255',
+            'time_in' => 'required|date_format:H:i',
+            'time_out' => 'required|date_format:H:i',
+            'overtime' => 'nullable|integer'
+       ]);*/
 
-        $employee = ModelsEmployee::where('employee_id', $request->employee)->get();
+
+        $employee = ModelsEmployee::where('employee_id', $request->employee)->first();
+
+        if ($employee) {
+           // Convert time_in from 12-hour to 24-hour format
+           $time_in_24 = date("H:i", strtotime($request->input('time_in')));
+          // Ensure time_out is already in 24-hour format
+           $time_out_24 = $request->input('time_out');
+
+            $attendance = new AttendanceModel([
+                'name' => "{$employee->first_name} {$employee->last_name}",
+                'employee_id' => $request->employee,
+                'time_in' => $time_in_24,
+                'time_out' => $time_out_24,
+                'overtime' => $request->overtime,
+            ]);
 
 
-        $attendance = new AttendanceModel([
-            'name' => "{$employee[0]->first_name} {$employee[0]->last_name}",
-            'time_in' => $request->time_in,
-            'time_out' => $request->time_out,
-        ]);
+            $employee->attendances()->save($attendance);
 
-         //$employee
-        $employee->attendances()->save($attendance);
+            Toastr::success('Attendance added', 'Success');
+            return redirect()->back()->with('success', 'Attendance recorded successfully.');
 
-        Toastr::success('Attendance added','Success');
-        return redirect()->back()->with('success', 'Attendance recorded successfully.');
+        } else {
+            // Handle the case where the employee is not found
+            Toastr::error('Attendance recorded fail', 'Error');
+            return redirect()->back()->with('error', 'Attendance recorded fail.');
+        }
     }
 
     /** leaveSettings page */
@@ -144,7 +165,7 @@ class LeavesController extends Controller
     {
         $employees = ModelsEmployee::all();
        // $getEmployee = $employees->get();
-        $attendances = AttendanceModel::with('employees')->get();
+        $attendances = AttendanceModel::all();
 
         //DATE FUNCTION
         $currentDate = \Carbon\Carbon::now()->format('F j, Y l');

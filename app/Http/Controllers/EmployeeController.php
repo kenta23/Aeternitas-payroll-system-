@@ -72,7 +72,7 @@ public function saveRecord(Request $request)
         // Generate custom ID
         $latestEmployee = Employee::latest()->first();
         $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
-        $newId = 'PH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
+        $newId = 'PPH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
 
 
         $employee = new Employee;
@@ -88,20 +88,12 @@ public function saveRecord(Request $request)
         } else {
             return redirect()->route('all/employee/card')->with('success', 'Employee created successfully.');
         }
-     /*catch(\Exception $e){
 
-        Toastr::error('Add new employee fail :)','Error');
-        return redirect()->back();
-    }*/
 }
-
 
     /** view edit record */
     public function viewRecord($employee_id)
     {
-       /* $permission = DB::table('employees')
-            ->join('module_permissions','employees.employee_id','module_permissions.employee_id')
-            ->select('employees.*','module_permissions.*')->where('employees.employee_id',$employee_id)->get(); */
 
         $employees = Employee::with('department')->where('employee_id', $employee_id)->get();
 
@@ -127,6 +119,9 @@ public function saveRecord(Request $request)
                 'gender'=>$request->gender,
                 'position'=>$request->position,
                 'department_id'=>$request->department_id,
+                'sss_number' => $request->sss_number,
+                'philhealth_number' => $request->philhealth,
+                'tin_number' => $request->tin_number,
             ];
 
             // update table user
@@ -174,7 +169,7 @@ public function saveRecord(Request $request)
         DB::beginTransaction();
         try{
             Employee::where('employee_id',$employee_id)->delete();
-            module_permission::where('employee_id',$employee_id)->delete();
+            //module_permission::where('employee_id',$employee_id)->delete();
 
             DB::commit();
             Toastr::success('Delete record successfully :)','Success');
@@ -191,6 +186,7 @@ public function saveRecord(Request $request)
     {
         $query = Employee::query();
         $position = positionType::all();
+        $departments = department::all();
 
         if ($request->filled('employee_id')) {
             $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
@@ -213,9 +209,9 @@ public function saveRecord(Request $request)
         $employees = $query->get();
 
         // Return the rendered view as JSON for AJAX
-        $html = view('employees.employee_list', ['employees' => $employees])->render();
+        //$html = view('employees.employee_list', ['employees' => $employees])->render();
 
-        return view('employees.allemployeecard', ['employees' => $employees, 'position' => $position])->render();
+        return view('employees.allemployeecard', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
     }
 
     /** list search employee */

@@ -108,64 +108,61 @@
                                     </div>
                                 </div>
 
-                               {{--- <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Employee Permission</label>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">SSS no</label>
                                     <div class="col-md-10">
-                                        <div class="table-responsive m-t-15">
-                                            <table class="table table-striped custom-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Module Permission</th>
-                                                        <th class="text-center">Read</th>
-                                                        <th class="text-center">Write</th>
-                                                        <th class="text-center">Create</th>
-                                                        <th class="text-center">Delete</th>
-                                                        <th class="text-center">Import</th>
-                                                        <th class="text-center">Export</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $key = 0;
-                                                    $key1 = 0;
-                                                    ?>
-
-                                                    @foreach ($permission as $items )
-                                                    <tr>
-                                                        <td>{{ $items->module_permission }}</td>
-                                                        <input type="hidden" name="permission[]" value="{{ $items->module_permission }}">
-                                                        <input type="hidden" name="id_permission[]" value="{{ $items->id }}">
-                                                        <td class="text-center">
-                                                            <input type="checkbox" class="option-input checkbox read{{ ++$key }}" id="read" name="read[]" value="Y"{{ $items->read =="Y" ? 'checked' : ''}} >
-                                                            <input type="checkbox" class="option-input checkbox read{{ ++$key1 }}" id="read" name="read[]" value="N" {{ $items->read =="N" ? 'checked' : ''}}>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input type="checkbox" class="option-input checkbox write{{ ++$key }}" id="write" name="write[]" value="Y" {{ $items->write =="Y" ? 'checked' : ''}}>
-                                                            <input type="checkbox" class="option-input checkbox write{{ ++$key1 }}" id="write" name="write[]" value="N" {{ $items->write =="N" ? 'checked' : ''}}>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input type="checkbox" class="option-input checkbox create{{ ++$key }}" id="create" name="create[]" value="Y" {{ $items->create =="Y" ? 'checked' : ''}}>
-                                                            <input type="checkbox" class="option-input checkbox create{{ ++$key1 }}" id="create" name="create[]" value="N" {{ $items->create =="N" ? 'checked' : ''}}>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input type="checkbox" class="option-input checkbox delete{{ ++$key }}" id="delete" name="delete[]" value="Y" {{ $items->delete =="Y" ? 'checked' : ''}}>
-                                                            <input type="checkbox" class="option-input checkbox delete{{ ++$key1 }}" id="delete" name="delete[]" value="N" {{ $items->delete =="N" ? 'checked' : ''}}>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input type="checkbox" class="option-input checkbox import{{ ++$key }}" id="import" name="import[]" value="Y" {{ $items->import =="Y" ? 'checked' : ''}}>
-                                                            <input type="checkbox" class="option-input checkbox import{{ ++$key1 }}" id="import" name="import[]" value="N" {{ $items->import =="N" ? 'checked' : ''}}>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input type="checkbox" class="option-input checkbox export{{ ++$key }}" id="export" name="export[]" value="Y" {{ $items->export =="Y" ? 'checked' : ''}}>
-                                                            <input type="checkbox" class="option-input checkbox export{{ ++$key1 }}" id="export" name="export[]" value="N" {{ $items->export =="N" ? 'checked' : ''}}>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        <input type="text" class="form-control" id="sss_number" name="sss_number" value="{{ $employees[0]->sss_number }}">
                                     </div>
-                                </div> --}}
+                                        @error('sss_number')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-2">Philhealth</label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" id="philhealth_number" name="philhealth" value="{{ $employees[0]->philhealth_number }}">
+                                        </div>
+                                            @error('philhealth_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-md-2">Pagibig</label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="pagibig_number" name="pagibig_number" value="{{ $employees[0]->pagibig_number }}">
+                                            </div>
+
+                                                @error('pagibig_number')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                         </div>
+
+                                         <div class="form-group row">
+                                            <label class="col-form-label col-md-2">TIN no</label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="tin_number" name="tin_number" value="{{ $employees[0]->tin_number }}">
+                                            </div>
+
+                                                @error('tin_number')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                         </div>
+
+
+                                </div>
+
+
+
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2"></label>
                                     <div class="col-md-10">
@@ -199,6 +196,41 @@
             }
         });
     </script>
+<script>
+   $(document).ready(function() {
+    $('#sss_number').on('input', function() {
+        var input = $(this).val();
+        // Remove non-digit characters
+        input = input.replace(/\D/g, '');
+
+        // Format the input
+        if (input.length > 2) {
+            input = input.substring(0, 2) + '-' + input.substring(2);
+        }
+        if (input.length > 9) {
+            input = input.substring(0, 10) + '-' + input.substring(9, 10);
+        }
+
+        $(this).val(input);
+    });
+
+    $('#philhealth_number').on('input', function() {
+        var input = $(this).val();
+        // Remove non-digit characters
+        input = input.replace(/\D/g, '');
+
+        // Format the input
+        if (input.length > 2) {
+            input = input.substring(0, 2) + '-' + input.substring(2);
+        }
+        if (input.length > 9) {
+            input = input.substring(0, 12) + '-' + input.substring(11, 12);
+        }
+
+        $(this).val(input);
+    });
+});
+</script>
     @endsection
 
 @endsection
