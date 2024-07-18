@@ -1,0 +1,12 @@
+.dashed {
+    border: 0.5px dashed gray;
+}
+
+.basic-pay-and-deductions {
+   display: flex;
+   align-items: center;
+   gap: 0 55px;
+}
+.amount {
+    text-decoration: underline;
+}

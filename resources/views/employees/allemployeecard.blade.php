@@ -1,5 +1,8 @@
 
 @extends('layouts.master')
+@section('title')
+ <title>Employees</title>
+@endsection
 @section('content')
     @section('style')
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >

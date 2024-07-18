@@ -1,4 +1,9 @@
 @extends('layouts.master')
+
+@section('title')
+  <title>Edit Employees</title>
+@endsection
+
 @section('content')
     @section('style')
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
@@ -158,7 +163,69 @@
                                                 @enderror
                                          </div>
 
+                                         <div class="card-header">
+                                            <h4 class="card-title mb-0">Employee's Payroll</h4>
+                                         </div>
 
+
+                                     <div class="row mt-4">
+
+                                         <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Basic Pay (₱) <i class="text text-danger"> Make Sure to update double times to calculate the amount!</i></label>
+
+                                            <select class="select form-control @error('basic_pay') is-invalid @enderror" style="width: 100%;" id="basic_pay" name="basic_pay">
+                                                <option value="">-- Select --</option>
+                                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>0000</option>
+                                                <option value="16000">P16000</option>
+                                            </select>
+
+                                            @error('basic_pay')
+                                             <span class="invalid-feedback" role="alert">
+                                                 <strong>{{ $message }}</strong>
+                                             </span>
+                                            @enderror
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6">
+                                            <div>
+                                                <label class="col-form-label">Monthly Allowance (₱)</label>
+                                                <input type="number" id="allowance" name="allowance" value="$employee->allowance" class="form-control" step="0.01" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Total Monthly (₱)</label>
+                                                <input type="number" id="total_salary" name="per_month" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Bi-Monthly Rate (₱)</label>
+                                                <input type="number" id="bi-monthly" name="bi-monthly" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Equivalent Daily Rate (₱)</label>
+                                                <input type="number" id="daily_rate" name="daily_rate" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Total Worked Days</label>
+                                                <input type="number" id="total_worked_days" name="total_worked_days" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                     </div>
                                 </div>
 
 

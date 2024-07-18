@@ -21,9 +21,7 @@
                                 <div class="form-group">
                                     <label>Default Country</label>
                                     <select class="select">
-                                        <option selected="selected">USA</option>
-                                        <option>United Kingdom</option>
-                                        <option>Cambodai</option>
+                                        <option selected="selected">Philippines</option>
                                     </select>
                                 </div>
                             </div>
@@ -43,7 +41,7 @@
                                 <div class="form-group">
                                     <label>Timezone</label>
                                     <select class="select">
-                                        <option>(UTC +7:00) Asai/Phnom Penh</option>
+                                        <option>(UTC +8:00) Asai/Manila</option>
                                     </select>
                                 </div>
                             </div>
@@ -52,8 +50,7 @@
                                     <label>Default Language</label>
                                     <select class="select">
                                         <option selected="selected">English</option>
-                                        <option>Khmer</option>
-                                        <option>French</option>
+                                        <option>Filipino</option>
                                     </select>
                                 </div>
                             </div>
@@ -62,10 +59,7 @@
                                     <label>Currency Code</label>
                                     <select class="select">
                                         <option selected="selected">USD</option>
-                                        <option>Pound</option>
-                                        <option>EURO</option>
-                                        <option>KHR</option>
-                                        <option>Ringgit</option>
+                                        <option value="Phillipine peso">Philippine Peso</option>
                                     </select>
                                 </div>
                             </div>

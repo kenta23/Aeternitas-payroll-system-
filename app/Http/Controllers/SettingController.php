@@ -13,6 +13,7 @@ class SettingController extends Controller
     public function companySettings()
     {
         $companySettings = CompanySettings::where('id',1)->first();
+        
         return view('settings.companysettings',compact('companySettings'));
     }
 
@@ -36,7 +37,7 @@ class SettingController extends Controller
         ]);
 
         try {
-            
+
             /** save or update to databases CompanySettings table */
             $saveRecord = CompanySettings::updateOrCreate(['id' => $request->id]);
             $saveRecord->company_name   = $request->company_name;
@@ -52,7 +53,7 @@ class SettingController extends Controller
             $saveRecord->fax            = $request->fax;
             $saveRecord->website_url    = $request->website_url;
             $saveRecord->save();
-            
+
             DB::commit();
             Toastr::success('Save CompanySettings successfully :)','Success');
             return redirect()->back();
@@ -63,7 +64,7 @@ class SettingController extends Controller
             return redirect()->back();
         }
     }
-    
+
     /** Roles & Permissions  */
     public function rolesPermissions()
     {
@@ -77,7 +78,7 @@ class SettingController extends Controller
         $request->validate([
             'roleName' => 'required|string|max:255',
         ]);
-        
+
         DB::beginTransaction();
         try{
 
@@ -113,7 +114,7 @@ class SettingController extends Controller
         try{
             $id        = $request->id;
             $roleName  = $request->roleName;
-            
+
             $update = [
                 'id'               => $id,
                 'permissions_name' => $roleName,
@@ -138,7 +139,7 @@ class SettingController extends Controller
             RolesPermissions::destroy($request->id);
             Toastr::success('Role Name deleted successfully :)','Success');
             return redirect()->back();
-        
+
         }catch(\Exception $e){
             DB::rollback();
             Toastr::error('Role Name delete fail :)','Error');

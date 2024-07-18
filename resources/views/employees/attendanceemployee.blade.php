@@ -198,7 +198,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($attendances as $a)
-                                    <tr>
+                                   <tr>
                                        <td>{{$a->employee_id }}</td>
                                        <td>{{$a->created_at}}</td>
                                        <td>{{$a->name}}</td>

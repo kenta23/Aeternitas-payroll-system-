@@ -1,6 +1,12 @@
 @extends('layouts.master')
+
+@section('title')
+ <title>Dashboard</title>
+@endsection
+
+
 @section('content')
-    <?php  
+    <?php
         $hour   = date ("G");
         $minute = date ("i");
         $second = date ("s");
@@ -35,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <section class="dash-section">
@@ -243,5 +249,5 @@
         </div>
         <!-- /Page Content -->
     </div>
-    <!-- /Page Wrapper -->  
+    <!-- /Page Wrapper -->
 @endsection

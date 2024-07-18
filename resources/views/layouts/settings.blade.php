@@ -3,13 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <meta name="description" content="Smarthr - Bootstrap Admin Template">
+        <meta name="description" content="Aeternitas Payroll System">
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-        <meta name="author" content="Soeng Souy">
+        <meta name="author" content="Aeternitas">
         <meta name="robots" content="noindex, nofollow">
-        <title>Settings - HRMS</title>
+        <title>Company Settings</title>
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/LOGO.png') }}">
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap.min.css') }}">
 		<!-- Fontawesome CSS -->
@@ -23,9 +23,7 @@
          <!--font family -->
          <link rel="preconnect" href="https://fonts.googleapis.com">
          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-         <link
-             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-             rel="stylesheet">
+         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 		{{-- message toastr --}}
 		<link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
@@ -67,7 +65,7 @@
 				<!-- Header Menu -->
 				<ul class="nav user-menu">
 					<!-- Search -->
-					<li class="nav-item">
+					{{--<li class="nav-item">
 						<div class="top-nav-search">
 							<a href="javascript:void(0);" class="responsive-search">
 								<i class="fa fa-search"></i>
@@ -77,10 +75,10 @@
 								<button class="btn" type="submit"><i class="fa fa-search"></i></button>
 							</form>
 						</div>
-					</li>
+					</li> --}}
 					<!-- /Search -->
 					<!-- Flag -->
-                    <li class="nav-item dropdown has-arrow flag-nav">
+                   {{-- <li class="nav-item dropdown has-arrow flag-nav">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
                             <img src="{{ URL::to('assets/img/flags/us.png') }}" alt="" height="20"> <span>English</span>
                         </a>
@@ -88,7 +86,7 @@
                             <a href="javascript:void(0);" class="dropdown-item"><img src="{{ URL::to('assets/img/flags/us.png') }}" alt="" height="16"> English</a>
                             <a href="javascript:void(0);" class="dropdown-item"><img src="{{ URL::to('assets/img/flags/kh.png') }}" alt="" height="16"> Khmer</a>
                         </div>
-                    </li>
+                    </li> --}}
                     <!-- /Flag -->
 
 					<!-- Notifications -->

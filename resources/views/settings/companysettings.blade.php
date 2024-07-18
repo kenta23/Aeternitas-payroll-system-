@@ -1,5 +1,6 @@
 @extends('layouts.settings')
 @section('content')
+
     {{-- message --}}
     {!! Toastr::message() !!}
     <!-- Page Wrapper -->
@@ -57,17 +58,7 @@
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <label>Country</label>
-                                    <select class="form-control select" name="country">
-                                        @if (!empty($companySettings->country))
-                                            <option value="KHMER" {{ ( $companySettings->country == 'KHMER') ? 'selected' : '' }}> KHMER</option>
-                                            <option value="USA" {{ ( $companySettings->country == 'USA') ? 'selected' : '' }}> USA</option>
-                                            <option value="United Kingdom" {{ ( $companySettings->country == 'United Kingdom') ? 'selected' : '' }}> United Kingdom</option> 
-                                        @else
-                                            <option value="KHMER">KHMER</option>
-                                            <option value="USA">USA</option>
-                                            <option value="United Kingdom">United Kingdom</option>
-                                        @endif
-                                    </select>
+                                    <input type="text" value="Philippines" id="country" name="country" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
@@ -85,15 +76,9 @@
                                     <label>State/Province</label>
                                     <select class="form-control select" name="state_province">
                                         @if (!empty($companySettings->state_province))
-                                            <option value="Phnom Penh" {{ ( $companySettings->state_province == 'Phnom Penh') ? 'selected' : '' }}> Phnom Penh</option>
-                                            <option value="Pursat" {{ ( $companySettings->state_province == 'Pursat') ? 'selected' : '' }}> Pursat</option>
-                                            <option value="Kan dal" {{ ( $companySettings->state_province == 'Kan dal') ? 'selected' : '' }}> Kan dal</option>
-                                            <option value="Ta Keav" {{ ( $companySettings->state_province == 'Ta Keav') ? 'selected' : '' }}> Ta Keav</option>
+                                            <option value="Metro Manila" {{ ( $companySettings->state_province == 'Metro Manila') ? 'selected' : '' }}>Metro Manila</option>
                                         @else
-                                            <option value="Phnom Penh">Phnom Penh</option>
-                                            <option value="Pursat">Pursat</option>
-                                            <option value="Kan dal">Kan dal</option>
-                                            <option value="Ta Keav">Ta Keav</option>
+                                            <option value="Metro Manila" {{ ( $companySettings->state_province == 'Metro Manila') ? 'selected' : '' }}>Metro Manila</option>
                                         @endif
                                     </select>
                                 </div>
@@ -122,26 +107,24 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Phone Number</label>
-                                    @if (!empty($companySettings->phone_number))
-                                        <input type="tel" class="form-control" name="phone_number" value="{{ $companySettings->phone_number }}">
+                                    @if (!empty($companySettings->mobile_number))
+                                       <div class="input-group">
+                                         <span class="input-group-text" id="mobile-label">+63</span>
+                                         <input type="tel" class="form-control" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
+                                       </div>
                                     @else
-                                        <input type="tel" class="form-control" name="phone_number">
+                                      <div class="input-group mb-3">
+                                        <span class="input-group-text" id="mobile-label">+63</span>
+                                        <input type="tel" class="form-control" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
+                                      </div>
                                     @endif
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Mobile Number</label>
-                                    @if (!empty($companySettings->mobile_number))
-                                    <input type="tel" class="form-control" name="mobile_number" value="{{ $companySettings->mobile_number }}">
-                                    @else
-                                    <input type="tel" class="form-control" name="mobile_number" value="">
-                                    @endif
-                                </div>
-                            </div>
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Fax</label>
@@ -175,4 +158,18 @@
         <!-- /Page Content -->
     </div>
     <!-- /Page Wrapper -->
+
+    @section('script')
+        <script>
+             const mobilenumber = document.getElementById('mobile_number');
+
+            mobilenumber.addEventListener('input', function(e) {
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+            })
+
+        </script>
+
+    @endsection
 @endsection

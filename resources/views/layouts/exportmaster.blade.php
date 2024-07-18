@@ -13,6 +13,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/logo.png') }}">
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap.min.css') }}">
+    <link rel='stylesheet' href="{{ URL::to('assets/css/payrollstyle.css') }}">
 	<!-- Fontawesome CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/font-awesome.min.css') }}">
 	<!-- Lineawesome CSS -->

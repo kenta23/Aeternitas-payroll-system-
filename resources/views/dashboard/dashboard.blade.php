@@ -1,4 +1,8 @@
 @extends('layouts.master')
+@section('title')
+ <title>Dashboard</title>
+@endsection
+
 @section('content')
     <?php
         $hour   = date ("G");
@@ -38,7 +42,7 @@
                     <div class="card dash-widget card1">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                             <div class="dash-widget-info">
-                                <h3>20</h3> <span>Employees</span>
+                                <h3>{{ $employeesCount }}</h3> <span>Employees</span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +51,7 @@
                     <div class="card dash-widget card1">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-building"></i></span>
                             <div class="dash-widget-info">
-                                <h3>6</h3> <span>Departments</span>
+                                <h3>{{ $departmentsCount }}</h3> <span>Departments</span>
                             </div>
                         </div>
                     </div>
@@ -56,7 +60,7 @@
                     <div class="card dash-widget card1">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-briefcase"></i></span>
                             <div class="dash-widget-info">
-                                <h3>5</h3> <span>Positions</span>
+                                <h3>{{ $positionsCount }}</h3> <span>Positions</span>
                             </div>
                         </div>
                     </div>

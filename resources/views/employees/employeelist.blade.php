@@ -42,13 +42,13 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating">
+                            <input type="text" id="name" name="name" class="form-control floating">
                             <label class="focus-label">Employee Name</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating">
+                            <input type="text" id="position" name="position" class="form-control floating">
                             <label class="focus-label">Position</label>
                         </div>
                     </div>
@@ -72,30 +72,30 @@
                                     <th>Email</th>
                                     <th>Mobile</th>
                                     <th class="text-nowrap">Join Date</th>
-                                    <th>Role</th>
+                                    <th>Department</th>
                                     <th class="text-right no-sort">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $items )
+                                @foreach ($employees as $emp )
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}<span>{{ $items->position }}</span></a>
+                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"> <img alt="" src="{{ URL::to('/assets/images/'. $emp->avatar) }}"></a>
+                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                         </h2>
                                     </td>
-                                    <td>{{ $items->user_id }}</td>
-                                    <td>{{ $items->email }}</td>
-                                    <td>{{ $items->phone_number }}</td>
-                                    <td>{{ $items->join_date }}</td>
-                                    <td>{{ $items->role_name }}</td>
+                                    <td>{{ $emp->employee_id }}</td>
+                                    <td>{{ $emp->email }}</td>
+                                    <td>{{ $emp->phone_number }}</td>
+                                    <td>{{ $emp->created_at }}</td>
+                                    <td>{{ $emp->department->name }}</td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="{{ url('all/employee/view/edit/'.$items->user_id) }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="{{url('all/employee/delete/'.$items->user_id)}}"onclick="return confirm('Are you sure to want to delete it?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item" href="{{ url('all/employee/view/edit/'.$emp->employee_id) }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item" href="{{url('all/employee/delete/'.$emp->employee_id)}}"onclick="return confirm('Are you sure to want to delete it?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
                                         </div>
                                     </td>
@@ -110,7 +110,7 @@
         <!-- /Page Content -->
 
         <!-- Add Employee Modal -->
-        <div id="add_employee" class="modal custom-modal fade" role="dialog">
+      {{--  <div id="add_employee" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -234,7 +234,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
+
         <!-- /Add Employee Modal -->
     </div>
     <!-- /Page Wrapper -->

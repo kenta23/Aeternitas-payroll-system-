@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use DB;
 use PDF;
@@ -15,9 +16,10 @@ class PayrollController extends Controller
     /** view page salary */
     public function salary()
     {
-        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get(); 
+        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
         $userList         = DB::table('users')->get();
         $permission_lists = DB::table('permission_lists')->get();
+
         return view('payroll.employeesalary',compact('users','userList','permission_lists'));
     }
 
@@ -25,11 +27,11 @@ class PayrollController extends Controller
     public function saveRecord(Request $request)
     {
         $request->validate([
-            'name'         => 'required|string|max:255',
-            'salary'       => 'required|string|max:255',
-            'basic' => 'required|string|max:255',
-            'da'    => 'required|string|max:255',
-            'hra'    => 'required|string|max:255',
+            'name'    => 'required|string|max:255',
+            'salary'  => 'required|string|max:255',
+            'basic'   => 'required|string|max:255',
+            'da'      => 'required|string|max:255',
+            'hra'     => 'required|string|max:255',
             'conveyance' => 'required|string|max:255',
             'allowance'  => 'required|string|max:255',
             'medical_allowance' => 'required|string|max:255',
@@ -45,7 +47,7 @@ class PayrollController extends Controller
         try {
             $salary = StaffSalary::updateOrCreate(['user_id' => $request->user_id]);
             $salary->name              = $request->name;
-            $salary->user_id            = $request->user_id;
+            $salary->user_id           = $request->user_id;
             $salary->salary            = $request->salary;
             $salary->basic             = $request->basic;
             $salary->da                = $request->da;
@@ -64,6 +66,7 @@ class PayrollController extends Controller
             DB::commit();
             Toastr::success('Create new Salary successfully :)','Success');
             return redirect()->back();
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Add Salary fail :)','Error');
@@ -74,17 +77,10 @@ class PayrollController extends Controller
     /** salary view detail */
     public function salaryView($user_id)
     {
-        $users = DB::table('users')
-                ->join('staff_salaries', 'users.user_id', 'staff_salaries.user_id')
-                ->join('profile_information', 'users.user_id', 'profile_information.user_id')
-                ->select('users.*', 'staff_salaries.*','profile_information.*')
-                ->where('staff_salaries.user_id',$user_id)->first();
-        if (!empty($users)) {
-            return view('payroll.salaryview',compact('users'));
-        } else {
-            Toastr::warning('Please update information user :)','Warning');
-            return redirect()->route('profile_user');
-        }
+        $employee = Employee::find($user_id);
+
+        return view('payroll.salaryview', compact('employee'));
+
     }
 
     /** update record */
@@ -135,7 +131,7 @@ class PayrollController extends Controller
             DB::commit();
             Toastr::success('Salary deleted successfully :)','Success');
             return redirect()->back();
-            
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Salary deleted fail :)','Error');
@@ -172,7 +168,7 @@ class PayrollController extends Controller
             ->join('profile_information', 'users.user_id', 'profile_information.user_id')
             ->select('users.*', 'staff_salaries.*','profile_information.*')
             ->where('staff_salaries.user_id',$user_id)->get();
-            
+
             return Excel::download(new SalaryExcel($user_id),'ReportDetailSalary'.'.xlsx');
     }
 }

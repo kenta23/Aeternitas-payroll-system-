@@ -36,15 +36,12 @@ class EmployeeController extends Controller
     public function listAllEmployee()
     {
         $position = positionType::all();
+        $employees = Employee::with('department')->get();
+        $departments = department::all();
 
-        $users = DB::table('users')
-                    ->join('employees','users.user_id', 'employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                    ->get();
-        $userList = DB::table('users')->get();
 
-        $permission_lists = DB::table('permission_lists')->get();
-        return view('employees.employeelist',compact('users','userList', 'position', 'permission_lists'));
+
+        return view('employees.employeelist',compact('employees', 'position','departments'));
     }
 
     /** save data employee */
@@ -217,75 +214,34 @@ public function saveRecord(Request $request)
     /** list search employee */
     public function employeeListSearch(Request $request)
     {
-        $users = DB::table('users')
-                    ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date','employees.gender','employees.position')->get();
-        $permission_lists = DB::table('permission_lists')->get();
-        $userList         = DB::table('users')->get();
+        $query = Employee::query();
+        $position = positionType::all();
+        $departments = department::all();
 
-        // search by id
-        if($request->employee_id)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')->get();
-        }
-        // search by name
-        if($request->name)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('users.name','LIKE','%'.$request->name.'%')->get();
-        }
-        // search by name
-        if($request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
+        if ($request->filled('employee_id')) {
+            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
         }
 
-        // search by name and id
-        if($request->employee_id && $request->name)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.name','LIKE','%'.$request->name.'%')->get();
+        if ($request->filled('name')) {
+            $fullname = trim($request->name);
+            $parts = explode(' ', $fullname);
+            $firstname = $parts[0];
+            $lastname = isset($parts[1]) ? $parts[1] : '';
+
+            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
+                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
         }
-        // search by position and id
-        if($request->employee_id && $request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
+
+        if ($request->filled('position')) {
+            $query->where('position', 'LIKE', '%' . $request->position . '%');
         }
-        // search by name and position
-        if($request->name && $request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
-        }
-        // search by name and position and id
-        if($request->employee_id && $request->name && $request->position)
-        {
-            $users = DB::table('users')
-                        ->join('employees','users.user_id','employees.employee_id')
-                        ->select('users.*','employees.birth_date','employees.gender','employees.position')
-                        ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-                        ->where('users.name','LIKE','%'.$request->name.'%')
-                        ->where('users.position','LIKE','%'.$request->position.'%')->get();
-        }
-        return view('employees.employeelist',compact('users','userList','permission_lists'));
+
+        $employees = $query->get();
+
+        // Return the rendered view as JSON for AJAX
+        //$html = view('employees.employee_list', ['employees' => $employees])->render();
+
+        return view('employees.employeelist',compact('employees','position','departments'));
     }
 
     /** employee profile with all controller user */
