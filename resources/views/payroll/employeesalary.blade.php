@@ -176,7 +176,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Select Staff</label>
+                                        <label>Employee</label>
                                         <select class="select select2s-hidden-accessible @error('name') is-invalid @enderror" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
                                             <option value="">-- Select --</option>
                                             @foreach ($userList as $key=>$user )

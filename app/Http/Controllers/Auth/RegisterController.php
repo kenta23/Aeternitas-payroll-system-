@@ -43,14 +43,14 @@ class RegisterController extends Controller
                 'status'    => 'Active',
                 'password'  => Hash::make($request->password),
             ]);
-            Toastr::success('Create new account successfully :)','Success');
+            Toastr::success('New account successfully created','Success');
 
             return redirect('/home');
 
         }catch(\Exception $e) {
             \Log::info($e);
             DB::rollback();
-            Toastr::error('Add new employee fail :)','Error');
+            Toastr::error('Add new employee fail','Error');
             return redirect()->back();
         }
     }

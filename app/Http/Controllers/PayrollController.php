@@ -17,6 +17,7 @@ class PayrollController extends Controller
     public function salary()
     {
         $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
+        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
         $userList         = DB::table('users')->get();
         $permission_lists = DB::table('permission_lists')->get();
 
@@ -132,6 +133,7 @@ class PayrollController extends Controller
             Toastr::success('Salary deleted successfully :)','Success');
             return redirect()->back();
 
+
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Salary deleted fail :)','Error');
@@ -168,6 +170,7 @@ class PayrollController extends Controller
             ->join('profile_information', 'users.user_id', 'profile_information.user_id')
             ->select('users.*', 'staff_salaries.*','profile_information.*')
             ->where('staff_salaries.user_id',$user_id)->get();
+
 
             return Excel::download(new SalaryExcel($user_id),'ReportDetailSalary'.'.xlsx');
     }

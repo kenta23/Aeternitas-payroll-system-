@@ -246,7 +246,7 @@
 
     </div>
     <!-- /Page Wrapper -->
-    @section('script')
+@section('script')
     <script>
         $("input:checkbox").on('click', function()
         {
@@ -263,8 +263,44 @@
             }
         });
     </script>
+
 <script>
-   $(document).ready(function() {
+   const sss_number = document.getElementById('sss_number');
+   const philhealth_number = document.getElementById('philhealth_number');
+
+   function sssNumberFormat() {
+       let sssNumberInput = sss_number.value;
+       // Remove non-digit characters
+       sssNumberInput = sssNumberInput.replace(/\D/g, '');
+
+        if (sssNumberInput.length > 2) {
+            sssNumberInput = sssNumberInput.substring(0, 2) + '-' + sssNumberInput.substring(2);
+        }
+        if (sssNumberInput.length > 9) {
+            sssNumberInput = sssNumberInput.substring(0, 10) + '-' + sssNumberInput.substring(9, 10);
+        }
+
+        sss_number.value =  sssNumberInput;
+   }
+   function philhealthNumberFormat() {
+       let philhealthNumberInput = philhealth_number.value;
+       // Remove non-digit characters
+       philhealthNumberInput = philhealthNumberInput.replace(/\D/g, '');
+
+        if (philhealthNumberInput.length > 2) {
+           philhealthNumberInput = philhealthNumberInput.substring(0, 2) + '-' + philhealthNumberInput.substring(2);
+        }
+        if (philhealthNumberInput.length > 9) {
+            philhealthNumberInput = philhealthNumberInput.substring(0, 12) + '-' + philhealthNumberInput.substring(11, 12);
+        }
+
+        philhealth_number.value =  philhealthNumberInput;
+   }
+
+    sss_number.addEventListener('input', sssNumberFormat);
+    philhealth_number.addEventListener('input', philhealthNumberFormat);
+
+  /* $(document).ready(function() {
     $('#sss_number').on('input', function() {
         var input = $(this).val();
         // Remove non-digit characters
@@ -296,7 +332,7 @@
 
         $(this).val(input);
     });
-});
+}); */
 </script>
     @endsection
 

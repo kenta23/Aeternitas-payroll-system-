@@ -86,7 +86,7 @@ class LoginController extends Controller
                 $updateLastLogin = ['last_login' => $todayDate,];
                 User::where('email',$username)->update($updateLastLogin);
 
-                Toastr::success('Login successfully :)','Success');
+                Toastr::success('Logged in','Success');
                 return redirect()->intended('home');
             } else {
                 Toastr::error('Authentication failed','Error');
@@ -120,7 +120,7 @@ class LoginController extends Controller
     ]);
         $request->session()->flush();
         Auth::logout();
-        Toastr::success('Logout successfully :)','Success');
+        Toastr::success('Account signed out', 'Success');
         return redirect('/');
     }
 

@@ -149,7 +149,7 @@
              </div>
          </div>
      </div>
-
+  
      <!-- Add Register Modal -->
      <div id="register" class="modal custom-modal1 fade" role="dialog">
          <div class="modal-dialog modal-dialog-centered modal-lg">
