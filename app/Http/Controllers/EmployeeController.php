@@ -114,48 +114,29 @@ public function saveRecord(Request $request)
                 'email'=>$request->email,
                 'birth_date'=>$request->birthdate,
                 'gender'=>$request->gender,
+                'phone_number'=>$request->phone_number,
                 'position'=>$request->position,
                 'department_id'=>$request->department_id,
                 'sss_number' => $request->sss_number,
                 'philhealth_number' => $request->philhealth,
                 'tin_number' => $request->tin_number,
+                'monthly_pay' => $request->input('monthly_pay'),
+                'allowance' => $request->input('allowance'),
+                'total_monthly'=>$request->input('total_monthly'),
+                'bi_monthly'=>$request->input('bi_monthly'),
+                'per_day'=>$request->input('daily_rate'),
             ];
 
-            // update table user
-           /* $updateUser = [
-                'id'=>$request->id,
-                'name'=>$request->name,
-                'email'=>$request->email,
-            ]; */
-
-            // update table module_permissions
-           /* for($i = 0;$i<count($request->id_permission);$i++)
-            {
-                $UpdateModule_permissions = [
-                    'employee_id' => $request->employee_id,
-                    'module_permission' => $request->permission[$i],
-                    'id'                => $request->id_permission[$i],
-                    'read'              => $request->read[$i],
-                    'write'             => $request->write[$i],
-                    'create'            => $request->create[$i],
-                    'delete'            => $request->delete[$i],
-                    'import'            => $request->import[$i],
-                    'export'            => $request->export[$i],
-                ];
-                module_permission::where('id',$request->id_permission[$i])->update($UpdateModule_permissions);
-            } */
-
-            //User::where('id',$request->id)->update($updateUser);
 
             Employee::where('id',$request->id)->update($updateEmployee);
 
             DB::commit();
-            Toastr::success('updated record successfully :)','Success');
+            Toastr::success('Record successfully updated','Success');
             return redirect()->route('all/employee/card');
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('updated record fail :)','Error');
+            Toastr::error('updated record fail','Error');
             return redirect()->back();
         }
     }

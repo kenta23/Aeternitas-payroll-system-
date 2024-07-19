@@ -49,13 +49,19 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-md-2">First name</label>
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" id="name" name="firstname" value="{{ $employees[0]->first_name }}">
+                                    <label class="col-form-label col-md-2 mb-2">First name</label>
+                                    <div class="col-md-10 mb-2">
+                                        <input type="text" class="form-control" id="first_name" name="firstname" value="{{ $employees[0]->first_name }}">
                                     </div>
-                                    <label class="col-form-label col-md-2">Last name</label>
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" id="name" name="lastname" value="{{ $employees[0]->last_name }}">
+
+                                    <label class="col-form-label col-md-2 mb-2">Middle name</label>
+                                    <div class="col-md-10 mb-2">
+                                        <input type="text" placeholder="Optional" class="form-control" id="middlename" name="middle_name" value="{{ $employees[0]->middle_name }}">
+                                    </div>
+
+                                    <label class="col-form-label col-md-2 mb-2">Last name</label>
+                                    <div class="col-md-10 mb-2">
+                                        <input type="text" class="form-control" id="last_name" name="lastname" value="{{ $employees[0]->last_name }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -70,6 +76,7 @@
                                         <input type="text" class="form-control datetimepicker" id="birth_date" name="birthdate" value="{{ $employees[0]->birth_date }}">
                                     </div>
                                 </div>
+
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Gender</label>
                                     <div class="col-md-10">
@@ -80,6 +87,14 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                 <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Phone Number</label>
+                                     <div class="input-group col-md-10">
+                                            <span class="input-group-text">+63</span>
+                                            <input type="text" name="phone_number" value="{{ ($employees[0]->phone_number) }}" class="form-control" placeholder="Enter 10 digit phone number Ex. 9123456789">
+                                      </div>
+                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Position</label>
@@ -100,7 +115,7 @@
                                         <select class="select form-control @error('department') is-invalid @enderror" style="width: 100%;" id="department" name="department_id">
                                             <option value="">-- Select --</option>
                                             @foreach ($departments as $department)
-                                                <option value="{{ $department->id }}" {{ $employees[0]->department_id == $department->id ? 'selected' : '' }}>
+                                                <option value="{{ $department->id }}" {{ $employees[0]->department_id == $department->id ? 'selected' : '' }} >
                                                     {{ $department->name }}
                                                 </option>
                                             @endforeach
@@ -164,42 +179,46 @@
                                          </div>
 
                                          <div class="card-header">
-                                            <h4 class="card-title mb-0">Employee's Payroll</h4>
+                                            <h4 class="card-title mb-0">Summary details</h4>
                                          </div>
 
 
                                      <div class="row mt-4">
-
                                          <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="col-form-label">Basic Pay (₱) <i class="text text-danger"> Make Sure to update double times to calculate the amount!</i></label>
+                                                <label class="col-form-label">Monthly Pay (₱)</label>
 
-                                            <select class="select form-control @error('basic_pay') is-invalid @enderror" style="width: 100%;" id="basic_pay" name="basic_pay">
+                                            <select class="select form-control @error('monthly_pay') is-invalid @enderror" style="width: 100%;" id="monthly_pay" name="monthly_pay">
                                                 <option value="">-- Select --</option>
-                                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>0000</option>
-                                                <option value="16000">P16000</option>
+                                                <option value="16000.00" {{ $employees[0]->monthly_pay == '16000.00' ? 'selected' : '' }}>₱16,000.00</option>
+                                                <option value="18000.00" {{ $employees[0]->monthly_pay == '18000.00' ? 'selected' : '' }}>₱18,000.00</option>
+                                                <option value="20000.00" {{ $employees[0]->monthly_pay == '20000.00' ? 'selected' : '' }}>₱20,000.00</option>
+                                                <option value="22000.00" {{ $employees[0]->monthly_pay == '22000.00' ? 'selected' : '' }}>₱22,000.00</option>
+                                                <option value="25000.00" {{ $employees[0]->monthly_pay == '25000.00' ? 'selected' : '' }}>₱25,000.00</option>
+                                                <option value="30000.00" {{ $employees[0]->monthly_pay == '30000.00' ? 'selected' : '' }}>₱30,000.00</option>
                                             </select>
 
-                                            @error('basic_pay')
+                                            @error('monthly_pay')
                                              <span class="invalid-feedback" role="alert">
                                                  <strong>{{ $message }}</strong>
                                              </span>
                                             @enderror
                                             </div>
+
                                         </div>
 
 
                                         <div class="col-sm-6">
                                             <div>
                                                 <label class="col-form-label">Monthly Allowance (₱)</label>
-                                                <input type="number" id="allowance" name="allowance" value="$employee->allowance" class="form-control" step="0.01" required>
+                                                <input type="number" id="allowance" name="allowance" value="{{ $employees[0]->allowance }}" class="form-control" step="0.01" required>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Total Monthly (₱)</label>
-                                                <input type="number" id="total_salary" name="per_month" class="form-control" readonly>
+                                                <input type="number" id="total_monthly" name="total_monthly" class="form-control" readonly>
                                             </div>
                                         </div>
 
@@ -207,7 +226,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Bi-Monthly Rate (₱)</label>
-                                                <input type="number" id="bi-monthly" name="bi-monthly" class="form-control" readonly>
+                                                <input type="number" id="bi_monthly" name="bi_monthly" class="form-control" readonly>
                                             </div>
                                         </div>
 
@@ -215,13 +234,6 @@
                                             <div class="form-group">
                                                 <label>Equivalent Daily Rate (₱)</label>
                                                 <input type="number" id="daily_rate" name="daily_rate" class="form-control" readonly>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Total Worked Days</label>
-                                                <input type="number" id="total_worked_days" name="total_worked_days" class="form-control" readonly>
                                             </div>
                                         </div>
 
@@ -233,10 +245,12 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2"></label>
                                     <div class="col-md-10">
-                                        <button type="submit" class="btn btn-primary submit-btn" id="updateBtn">Update</button>
+                                        <button type="submit" class="btn btn-primary col-md-4 submit-btn" id="updateBtn">Update</button>
                                     </div>
                                 </div>
+
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -246,7 +260,9 @@
 
     </div>
     <!-- /Page Wrapper -->
+
 @section('script')
+
     <script>
         $("input:checkbox").on('click', function()
         {
@@ -300,40 +316,51 @@
     sss_number.addEventListener('input', sssNumberFormat);
     philhealth_number.addEventListener('input', philhealthNumberFormat);
 
-  /* $(document).ready(function() {
-    $('#sss_number').on('input', function() {
-        var input = $(this).val();
-        // Remove non-digit characters
-        input = input.replace(/\D/g, '');
+  </script>
 
-        // Format the input
-        if (input.length > 2) {
-            input = input.substring(0, 2) + '-' + input.substring(2);
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+     //Calculate and display total monthly and bi-monthly totals
+     const monthlyPayInput = document.getElementById('monthly_pay');
+     const allowanceInput = document.getElementById('allowance');
+     const equivalentDailyRateInput = document.getElementById('daily_rate');
+
+
+    function calculateTotals() {
+
+         const monthlyPay = parseFloat(monthlyPayInput.value);
+         const allowance = parseFloat(allowanceInput.value);
+
+
+
+        if (!isNaN(monthlyPay) && !isNaN(allowance)) {
+            const totalMonthly = monthlyPay + allowance;
+            const biMonthlyTotal = totalMonthly / 2;
+            const dailyRate = (totalMonthly * 12) / 313;    //will change to basic pay later on.
+
+            document.getElementById('total_monthly').value = totalMonthly.toFixed(2);
+            document.getElementById('bi_monthly').value = biMonthlyTotal.toFixed(2);
+            document.getElementById('daily_rate').value = dailyRate.toFixed(2);
         }
-        if (input.length > 9) {
-            input = input.substring(0, 10) + '-' + input.substring(9, 10);
-        }
 
-        $(this).val(input);
-    });
+        console.log('MONTHLY PAY', monthlyPay);
+        console.log('ALLOWANCE', allowance);
+    }
 
-    $('#philhealth_number').on('input', function() {
-        var input = $(this).val();
-        // Remove non-digit characters
-        input = input.replace(/\D/g, '');
+       window.onload = function () {
+            calculateTotals();
+        };
 
-        // Format the input
-        if (input.length > 2) {
-            input = input.substring(0, 2) + '-' + input.substring(2);
-        }
-        if (input.length > 9) {
-            input = input.substring(0, 12) + '-' + input.substring(11, 12);
-        }
+     //addEventListener Function
+     document.getElementById('monthly_pay').addEventListener('change', calculateTotals);
+     document.getElementById('allowance').addEventListener('input', calculateTotals);
+  })
 
-        $(this).val(input);
-    });
-}); */
-</script>
-    @endsection
+  </script>
+
+  @endsection
 
 @endsection

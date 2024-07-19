@@ -11,12 +11,13 @@ class CreateEmployeesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('suffix')->nullable();
             $table->string('email');
             $table->string('birth_date');
             $table->string('gender');
@@ -25,10 +26,25 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->string('phone_number')->nullable();
             $table->mediumText('current_address')->nullable();
-            $table->integer('pay_type')->nullable();
-            $table->integer('per_day')->nullable();
-            $table->integer('basic_pay')->nullable();
-            $table->integer('per_month')->nullable();
+            $table->string('pay_type')->nullable(); // Corrected line
+            $table->decimal('per_day', 10, 2)->nullable();
+            $table->decimal('basic_pay', 10, 2)->nullable();
+            $table->decimal('allowance', 10, 2)->nullable();
+            $table->decimal('monthly_pay', 10, 2)->nullable();
+            $table->decimal('bi_monthly', 10, 2)->nullable();
+            $table->integer('actual_days_worked')->nullable();
+            $table->decimal('absences', 10, 2)->nullable();
+            $table->decimal('vlsl', 10, 2)->nullable();
+            $table->decimal('regular_worked_days', 10, 2)->nullable();
+            $table->decimal('rwd_amount', 10, 2)->nullable();
+            $table->decimal('legal_worked_days', 10, 2)->nullable();
+            $table->decimal('lhd_amount', 10, 2)->nullable();
+            $table->decimal('leave_amount', 10, 2)->nullable();
+            $table->decimal('special_rate', 10, 2)->nullable();
+            $table->decimal('special_worked_days', 10, 2)->nullable();
+            $table->decimal('special_amount', 10, 2)->nullable();
+            $table->decimal('total_basic_pay', 10, 2)->nullable();
+            $table->decimal('total_monthly', 10, 2)->nullable();
             $table->string('sss_number')->nullable();
             $table->string('philhealth_number')->nullable();
             $table->string('pagibig_number')->nullable();
@@ -51,13 +67,13 @@ class CreateEmployeesTable extends Migration
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('employees');
     }

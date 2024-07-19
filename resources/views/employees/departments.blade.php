@@ -1,7 +1,7 @@
 
 @extends('layouts.master')
 @section('content')
-   
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -40,7 +40,7 @@
                                 <tr>
                                     <td>{{ ++$key }}</td>
                                     <td hidden class="id">{{ $items->id }}</td>
-                                    <td class="department">{{ $items->department }}</td>
+                                    <td class="department">{{ $items->name }}</td>
                                     <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -59,7 +59,7 @@
             </div>
         </div>
         <!-- /Page Content -->
-        
+
         <!-- Add Department Modal -->
         <div id="add_department" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -91,7 +91,7 @@
             </div>
         </div>
         <!-- /Add Department Modal -->
-        
+
         <!-- Edit Department Modal -->
         <div id="edit_department" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
