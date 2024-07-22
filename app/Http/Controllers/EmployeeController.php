@@ -100,6 +100,67 @@ public function saveRecord(Request $request)
         return view('employees.edit.editemployee',compact('employees', 'position', 'departments'));
     }
 
+    public function timekeeping() {
+        $employees = Employee::all();
+
+        $position = PositionType::all();
+        return view('employees.timekeeping', compact('employees'));
+    }
+
+    public function timekeepingEdit($employee_id) {
+
+        $employee = Employee::where('employee_id', $employee_id)->first();
+
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+
+        $response = [
+            'id' => $employee->id,
+            'employee_id' => $employee->employee_id,
+            'name' => $employee->first_name . ' ' . $employee->last_name,
+            'daily_rate'=>$employee->per_day,
+            'position' => $employee->position,
+            'regular_worked_days' => $employee->regular_worked_days,
+            'absences' =>$employee->absences,
+            'legal_worked_days' => $employee->legal_worked_days,
+            'lhd_amount'=>$employee->lhd_amount,
+            'special_rate'=>$employee->special_rate,
+            'special_amount' => $employee->special_amount,
+        ];
+
+        return response()->json($response);
+    }
+
+    public function updateTimekeeping(Request $request) {
+
+         //dd($request->all());
+         //split first name and last name
+         $fullName = $request->input('name');
+         // Split the full name into an array using space as the delimiter
+         $nameParts = explode(' ', $fullName);
+         // The first part of the array is the first name
+         $firstName = $nameParts[0];
+         $lastName = $nameParts[1];
+
+       try {
+         $updateValues = [
+            'regular_worked_days' => $request->regular_worked_days,
+            'absences' => $request->absences,
+            'month_rate_paid_days'  //CONTINUE
+
+         ]
+
+        $employee->update($request->all());
+       }
+       catch() {
+
+       }
+
+
+    }
+
     /** update record employee */
     public function updateRecord( EmployeeRequest $request)
     {

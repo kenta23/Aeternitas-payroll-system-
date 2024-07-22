@@ -49,6 +49,7 @@
                         <li><a class="{{set_active(['form/leavesettings/page'])}}" href="{{ route('form/leavesettings/page') }}">Leave Settings</a></li>
                         <li><a class="{{set_active(['attendance/page'])}}" href="{{ route('attendance/page') }}">Attendance (Admin)</a></li>
                         <li><a class="{{set_active(['attendance/employee/page'])}}" href="{{ route('attendance/employee/page') }}">Attendance (Employee)</a></li>
+                        <li><a class="{{set_active(['employees/timekeeping'])}}" href="{{ route('employees/timekeeping') }}">Timekeeping</a></li>
                         <li><a class="{{set_active(['form/departments/page'])}}" href="{{ route('form/departments/page') }}">Departments</a></li>
                         <li><a class="{{set_active(['form/designations/page'])}}" href="{{ route('form/designations/page') }}">Designations</a></li>
                         <li><a class="{{set_active(['form/timesheet/page'])}}" href="{{ route('form/timesheet/page') }}">Timesheet</a></li>
@@ -73,9 +74,9 @@
                     <a href="#" class="{{ set_active(['form/salary/page','form/payroll/items']) ? 'noti-dot' : '' }}"><i class="la la-money"></i>
                     <span> Payroll </span> <span class="menu-arrow"></span></a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
-                        <li><a class="{{set_active(['form/salary/page'])}}" href="{{ route('form/salary/page') }}"> Employee's Sallary </a></li>
-                        <li><a href="{{ route('form/salary/page') }}"> Employee's Summary </a></li>
-                        <li><a href="{{ route('form/salary/page') }}"> Payslip </a></li>
+                        <li><a class="{{set_active(['form/sallary/page'])}}" href="{{ route('form/sallary/page') }}"> Employee's Sallary </a></li>
+                        <li><a href="{{ route('form/sallary/page') }}"> Employee's Summary </a></li>
+                        <li><a href="{{ route('form/sallary/page') }}"> Payslip </a></li>
                         <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payroll Items </a></li>
                     </ul>
                 </li>

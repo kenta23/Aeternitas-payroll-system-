@@ -14,15 +14,42 @@ use Brian2694\Toastr\Facades\Toastr;
 class PayrollController extends Controller
 {
     /** view page salary */
-    public function salary()
+    public function sallary()
     {
-        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
-        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
-        $userList         = DB::table('users')->get();
-        $permission_lists = DB::table('permission_lists')->get();
+        //$users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
+        //$users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
+       // $userList         = DB::table('users')->get();
+       // $permission_lists = DB::table('permission_lists')->get();
 
-        return view('payroll.employeesalary',compact('users','userList','permission_lists'));
+        $employees = Employee::all();
+
+        return view('payroll.employeesalary',compact('employees'));
     }
+
+    public function getEmployeeSalary($employeeId)
+{
+    $employee = Employee::where('employee_id', $employeeId)->first();
+
+    if (!$employee) {
+        return response()->json(['message' => 'Employee not found'], 404);
+    }
+
+    $response = [
+        'id' => $employee->id,
+        'employee_id' => $employee->employee_id,
+        'name' => $employee->first_name . ' ' . $employee->last_name,
+        'position' => $employee->position,
+        'basic_pay' => $employee->basic_pay,
+        'phone_number' =>$employee->phone_number,
+        'per_day' => $employee->per_day,
+        'allowance'=>$employee->allowance,
+        'monthly_pay'=>$employee->monthly_pay,
+        'bi_monthly' => $employee->bi_monthly,
+
+    ];
+
+    return response()->json($response);
+}
 
     /** save record */
     public function saveRecord(Request $request)

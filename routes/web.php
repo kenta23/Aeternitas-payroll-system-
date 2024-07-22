@@ -159,6 +159,10 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('all/employee/delete/{employee_id}', 'deleteRecord')->middleware('auth');
         Route::post('all/employee/search', 'employeeSearch')->name('all/employee/search');
         Route::post('all/employee/list/search', 'employeeListSearch')->name('all/employee/list/search');
+        Route::get('employee/timekeeping/edit/{employee_id}', 'timekeepingEdit')->middleware('auth')->name('employee/timekeeping/edit');
+        Route::post('employee/timekeeping/update', 'updateTimekeeping')->middleware('auth')->name('employee/timekeeping/update');
+
+        Route::get('employees/timekeeping', 'timekeeping')->middleware('auth')->name('employees/timekeeping');
 
         Route::get('form/departments/page', 'index')->middleware('auth')->name('form/departments/page');
         Route::post('form/departments/save', 'saveRecordDepartment')->middleware('auth')->name('form/departments/save');
@@ -214,7 +218,8 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
     // ------------------------ form payroll  ----------------------------//
     Route::controller(PayrollController::class)->group(function () {
-        Route::get('form/salary/page', 'salary')->middleware('auth')->name('form/salary/page');
+        Route::get('form/sallary/page', 'sallary')->middleware('auth')->name('form/sallary/page');
+        Route::get('employee/sallary/{employeeId}', 'getEmployeeSalary')->middleware('auth')->name('employee/sallary');
         Route::post('form/salary/save','saveRecord')->middleware('auth')->name('form/salary/save');
         Route::post('form/salary/update', 'updateRecord')->middleware('auth')->name('form/salary/update');
         Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
