@@ -262,7 +262,6 @@
     <!-- /Page Wrapper -->
 
 @section('script')
-
     <script>
         $("input:checkbox").on('click', function()
         {

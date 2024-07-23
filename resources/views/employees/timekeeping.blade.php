@@ -157,7 +157,7 @@
                             <h4 class="text-primary">Regular worked days</h4>
                             <div class="form-group">
                                 <label>No. of regular worked days</label>
-                                <input class="form-control" type="number" step="0.01" name="regular_worked_days" id="regular_worked_days" value="13">
+                                <input class="form-control" type="number" readonly step="0.01" name="regular_worked_days" id="regular_worked_days" value="13">
                             </div>
                             @error('regular_worked_days')
                               <span class="invalid-feedback" role="alert">
@@ -192,7 +192,7 @@
 
                              <div class="form-group">
                                 <label>Total amount</label>
-                                <input class="form-control" type="text" name="lhd_amount" id="lhd_amount" value="">
+                                <input class="form-control" type="text" name="lhd_amount" readonly id="lhd_amount" value="">
                              </div>
 
                              @error('lhd_amount')

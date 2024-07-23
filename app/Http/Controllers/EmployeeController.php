@@ -145,31 +145,37 @@ public function saveRecord(Request $request)
          $lastName = $nameParts[1];
 
        try {
+         DB::beginTransaction();
+
          $updateValues = [
             'regular_worked_days' => $request->regular_worked_days,
             'absences' => $request->absences,
             'month_rate_paid_days'  //CONTINUE
 
-         ]
 
-        $employee->update($request->all());
+         ];
+          //$employee->update($request->all());
+          Employee::where('employee_id', $request->employee_id)->update();
+
+          DB::commit();
+          Toastr::success('Record updated succesfully','Success');
+          return redirect()->route('employees/timekeeping');
        }
-       catch() {
-
+       catch(\Exception $e) {
+         DB::rollback();
+         Toastr::error('Failed to update please try again','Error');
+         return redirect()->back();
        }
-
-
     }
 
     /** update record employee */
-    public function updateRecord( EmployeeRequest $request)
+    public function updateRecord(EmployeeRequest $request)
     {
         DB::beginTransaction();
-        try {
 
+        try {
             // update table Employee
             $updateEmployee = [
-                'id'=>$request->id,
                 'first_name'=>$request->firstname,
                 'last_name'=>$request->lastname,
                 'email'=>$request->email,
@@ -183,14 +189,14 @@ public function saveRecord(Request $request)
                 'tin_number' => $request->tin_number,
                 'monthly_pay' => $request->input('monthly_pay'),
                 'allowance' => $request->input('allowance'),
-                'total_monthly'=>$request->input('total_monthly'),
+                'basic_pay'=>$request->input('total_monthly'),
                 'bi_monthly'=>$request->input('bi_monthly'),
                 'per_day'=>$request->input('daily_rate'),
             ];
 
+            //dd($updateEmployee);
 
-            Employee::where('id',$request->id)->update($updateEmployee);
-
+            Employee::where('id', $request->id)->update($updateEmployee);
             DB::commit();
             Toastr::success('Record successfully updated','Success');
             return redirect()->route('all/employee/card');
