@@ -101,9 +101,10 @@ public function saveRecord(Request $request)
     }
 
     public function timekeeping() {
-        $employees = Employee::all();
+        $employees = Employee::paginate(10);
 
         $position = PositionType::all();
+
         return view('employees.timekeeping', compact('employees'));
     }
 
@@ -114,6 +115,19 @@ public function saveRecord(Request $request)
         if (!$employee) {
             return response()->json(['message' => 'Employee not found'], 404);
         }
+
+        $computedOtRate25 = round(($employee->per_day / 8) * 1.25, 2);
+$computedOtAmount25 = round($computedOtRate25 * $employee->ot_hours25, 2);
+
+$computedOtRate30 = round(($employee->per_day / 8) * 1.30, 2);
+$computedOtAmount30 = round($computedOtRate30 * $employee->ot_hours30, 2);
+
+$computedOtRate100 = round(($employee->per_day / 8) * 2.00, 2); // Assuming double rate for 100%
+$computedOtAmount100 = round($computedOtRate100 * $employee->ot_hours100, 2);
+
+// Total OT amount
+$totalOtAmount = round($computedOtAmount25 + $computedOtAmount30 + $computedOtAmount100, 2);
+
 
 
         $response = [
@@ -128,6 +142,18 @@ public function saveRecord(Request $request)
             'lhd_amount'=>$employee->lhd_amount,
             'special_rate'=>$employee->special_rate,
             'special_amount' => $employee->special_amount,
+
+             // Overtimes
+    'ot_rate25' => $computedOtRate25,
+    'ot_hours25' => $employee->ot_hours25,
+    'ot_amount25' => $computedOtAmount25,
+    'ot_rate30' => $computedOtRate30,
+    'ot_hours30' => $employee->ot_hours30,
+    'ot_amount30' => $computedOtAmount30,
+    'ot_rate100' => $computedOtRate100,
+    'ot_hours100' => $employee->ot_hours100,
+    'ot_amount100' => $computedOtAmount100,
+    'total_ot' => $totalOtAmount
         ];
 
         return response()->json($response);
@@ -147,13 +173,25 @@ public function saveRecord(Request $request)
        try {
          DB::beginTransaction();
 
+         //calculate regular worked days - absences = actual worked days
+         $regulardays = $request->regular_worked_days;
+         $absences  = $request->absences;
+
+         $actualWorkedDays = $regulardays - $absences;
+
          $updateValues = [
             'regular_worked_days' => $request->regular_worked_days,
             'absences' => $request->absences,
-            'month_rate_paid_days'  //CONTINUE
-
-
+            'month_rate_paid_days',  //CONTINUE
+            'actual_days_worked' => $actualWorkedDays,
+            'legal_worked_days',
+            'lhd_amount',
+            'special_rate',
+            'special_amount',
+            'lhw_days'
          ];
+
+
           //$employee->update($request->all());
           Employee::where('employee_id', $request->employee_id)->update();
 

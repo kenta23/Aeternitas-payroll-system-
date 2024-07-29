@@ -92,7 +92,7 @@
                                     <label class="col-form-label col-md-2">Phone Number</label>
                                      <div class="input-group col-md-10">
                                             <span class="input-group-text">+63</span>
-                                            <input type="text" name="phone_number" value="{{ ($employees[0]->phone_number) }}" class="form-control" placeholder="Enter 10 digit phone number Ex. 9123456789">
+                                            <input type="text" id="phone_number" name="phone_number" value="{{ ($employees[0]->phone_number) }}" class="form-control" placeholder="Enter 10 digit phone number Ex. 9123456789">
                                       </div>
                                  </div>
 
@@ -282,9 +282,24 @@
 <script>
    const sss_number = document.getElementById('sss_number');
    const philhealth_number = document.getElementById('philhealth_number');
+   const phoneNumber = document.getElementById('phone_number');
+
+   function phoneNumberFormat() {
+
+    let phoneNumberInput = phoneNumber.value;
+
+    phoneNumberInput = phoneNumberInput.replace(/\D/g, '');
+
+    if (phoneNumberInput.length > 10) {
+        phoneNumberInput = phoneNumberInput.substring(0, 10);
+     }
+
+     phoneNumber.value = phoneNumberInput;
+  }
 
    function sssNumberFormat() {
        let sssNumberInput = sss_number.value;
+
        // Remove non-digit characters
        sssNumberInput = sssNumberInput.replace(/\D/g, '');
 
@@ -314,10 +329,9 @@
 
     sss_number.addEventListener('input', sssNumberFormat);
     philhealth_number.addEventListener('input', philhealthNumberFormat);
+    phoneNumber.addEventListener('input', phoneNumberFormat);
 
   </script>
-
-
 
 
   <script>

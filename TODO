@@ -1,0 +1,6 @@
+
+Todo:
+  ☐ Validations on adding employees (phone number etc.)
+  ☐ Inputs on phone numbers
+  ☐ employees schemas (add default values on absences, regular worked days etc.)
+  ☐ Overtime function
