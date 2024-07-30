@@ -109,7 +109,7 @@
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="night-differential-tab" data-bs-toggle="tab" data-bs-target="#timekeeping-tab-pane" type="button" role="tab" aria-controls="timekeeping-tab-pane" aria-selected="false">Night Differential</button>
+                        <button class="nav-link" id="night-differential-tab" data-bs-toggle="tab" data-bs-target="#night-differential" type="button" role="tab" aria-controls="night-differential" aria-selected="false">Night Differential</button>
                     </li>
 
                     <li class="nav-item" role="presentation">
@@ -231,27 +231,42 @@
                             <h4 class="text-primary">Special Worked Days</h4>
 
                             <div class="form-group">
-                                <label>Special work days rate</label>
-                                <input class="form-control" type="text" name="special_rate" id="special_rate" value="">
+                                <label>SNH rate</label>
+                                <input class="form-control" type="number" name="special_rate" id="special_rate" value="" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Special Worked Days</label>
+                                <input class="form-control" type="number" step="0.01" name="special_amount" id="special_worked_days" value="">
                             </div>
 
                             <div class="form-group">
                                 <label>Special work total amount</label>
-                                <input class="form-control" type="text" name="special_amount" id="special_amount" value="">
+                                <input class="form-control" type="number" name="special_amount" id="special_amount" value="" readonly>
                             </div>
                          </div>
 
                          <div class="col-sm-6">
-                            <h4 class="text-primary">Leave</h4>
+                            <h4 class="text-primary">Total amounts</h4>
 
                             <div class="form-group">
-                                <label>Special work days rate</label>
-                                <input class="form-control" type="text" name="lhw_days" id="lhw_days" value="">
+                                <label>Basic Pay</label>
+                                <input class="form-control" type="number" name="basic_pay" id="basic_pay" step="0.001" value="" readonly>
                             </div>
 
                             <div class="form-group">
-                                <label>Special work total amount</label>
-                                <input class="form-control" type="text" name="special_amount" id="special_amount" value="">
+                                <label>Basic Pay + OT </label>
+                                <input class="form-control" type="number" name="basic_pay_plus_ot" id="basic_pay_plus_ot" step="0.001" value="" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Total Worked Days</label>
+                                <input type="number" id="total_worked_days" name="total_worked_days" class="form-control" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Regular work days amount</label>
+                                <input class="form-control" type="number" name="rwd_amount" id="rwd_amount" step="0.01" value="" readonly>
                             </div>
                          </div>
 
@@ -357,6 +372,27 @@
                      </div>
                    </div>
 
+
+                   <!--NIGHT DIFFERENTIAL -->
+
+                   <div class="p-3 border tab-pane fade" id="night-differential" role="tabpanel" aria-labelledby="night-differential-tab">
+                         <div class="row">
+                              <div class="col-sm-12">
+                                  <label for="nd_rate">10% OF Rate/Hour (₱)</label>
+                                  <input type="number" class="form-control" id="nd_rate" name="nd_rate" readonly>
+
+
+                                  <label for="nd_hours">ND Hours</label>
+                                  <input type="number" class="form-control" id="nd_hours" name="nd_hours" step="0.01">
+
+
+                                  <label for="nd_amount">ND Amount</label>
+                                  <input type="number" class="form-control" id="nd_amount" name="nd_amount" readonly>
+                              </div>
+                          </div>
+
+                   </div>
+
                      <div class="submit-section modal-footer">
                         <button type="submit" class="btn btn-primary submit-btn">Update</button>
                    </div>
@@ -433,6 +469,44 @@
      const otAmount100 = document.getElementById('ot_amount100');
 
 
+     //SPECIAL DAYS
+     const specialRate =  document.getElementById('special_rate');
+     const specialWorkedDays = document.getElementById('special_worked_days');
+     const specialTotalAmount = document.getElementById('special_amount');
+
+     //NIGHT DIFFERENTIAL
+     const ndRate = document.getElementById('nd_rate');
+     const ndHours = document.getElementById('nd_hours');
+     const ndAmount = document.getElementById('nd_amount');
+
+
+     function calculateNightDifferential () {
+         const parsedDailyRate = parseFloat(dailyRate.value) || 0;
+         const totalNdRate = (parsedDailyRate / 8) * 0.1;
+
+         if(ndHours) {
+             const parsedNdHours = parseFloat(ndHours.value) || 0;
+             const totalNd = parsedNdHours * totalNdRate;
+             ndAmount.value = totalNd.toFixed(2);
+         }
+
+         parsedDailyRate ? ndRate.value = totalNdRate.toFixed(2) : ndRate.value = 0;
+     }
+
+
+  function calculateSpecialWorkingDays() {
+       //calculate first the special rate
+       const parsedDailyRate = parseFloat(dailyRate.value) || 0;
+       const totalSpecialRate =  parsedDailyRate * 0.3;
+
+       if(specialWorkedDays && specialRate) {
+           const parsedSpecialWorkedDays = parseFloat(specialWorkedDays.value) || 0;
+
+           specialTotalAmount.value = (totalSpecialRate * parsedSpecialWorkedDays).toFixed(2);
+       }
+           specialRate.value = totalSpecialRate.toFixed(2);
+   }
+
 
  function calculateAllOTs() {
     const otRate25Value = parseFloat(otRate25.value) || 0;
@@ -472,7 +546,11 @@
     function calculateRegularDays () {
         if (regularWorkDaysInput && absencesInput) {
             const absences = parseFloat(absencesInput.value) || 0;
-            const total = regularDaysTotal - absences;
+            let total = regularDaysTotal - absences;
+
+            if(total < 0) {
+                total = 0;
+            }
 
             regularWorkDaysInput.value = total.toFixed(2);
         }
@@ -500,7 +578,19 @@
         calculateRegularDays();
         calculateTotalAmountLWD();
         calculateAllOTs();
+        calculateSpecialWorkingDays();
+        calculateNightDifferential();
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        regularDaysTotal = parseFloat(regularWorkDaysInput.value) || 0;
+
+       calculateRegularDays();
+       calculateTotalAmountLWD();
+       calculateAllOTs();
+       calculateSpecialWorkingDays();
+       calculateNightDifferential();
+    })
 
     absencesInput.addEventListener('input', calculateRegularDays);
     legalWorkedDaysInput.addEventListener('input', calculateTotalAmountLWD);
@@ -508,6 +598,8 @@
     otHours25.addEventListener('input', calculateAllOTs);
     otHours30.addEventListener('input', calculateAllOTs);
     otHours100.addEventListener('input', calculateAllOTs);
+    specialWorkedDays.addEventListener('input', calculateSpecialWorkingDays);
+    ndHours.addEventListener('input', calculateNightDifferential);
 
     calculateAllOTs();
 
