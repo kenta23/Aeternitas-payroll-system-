@@ -13,7 +13,6 @@
 	<link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/logo.png') }}">
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap.min.css') }}">
-    <link rel='stylesheet' href="{{ URL::to('assets/css/payrollstyle.css') }}">
 	<!-- Fontawesome CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/font-awesome.min.css') }}">
 	<!-- Lineawesome CSS -->
@@ -40,7 +39,11 @@
 	<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
 	<script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
 
+
 	<script src="{{ URL::to('js/app.js') }}" defer></script>
+
+    {{-- CUSTOM STYLES --}}
+    @yield('styles')
 </head>
 <body>
 	<!-- Main Wrapper -->
@@ -49,5 +52,7 @@
 		<!-- /Page Wrapper -->
 	</div>
 	<!-- /Main Wrapper -->
+
+    @yield('script')
 </body>
 </html>

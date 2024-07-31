@@ -88,7 +88,7 @@
 
     <!-- Edit Salary Modal -->
     <div id="edit_employee" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Timekeeping</h5>
@@ -99,7 +99,7 @@
 
                 <div class="modal-body">
                 <!--NAV TABS -->
-                <ul class="nav nav-pills w-100 nav-fill" id="myTab" role="tablist">
+                <ul class="nav nav-tabs w-100 nav-fill" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="working-days-tab" data-bs-toggle="tab" data-bs-target="#working-days" type="button" role="tab" aria-controls="working-days" aria-selected="true">Working days</button>
                     </li>
@@ -113,12 +113,21 @@
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="lates-tab" data-bs-toggle="tab" data-bs-target="#timekeeping-tab-pane" type="button" role="tab" aria-controls="timekeeping-tab-pane" aria-selected="false">Lates</button>
+                        <button class="nav-link" id="leave-tab" data-bs-toggle="tab" data-bs-target="#leave" type="button" role="tab" aria-controls="leave-tab-pane" aria-selected="false">Leave</button>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="late-deduction-tab" data-bs-toggle="tab" data-bs-target="#late-deduction" type="button" role="tab" aria-controls="late-deduction-tab-pane" aria-selected="false">Late Deduction</button>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="allowance-tab" data-bs-toggle="tab" data-bs-target="#allowance" type="button" role="tab" aria-controls="allowance-tab-pane" aria-selected="false">Allowance</button>
                     </li>
                 </ul>
 
              <form action="{{ route('employee/timekeeping/update')}}" method="POST">
                  @csrf
+
                 <div class="tab-content">
                     <div class="p-3 border tab-pane fade show active" id="working-days" role="tabpanel" aria-labelledby="working-days-tab">
                         <!-- Content for Working Days -->
@@ -171,6 +180,14 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Bi Monthly</label>
+                                        <input class="form-control" type="number" step="0.01" name="bi_monthly" id="bi_monthly" value=''>
+                                    </div>
                                 </div>
                             </div>
 
@@ -237,7 +254,7 @@
 
                             <div class="form-group">
                                 <label>Special Worked Days</label>
-                                <input class="form-control" type="number" step="0.01" name="special_amount" id="special_worked_days" value="">
+                                <input class="form-control" type="number" step="0.01" name="special_worked_days" id="special_worked_days" value="">
                             </div>
 
                             <div class="form-group">
@@ -245,6 +262,7 @@
                                 <input class="form-control" type="number" name="special_amount" id="special_amount" value="" readonly>
                             </div>
                          </div>
+
 
                          <div class="col-sm-6">
                             <h4 class="text-primary">Total amounts</h4>
@@ -269,13 +287,11 @@
                                 <input class="form-control" type="number" name="rwd_amount" id="rwd_amount" step="0.01" value="" readonly>
                             </div>
                          </div>
-
                     </div>
                 </div>
 
 
                      <div class="p-3 border tab-pane fade" id="overtime" role="tabpanel" aria-labelledby="overtime-tab">
-
                          <div class="row">
 
                             <div class="col-sm-6">
@@ -283,7 +299,7 @@
 
                                 <div class="form-group">
                                     <label for="ot_rate25">OT Rate</label>
-                                    <input class="form-control" type="number" step="0.01" name="ot_rate25" id="ot_rate25" value="" disabled>
+                                    <input class="form-control" type="number" step="0.01" name="ot_rate25" id="ot_rate25" value="" readonly>
 
                                     <label for="ot_hours25">OT Hours</label>
                                     <input class="form-control" type="number" id="ot_hours25" name="ot_hours25" value="">
@@ -295,7 +311,7 @@
                                     @enderror
 
                                     <label for="ot_amount25">OT Amount</label>
-                                    <input class="form-control" type="number" id="ot_amount25" name="ot_amount25" value="" step="0.01">
+                                    <input class="form-control" type="number" id="ot_amount25" name="ot_amount25" value="" step="0.01" readonly>
 
                                     @error('ot_amount25')
                                       <span class="invalid-feedback" role="alert">
@@ -315,7 +331,7 @@
                                 <input class="form-control" type="number" name="ot_rate30" id="ot_rate30" value="" readonly>
 
                                 <label for="ot_hours30">OT Hours</label>
-                                <input class="form-control" type="number" id="ot_hours30" name="ot_hours30" value="">
+                                <input class="form-control" type="number" id="ot_hours30" name="ot_hours30" value="" step="0.01">
 
                                 @error('ot_hours30')
                                   <span class="invalid-feedback" role="alert">
@@ -324,7 +340,7 @@
                                 @enderror
 
                                 <label for="ot_amount30">OT Amount</label>
-                                <input class="form-control" type="number" id="ot_amount30" name="ot_amount30" value="" step="0.01">
+                                <input class="form-control" type="number" id="ot_amount30" name="ot_amount30" value="" step="0.01" readonly>
 
                                 @error('ot_amount30')
                                   <span class="invalid-feedback" role="alert">
@@ -353,7 +369,7 @@
                             @enderror
 
                             <label for="ot_amount100">OT Amount</label>
-                            <input class="form-control" type="number" id="ot_amount100" name="ot_amount100" value="0" step="0.01">
+                            <input class="form-control" type="number" id="ot_amount100" name="ot_amount100" value="0" step="0.01" readonly>
 
                             @error('ot_amount100')
                               <span class="invalid-feedback" role="alert">
@@ -393,6 +409,80 @@
 
                    </div>
 
+                   <!--LEAVE-->
+                   <div class="p-3 border tab-pane fade" id="leave" role="tabpanel" aria-labelledby="leave-tab">
+                             <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="leave_dailyrate">Daily Rate (₱)</label>
+                                        <input type="number" class="form-control" id="leave_dailyrate" name="leave_dailyrate" readonly>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="col-sm-6">
+                                       <div class="form-group">
+                                         <label for="credit_points">Credit Points</label>
+                                         <input type="number" class="form-control" id="credit_points" name="credit_points" step="0.01">
+                                       </div>
+                                  </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="used_credit">Used credit</label>
+                                        <input type="number" class="form-control" id="used_credit" name="used_credit" step="0.01">
+                                    </div>
+                                  </div>
+
+                             <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="leave_amount">Leave amount (₱)</label>
+                                        <input type="number" class="form-control" id="leave_amount" name="leave_amount" step="0.01" readonly>
+                                    </div>
+                             </div>
+                        </div>
+                   </div>
+
+                   <!--LATE DEDUCTION -->
+
+                   <div class="p-3 border tab-pane fade" id="late-deduction" role="tabpanel" aria-labelledby="late-deduction-tab">
+                      <div class="row">
+                          <div class="col-sm-12">
+                               <div class="form-group">
+                                  <label for="deduction_rate">Rate/Min (₱)</label>
+                                  <input type="number" class="form-control" id="deduction_rate" name="deduction_rate" step="0.01" readonly>
+
+                                  <label for="no_of_minutes">Number Of Minutes</label>
+                                  <input type="number" class="form-control" id="no_of_minutes" name="no_of_minutes" step="0.01">
+
+                                  <label for="late_amount">Amount (₱)</label>
+                                  <input type="number" class="form-control" id="late_amount" name="late_amount" step="0.01" readonly>
+
+                                  <label for="late_charges">Charges (₱) <span class="text-primary text-sm">Missing/Loss Item Note: Please Input 0 if none or Existing data to recalculate the Total Charge!</span></label>
+                                  <input type="number" class="form-control" id="late_charges" name="late_charges" step="0.01" readonly>
+
+                               </div>
+                          </div>
+                      </div>
+                   </div>
+
+
+                   <div class="p-3 border tab-pane fade" id="allowance" role="tabpanel" aria-labelledby="allowance-tab">
+                      <div class="row">
+                           <div class="col-sm-12">
+                               <div class="form-group">
+                                    <label for="allowance">Allowance (₱)</label>
+                                    <input type="number" step="0.01" class="form-control" id="allowance" name="allowance" value="">
+
+
+                                    <label for="meal">Meal (₱)</label>
+                                    <input type="number" step="0.01" class="form-control" id="meal" name="meal" value="">
+                               </div>
+                           </div>
+                      </div>
+
+                   </div>
+
                      <div class="submit-section modal-footer">
                         <button type="submit" class="btn btn-primary submit-btn">Update</button>
                    </div>
@@ -413,6 +503,7 @@
                   url: '{{ url("employee/timekeeping/edit") }}/' + employeeId,
                   type: 'GET',
                   success: function(response) {
+                      $('#id').val(response.id)
                       $('#employee_id').val(response.employee_id);
                       $('#daily_rate').val(response.daily_rate);
                       $('#name').val(response.name);
@@ -423,6 +514,7 @@
                       $('#lhd_amount').val(response.lhd_amount);
                       $('#special_rate').val(response.special_rate);
                       $('#special_amount').val(response.special_amount);
+                      $('#bi_monthly').val(response.bi_monthly);
 
                       //overtime
                       $('#ot_rate25').val(response.ot_rate25);
@@ -451,6 +543,14 @@
      const lhdAmountInput = document.getElementById('lhd_amount');
      let lhdAmountValue = parseFloat(lhdAmountInput.value) || 0;
      const dailyRate = document.getElementById('daily_rate');
+     const basicPay = document.getElementById('basic_pay');
+     const biMonthly = document.getElementById('bi_monthly');
+
+
+     //for basic pay
+     const specialAmount = document.getElementById('special_amount');
+     const lhdAmount = dcoument.getElementById('lhd_amount');
+     const rwdAmount = document.getElementById('rwd_amount');
 
      //overtime
      const otRate25 = document.getElementById('ot_rate25');
@@ -507,6 +607,22 @@
            specialRate.value = totalSpecialRate.toFixed(2);
    }
 
+   function calculateBasicPay() {
+         //rwd amount
+         //lhd amount
+         //special amount
+   }
+
+
+   function calculateRwdAmount() {
+       //bimonthly
+       const parsedBiMonthly = parseFloat(biMonthly.value) || 0;
+       //leave amount
+       //month rate paid days
+       //regular worked days
+       //used current cut off
+   }
+
 
  function calculateAllOTs() {
     const otRate25Value = parseFloat(otRate25.value) || 0;
@@ -540,7 +656,6 @@
          totalOt.value = total.toFixed(2);
     }
 }
-
 
 
     function calculateRegularDays () {

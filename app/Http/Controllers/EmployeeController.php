@@ -128,8 +128,6 @@ public function saveRecord(Request $request)
         // Total OT amount
         $totalOtAmount = round($computedOtAmount25 + $computedOtAmount30 + $computedOtAmount100, 2);
 
-
-
         $response = [
             'id' => $employee->id,
             'employee_id' => $employee->employee_id,
@@ -142,6 +140,7 @@ public function saveRecord(Request $request)
             'lhd_amount'=>$employee->lhd_amount,
             'special_rate'=>$employee->special_rate,
             'special_amount' => $employee->special_amount,
+            'bi_monthly' => $employee->bi_monthly,
 
             // Overtimes
             'ot_rate25' => $computedOtRate25,
@@ -160,37 +159,27 @@ public function saveRecord(Request $request)
     }
 
     public function updateTimekeeping(Request $request) {
+      dd($request->all());
+      DB::beginTransaction();
 
-         //dd($request->all());
-         //split first name and last name
-         $fullName = $request->input('name');
-         // Split the full name into an array using space as the delimiter
-         $nameParts = explode(' ', $fullName);
-         // The first part of the array is the first name
-         $firstName = $nameParts[0];
-         $lastName = $nameParts[1];
+            $regulardays = $request->regular_worked_days;
+            $absences  = $request->absences;
+            $actualWorkedDays = $regulardays - $absences;
+
 
        try {
-         DB::beginTransaction();
-
-         //calculate regular worked days - absences = actual worked days
-         $regulardays = $request->regular_worked_days;
-         $absences  = $request->absences;
-         $actualWorkedDays = $regulardays - $absences;
-
-
-
-
-         $updateValues = [
+         /*$updateValues = [
             'regular_worked_days' => $request->regular_worked_days,
             'absences' => $request->absences,
-            'month_rate_paid_days',  //CONTINUE
             'actual_days_worked' => $actualWorkedDays,
-            'legal_worked_days' ,
-            'lhd_amount',
-            'special_rate',
-            'special_amount',
-            'lhw_days',
+            'legal_worked_days' =>$request->legal_worked_days,
+            'lhd_amount' => $request->lhd_amount,
+            'special_rate' => $request->special_rate,
+            'special_worked_days' => $request->special_worked_days,
+            'special_amount' => $request->special_amount,
+
+            //'basic_pay' => $request->basic_pay,
+            //'basic_pay_plus_ot',
 
             'ot_rate25' => $request->ot_rate25,
             'ot_hours25' => $request->ot_hours25,
@@ -201,21 +190,49 @@ public function saveRecord(Request $request)
             'ot_rate100' => $request->ot_rate100,
             'ot_hours100' => $request->ot_hours100,
             'ot_amount100' => $request->ot_amount100,
-            'total_ot' => $request->total_ot
-         ];
+            'total_ot' => $request->total_ot,
+         ]; */
 
+         $updateValues = [
+            'regular_worked_days' => $request->input('month_rate_paid_days'),
+            'absences' => $request->input('absences'),
+            'actual_days_worked' => $actualWorkedDays,
+            'legal_worked_days' => $request->input('legal_worked_days'),
+            'lhd_amount' => $request->input('lhd_amount'),
+            'special_rate' => $request->input('special_rate'),
+            'special_worked_days' => $request->input('special_worked_days'),
+            'special_amount' => $request->input('special_amount'),
+
+            'ot_rate25' => $request->input('ot_rate25'),
+            'ot_hours25' => $request->input('ot_hours25'),
+            'ot_amount25' => $request->input('ot_amount25'),
+            'ot_rate30' => $request->input('ot_rate30'),
+            'ot_hours30' => $request->input('ot_hours30'),
+            'ot_amount30' => $request->input('ot_amount30'),
+            'ot_rate100' => $request->input('ot_rate100'),
+            'ot_hours100' => $request->input('ot_hours100'),
+            'ot_amount100' => $request->input('ot_amount100'),
+            'total_ot' => $request->input('total_ot'),
+        ];
+
+
+         $employee = new Employee;
 
           //$employee->update($request->all());
-          Employee::where('employee_id', $request->employee_id)->update();
+          //Employee::where('id', $request->id)->update($updateValues);
+          $employee->where('id', $request->id)->update($updateValues);
 
           DB::commit();
+
           Toastr::success('Record updated succesfully','Success');
           return redirect()->route('employees/timekeeping');
        }
        catch(\Exception $e) {
+
          DB::rollback();
          Toastr::error('Failed to update please try again','Error');
          return redirect()->back();
+
        }
     }
 
@@ -248,6 +265,7 @@ public function saveRecord(Request $request)
             //dd($updateEmployee);
 
             Employee::where('id', $request->id)->update($updateEmployee);
+
             DB::commit();
             Toastr::success('Record successfully updated','Success');
             return redirect()->route('all/employee/card');
