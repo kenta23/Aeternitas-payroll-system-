@@ -125,8 +125,14 @@ public function saveRecord(Request $request)
         $computedOtRate100 = round(($employee->per_day / 8) * 2.00, 2); // Assuming double rate for 100%
         $computedOtAmount100 = round($computedOtRate100 * $employee->ot_hours100, 2);
 
+        //lates
+        $computedRateLates = round(($employee->per_day / 8) / 60, 2);
+
         // Total OT amount
         $totalOtAmount = round($computedOtAmount25 + $computedOtAmount30 + $computedOtAmount100, 2);
+
+        //night differential
+        $nightDifferentialRate = round(($employee->per_day / 8) * 0.1 , 2);
 
         $response = [
             'id' => $employee->id,
@@ -152,14 +158,19 @@ public function saveRecord(Request $request)
             'ot_rate100' => $computedOtRate100,
             'ot_hours100' => $employee->ot_hours100,
             'ot_amount100' => $computedOtAmount100,
-            'total_ot' => $totalOtAmount
+            'total_ot' => $totalOtAmount,
+
+            //lates
+            'late_rate' => $computedRateLates,
+            'night_differential' => $nightDifferentialRate,
+
         ];
 
         return response()->json($response);
     }
 
     public function updateTimekeeping(Request $request) {
-      dd($request->all());
+      //dd($request->all());
       DB::beginTransaction();
 
             $regulardays = $request->regular_worked_days;
@@ -194,9 +205,9 @@ public function saveRecord(Request $request)
          ]; */
 
          $updateValues = [
-            'regular_worked_days' => $request->input('month_rate_paid_days'),
+            'regular_worked_days' => $actualWorkedDays,
             'absences' => $request->input('absences'),
-            'actual_days_worked' => $actualWorkedDays,
+            'actual_days_worked' => $request->input('month_rate_paid_days'),
             'legal_worked_days' => $request->input('legal_worked_days'),
             'lhd_amount' => $request->input('lhd_amount'),
             'special_rate' => $request->input('special_rate'),
@@ -213,13 +224,25 @@ public function saveRecord(Request $request)
             'ot_hours100' => $request->input('ot_hours100'),
             'ot_amount100' => $request->input('ot_amount100'),
             'total_ot' => $request->input('total_ot'),
+
+            //lates
+            'late_rate' => $request->input('deduction_rate'),
+            'late_amount' => $request->input('late_amount'),
+            'number_of_minutes_late' => $request->input('no_of_minutes'),
+
+             //leave
+             'leave_amount' => $request->input('leave_amount'),
+             //night differential
+             'nd_rate' => $request->input('nd_rate'),
+             'nd_hours' => $request->input('nd_hours'),
+             'nd_amount' => $request->input('nd_amount'),
+
+             'total_basic_pay_plus_ot' =>$request->input('basic_pay_plus_ot'),
+             'half_allowance' =>$request->input('allowance'),
+             'meal_allowance' => $request->input('meal'),
         ];
 
-
-         $employee = new Employee;
-
-          //$employee->update($request->all());
-          //Employee::where('id', $request->id)->update($updateValues);
+          $employee = new Employee;
           $employee->where('id', $request->id)->update($updateValues);
 
           DB::commit();
@@ -227,6 +250,7 @@ public function saveRecord(Request $request)
           Toastr::success('Record updated succesfully','Success');
           return redirect()->route('employees/timekeeping');
        }
+
        catch(\Exception $e) {
 
          DB::rollback();

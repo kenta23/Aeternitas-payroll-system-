@@ -24,8 +24,6 @@
             </div>
         </div>
 
-
-
         <!-- /Page Header -->
 
         {!! Toastr::message() !!}
@@ -33,7 +31,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table mb-0 datatable" style="width: 100%">
+                    <table class="table table-striped custom-table mb-0 datatable" style="width:100%;">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -186,7 +184,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Bi Monthly</label>
-                                        <input class="form-control" type="number" step="0.01" name="bi_monthly" id="bi_monthly" value=''>
+                                        <input class="form-control" type="number" step="0.01" name="bi_monthly" id="bi_monthly" value='' readonly>
                                     </div>
                                 </div>
                             </div>
@@ -197,7 +195,7 @@
                              <div class='col-sm-6'>
                                 <h4 class="text-primary">Regular worked days</h4>
                                 <div class="form-group">
-                                    <label>No. of regular worked days</label>
+                                    <label>No. of actual days worked</label>
                                     <input class="form-control" type="number" readonly step="0.01" name="regular_worked_days" id="regular_worked_days" value="13">
                                 </div>
                                 @error('regular_worked_days')
@@ -269,17 +267,17 @@
 
                             <div class="form-group">
                                 <label>Basic Pay</label>
-                                <input class="form-control" type="number" name="basic_pay" id="basic_pay" step="0.001" value="" readonly>
+                                <input class="form-control" type="number" name="basic_pay" id="basic_pay" step="0.01" value="" readonly>
                             </div>
 
                             <div class="form-group">
                                 <label>Basic Pay + OT </label>
-                                <input class="form-control" type="number" name="basic_pay_plus_ot" id="basic_pay_plus_ot" step="0.001" value="" readonly>
+                                <input class="form-control" type="number" name="basic_pay_plus_ot" id="basic_pay_plus_ot" step="0.01" value="" readonly>
                             </div>
 
                             <div class="form-group">
                                 <label>Total Worked Days</label>
-                                <input type="number" id="total_worked_days" name="total_worked_days" class="form-control" readonly>
+                                <input type="number" id="total_worked_days" name="total_worked_days" value="" step="0.01" class="form-control" readonly>
                             </div>
 
                             <div class="form-group">
@@ -415,7 +413,7 @@
                                   <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="leave_dailyrate">Daily Rate (₱)</label>
-                                        <input type="number" class="form-control" id="leave_dailyrate" name="leave_dailyrate" readonly>
+                                        <input type="number" class="form-control" id="leave_dailyrate" name="leave_dailyrate" readonly value="" step="0.01">
                                     </div>
                                   </div>
 
@@ -429,7 +427,7 @@
 
                                   <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="used_credit">Used credit</label>
+                                        <label for="used_credit">Used (current cut off)</label>
                                         <input type="number" class="form-control" id="used_credit" name="used_credit" step="0.01">
                                     </div>
                                   </div>
@@ -459,7 +457,7 @@
                                   <input type="number" class="form-control" id="late_amount" name="late_amount" step="0.01" readonly>
 
                                   <label for="late_charges">Charges (₱) <span class="text-primary text-sm">Missing/Loss Item Note: Please Input 0 if none or Existing data to recalculate the Total Charge!</span></label>
-                                  <input type="number" class="form-control" id="late_charges" name="late_charges" step="0.01" readonly>
+                                  <input type="number" class="form-control" id="late_charges" name="late_charges" step="0.01">
 
                                </div>
                           </div>
@@ -506,6 +504,7 @@
                       $('#id').val(response.id)
                       $('#employee_id').val(response.employee_id);
                       $('#daily_rate').val(response.daily_rate);
+                      $('#leave_dailyrate').val(response.daily_rate);
                       $('#name').val(response.name);
                       $('#position').val(response.position);
                       $('#regular_worked_days').val(response.regular_worked_days);
@@ -529,6 +528,12 @@
                       $('#ot_hours100').val(response.ot_hours100);
                       $('#ot_amount100').val(response.ot_amount100);
                       $('#total_ot').val(response.total_ot);
+
+                      //lates
+                      $('#deduction_rate').val(response.late_rate);
+
+                      //night differential
+                      $('#nd_rate').val(response.night_differential);
                   }
               });
           });
@@ -540,17 +545,27 @@
      const absencesInput = document.getElementById('absences');
      let regularDaysTotal = parseFloat(regularWorkDaysInput.value) || 0;
      const legalWorkedDaysInput = document.getElementById('legal_worked_days');
-     const lhdAmountInput = document.getElementById('lhd_amount');
-     let lhdAmountValue = parseFloat(lhdAmountInput.value) || 0;
+     //const lhdAmountInput = document.getElementById('lhd_amount');
+     const basicPayPlusOt = document.getElementById('basic_pay_plus_ot');
+
      const dailyRate = document.getElementById('daily_rate');
      const basicPay = document.getElementById('basic_pay');
      const biMonthly = document.getElementById('bi_monthly');
+     const monthRatePaidDays = document.getElementById('month_rate_paid_days');
+     const totalWorkedDays = document.getElementById('total_worked_days');
+
+
+     //allowance
+     const allowance = document.getElementById('allowance');
+     const meal = document.getElementById('meal');
 
 
      //for basic pay
      const specialAmount = document.getElementById('special_amount');
-     const lhdAmount = dcoument.getElementById('lhd_amount');
+     const lhdAmount = document.getElementById('lhd_amount');
+     let lhdAmountValue = parseFloat(lhdAmount.value) || 0;
      const rwdAmount = document.getElementById('rwd_amount');
+
 
      //overtime
      const otRate25 = document.getElementById('ot_rate25');
@@ -579,18 +594,119 @@
      const ndHours = document.getElementById('nd_hours');
      const ndAmount = document.getElementById('nd_amount');
 
+     //LEAVE
+     const usedCurrentCutOff = document.getElementById('used_credit');
+     const leaveAmount = document.getElementById('leave_amount');
+     const leaveDailyRate = document.getElementById('leave_dailyrate');
+
+     //Lates
+     const lateAmount = document.getElementById('late_amount');
+     const numberOfMinutes = document.getElementById('no_of_minutes');
+     const deductionRate = document.getElementById('deduction_rate');
+
+
+     //Calculate Leave
+     function calculateLeaveAmount() {
+        const parsedDailyRateInLeave = parseFloat(leaveDailyRate.value) || 0;
+        const parsedUsedCurrentCutOff = parseFloat(usedCurrentCutOff.value) || 0;
+
+        if (parsedDailyRateInLeave && parsedUsedCurrentCutOff) {
+            const leaveAmountVal = parsedDailyRateInLeave * parsedUsedCurrentCutOff;
+
+            leaveAmount.value = leaveAmountVal.toFixed(2);
+
+            calculateRwdAmount();
+        }
+    }
+
+    //calculate Basic Pay
+    function calculateBasicPay () {
+         const parsedLegalDays = parseFloat(lhdAmount.value) || 0;
+         const parsedSpecialDays = parseFloat(specialAmount.value) || 0;
+         const parsedRegularDays = parseFloat(rwdAmount.value) || 0;
+
+       if (parsedLegalDays && parsedRegularDays && parsedRegularDays) {
+            const totalBasicPay = parsedLegalDays + parsedSpecialDays + parsedRegularDays;
+
+            basicPay.value = totalBasicPay.toFixed(2);
+       }
+    }
+
+    //calculate total worked days
+    // Total worked days
+    function calculateTotalWorkedDays() {
+    // Parse the values from input fields
+    const parsedRegularWorkedDays = parseFloat(regularWorkDaysInput.value) || 0;
+    const parsedLegalWorkedDays = parseFloat(legalWorkedDaysInput.value) || 0;
+    const parsedSpecialWorkedDays = parseFloat(specialWorkedDays.value) || 0;
+
+    // Sum up all valid worked days
+    const totalWorkedDays = parsedRegularWorkedDays + parsedLegalWorkedDays + parsedSpecialWorkedDays;
+    document.getElementById('total_worked_days').value = totalWorkedDays.toFixed(2);
+}
+
+
+    //calculate basic pay Plus ot
+    function calculateBasicPayPlusOT () {
+        const totalBasicPay = parseFloat(basicPay.value) || 0;
+        const parsedTotalOT = parseFloat(totalOt.value) || 0;
+
+        console.log('total ot ', parsedTotalOT);
+
+       if(totalBasicPay && parsedTotalOT) {
+          const totalBasicPayPlusOT = totalBasicPay + parsedTotalOT;
+          basicPayPlusOt.value = totalBasicPayPlusOT.toFixed(2);
+       }
+
+    }
+
+    //calculate RWD Amount
+    function calculateRwdAmount () {
+        const parsedBiMonthlyRate = parseFloat(biMonthly.value) || 0;
+        const parsedLeaveAmount = parseFloat(leaveAmount.value) || 0;
+        const parsedMonthRatePaidDays = parseFloat(monthRatePaidDays.value) || 0;
+        const regularWorkedDays = parseFloat(regularWorkDaysInput.value);
+        const parseduUsedCurrentCutOff = parseFloat(usedCurrentCutOff.value) || 0;
+
+        const parsedDailyRate = parseFloat(dailyRate.value) || 0;
+
+        console.log('values', [
+            parsedBiMonthlyRate, parsedLeaveAmount, parsedMonthRatePaidDays, regularWorkedDays, parseduUsedCurrentCutOff, parsedDailyRate
+        ])
+
+
+        if (parsedBiMonthlyRate || parsedLeaveAmount || parsedMonthRatePaidDays || regularWorkedDays || parseduUsedCurrentCutOff || parsedDailyRate) {
+            const finalAmount = (parsedBiMonthlyRate - parsedLeaveAmount) - ( (parsedMonthRatePaidDays - regularWorkedDays - parseduUsedCurrentCutOff) * parsedDailyRate);
+
+            rwdAmount.value = finalAmount.toFixed(2);
+
+            calculateBasicPay();
+        }
+    }
+
+
+    // Calculate late rate and late amount
+    function calculateLateRate() {
+        const parsedDailyRateInLates = parseFloat(deductionRate.value) || 0;
+
+        const parsedLateAmount = parseFloat(lateAmount.value) || 0;
+        const parsedNumberOfMinutes = parseInt(numberOfMinutes.value) || 0;
+
+        if (numberOfMinutes) {
+            lateAmount.value = (parsedDailyRateInLates * parsedNumberOfMinutes).toFixed(2);
+        }
+    }
+
 
      function calculateNightDifferential () {
-         const parsedDailyRate = parseFloat(dailyRate.value) || 0;
-         const totalNdRate = (parsedDailyRate / 8) * 0.1;
+         const parsedNdRate = parseFloat(nd_rate.value) || 0;
 
          if(ndHours) {
              const parsedNdHours = parseFloat(ndHours.value) || 0;
-             const totalNd = parsedNdHours * totalNdRate;
+             const totalNd = parsedNdRate * parsedNdHours;
+
              ndAmount.value = totalNd.toFixed(2);
          }
-
-         parsedDailyRate ? ndRate.value = totalNdRate.toFixed(2) : ndRate.value = 0;
      }
 
 
@@ -603,11 +719,13 @@
            const parsedSpecialWorkedDays = parseFloat(specialWorkedDays.value) || 0;
 
            specialTotalAmount.value = (totalSpecialRate * parsedSpecialWorkedDays).toFixed(2);
+
+           calculateBasicPay();
        }
            specialRate.value = totalSpecialRate.toFixed(2);
    }
 
-   function calculateBasicPay() {
+  /* function calculateBasicPay() {
          //rwd amount
          //lhd amount
          //special amount
@@ -621,13 +739,15 @@
        //month rate paid days
        //regular worked days
        //used current cut off
-   }
+   } */
 
 
  function calculateAllOTs() {
     const otRate25Value = parseFloat(otRate25.value) || 0;
     const otRate30Value = parseFloat(otRate30.value) || 0;
     const otRate100Value = parseFloat(otRate100.value) || 0;
+
+    console.log('OT should computed')
 
     if (otHours25 && otRate25Value) {
         const parsedOtHours25 = parseFloat(otHours25.value) || 0;
@@ -654,9 +774,12 @@
     if (!isNaN(otAmount25Value) && !isNaN(otAmount30Value) && !isNaN(otAmount100Value)) {
          const total = otAmount25Value + otAmount30Value + otAmount100Value;
          totalOt.value = total.toFixed(2);
-    }
-}
 
+         calculateBasicPayPlusOT();
+    }
+     calculateTotalWorkedDays();
+
+  }
 
     function calculateRegularDays () {
         if (regularWorkDaysInput && absencesInput) {
@@ -668,6 +791,9 @@
             }
 
             regularWorkDaysInput.value = total.toFixed(2);
+
+            calculateRwdAmount();
+            calculateBasicPay();
         }
     };
 
@@ -678,9 +804,12 @@
         if (!isNaN(parsedDailyRate) && legalWorkedDaysValue)
         {
            const totalLhdValue = legalWorkedDaysValue * parsedDailyRate;
-           lhdAmountInput.value = totalLhdValue.toFixed(2);
+           lhdAmount.value = totalLhdValue.toFixed(2);
+
+           calculateBasicPay();
+
         } else {
-           lhdAmountInput.value = '0.00';
+            lhdAmount.value = '0.00';
         }
 
         console.log('daily rate', parsedDailyRate);
@@ -695,6 +824,12 @@
         calculateAllOTs();
         calculateSpecialWorkingDays();
         calculateNightDifferential();
+        calculateLeaveAmount();
+        calculateLateRate();
+        calculateRwdAmount();
+        calculateBasicPay();
+        calculateBasicPayPlusOT();
+        calculateTotalWorkedDays();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -705,6 +840,12 @@
        calculateAllOTs();
        calculateSpecialWorkingDays();
        calculateNightDifferential();
+       calculateLeaveAmount();
+       calculateLateRate();
+       calculateRwdAmount();
+       calculateBasicPay();
+       calculateBasicPayPlusOT();
+       calculateTotalWorkedDays();
     })
 
     absencesInput.addEventListener('input', calculateRegularDays);
@@ -715,8 +856,9 @@
     otHours100.addEventListener('input', calculateAllOTs);
     specialWorkedDays.addEventListener('input', calculateSpecialWorkingDays);
     ndHours.addEventListener('input', calculateNightDifferential);
-
-    calculateAllOTs();
+    usedCurrentCutOff.addEventListener('input', calculateLeaveAmount);
+    numberOfMinutes.addEventListener('input', calculateLateRate);
+    biMonthly.addEventListener('input', calculateRwdAmount);
 
   </script>
  @endsection
