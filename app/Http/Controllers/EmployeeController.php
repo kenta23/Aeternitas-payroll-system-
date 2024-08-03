@@ -44,7 +44,7 @@ class EmployeeController extends Controller
         return view('employees.employeelist',compact('employees', 'position','departments'));
     }
 
-    /** save data employee */
+    /** save new data employee */
 public function saveRecord(Request $request)
   {
     //try {
@@ -144,6 +144,8 @@ public function saveRecord(Request $request)
             'absences' =>$employee->absences,
             'legal_worked_days' => $employee->legal_worked_days,
             'lhd_amount'=>$employee->lhd_amount,
+
+            'special_worked_days' => $employee->special_worked_days,
             'special_rate'=>$employee->special_rate,
             'special_amount' => $employee->special_amount,
             'bi_monthly' => $employee->bi_monthly,
@@ -162,7 +164,25 @@ public function saveRecord(Request $request)
 
             //lates
             'late_rate' => $computedRateLates,
+            'late_amount' => $employee->late_amount,
+            'number_of_minutes_late' => $employee->number_of_minutes_late,
+
+            //night differential
             'night_differential' => $nightDifferentialRate,
+            'nd_rate' => $employee->nd_rate,
+            'nd_hours' => $employee->nd_hours,
+            'nd_amount' => $employee->nd_amount,
+
+
+            'total_basic_pay_plus_ot' => $employee->total_basic_pay_plus_ot,
+            'total_basic_pay' => $employee->total_basic_pay,
+            'gross_pay' => $employee->gross_pay,
+
+            'half_allowance' => $employee->half_allowance,
+            'meal_allowance' => $employee->meal_allowance,
+
+            //leave
+            'leave_amount' => $employee->leave_amount,
 
         ];
 
@@ -175,41 +195,17 @@ public function saveRecord(Request $request)
 
             $regulardays = $request->regular_worked_days;
             $absences  = $request->absences;
-            $actualWorkedDays = $regulardays - $absences;
-
+           // $actualWorkedDays = $regulardays - $absences;
+            $employeeId = $request->id;
 
        try {
-         /*$updateValues = [
-            'regular_worked_days' => $request->regular_worked_days,
-            'absences' => $request->absences,
-            'actual_days_worked' => $actualWorkedDays,
-            'legal_worked_days' =>$request->legal_worked_days,
-            'lhd_amount' => $request->lhd_amount,
-            'special_rate' => $request->special_rate,
-            'special_worked_days' => $request->special_worked_days,
-            'special_amount' => $request->special_amount,
-
-            //'basic_pay' => $request->basic_pay,
-            //'basic_pay_plus_ot',
-
-            'ot_rate25' => $request->ot_rate25,
-            'ot_hours25' => $request->ot_hours25,
-            'ot_amount25' => $request->ot_amount25,
-            'ot_rate30' => $request->ot_rate30,
-            'ot_hours30' => $request->ot_hours30,
-            'ot_amount30' => $request->ot_amount30,
-            'ot_rate100' => $request->ot_rate100,
-            'ot_hours100' => $request->ot_hours100,
-            'ot_amount100' => $request->ot_amount100,
-            'total_ot' => $request->total_ot,
-         ]; */
-
          $updateValues = [
-            'regular_worked_days' => $actualWorkedDays,
-            'absences' => $request->input('absences'),
+            'regular_worked_days' => $regulardays,
+            'absences' => $absences ,
             'actual_days_worked' => $request->input('month_rate_paid_days'),
             'legal_worked_days' => $request->input('legal_worked_days'),
             'lhd_amount' => $request->input('lhd_amount'),
+
             'special_rate' => $request->input('special_rate'),
             'special_worked_days' => $request->input('special_worked_days'),
             'special_amount' => $request->input('special_amount'),
@@ -231,21 +227,25 @@ public function saveRecord(Request $request)
             'number_of_minutes_late' => $request->input('no_of_minutes'),
 
              //leave
-             'leave_amount' => $request->input('leave_amount'),
+            'leave_amount' => $request->input('leave_amount'),
              //night differential
              'nd_rate' => $request->input('nd_rate'),
              'nd_hours' => $request->input('nd_hours'),
              'nd_amount' => $request->input('nd_amount'),
 
-             'total_basic_pay_plus_ot' =>$request->input('basic_pay_plus_ot'),
              'half_allowance' =>$request->input('allowance'),
              'meal_allowance' => $request->input('meal'),
+
+             //total amounts
+             'total_basic_pay_plus_ot' => $request->input('basic_pay_plus_ot'),
+             'gross_pay' => $request->gross_pay,
+             'total_basic_pay' => $request->basic_pay,
+
         ];
 
-          $employee = new Employee;
-          $employee->where('id', $request->id)->update($updateValues);
-
-          DB::commit();
+           $employee = Employee::find($employeeId);
+           $employee->update($updateValues);
+           DB::commit();
 
           Toastr::success('Record updated succesfully','Success');
           return redirect()->route('employees/timekeeping');
@@ -258,6 +258,26 @@ public function saveRecord(Request $request)
          return redirect()->back();
 
        }
+    }
+
+    public function contributions() {
+
+        $employees = Employee::paginate(15);
+        $position = PositionType::all();
+
+        return view('employees.contributions', compact('employees', 'position'));
+    }
+
+    public function editEmployeeContributions($employeeId) {
+         try {
+              $employee = Employee::where('employee_id', $employeeId)->firstOrFail();
+
+              return view('employees.edit.editemployeetaxes', compact('employee'));
+         }
+         catch (\Exception $e) {
+            Toastr::error('Fetching employee failed','Error');
+            return redirect()->back();
+         }
     }
 
     /** update record employee */
@@ -281,7 +301,7 @@ public function saveRecord(Request $request)
                 'tin_number' => $request->tin_number,
                 'monthly_pay' => $request->input('monthly_pay'),
                 'allowance' => $request->input('allowance'),
-                'basic_pay'=>$request->input('total_monthly'),
+                'per_month'=>$request->input('total_monthly'),
                 'bi_monthly'=>$request->input('bi_monthly'),
                 'per_day'=>$request->input('daily_rate'),
             ];

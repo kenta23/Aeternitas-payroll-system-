@@ -28,6 +28,7 @@ class CreateEmployeesTable extends Migration
             $table->mediumText('current_address')->nullable();
             $table->string('pay_type')->default('monthly');
             $table->decimal('per_day', 10, 2)->default(0);
+            $table->decimal('per_month', 10, 2)->nullable();
             $table->decimal('basic_pay', 10, 2)->default(0);
             $table->decimal('allowance', 10, 2)->default(0);
             $table->decimal('monthly_pay', 10, 2)->default(0);
@@ -69,13 +70,55 @@ class CreateEmployeesTable extends Migration
             $table->decimal('nd_rate', 10, 2)->default(0);
             $table->decimal('nd_hours', 10, 2)->default(0);
             $table->decimal('nd_amount', 10, 2)->default(0);
+
+            //lates
             $table->decimal('late_rate', 10, 2)->default(0);
             $table->integer('number_of_minutes_late')->default(0);
             $table->decimal('late_amount', 10, 2)->default(0);
             $table->decimal('missing_charges', 10, 2)->default(0);
             $table->decimal('total_charges', 10, 2)->default(0);
+
+            //allowances
             $table->decimal('half_allowance', 10, 2)->default(0);
             $table->decimal('meal_allowance', 10, 2)->default(0);
+
+            $table->decimal('grosspay',10, 2)->nullable();
+
+            //CONTRIBUTIONS AND TAXES
+            $table->decimal('sss_premcontribution',10, 2)->nullable();
+            $table->decimal('sss_wisp',10, 2)->nullable();
+            $table->decimal('phic',10, 2)->nullable();
+            $table->decimal('hdmf',10, 2)->nullable();
+            $table->decimal('tax',10, 2)->nullable();
+            $table->decimal('sss_loan',10, 2)->nullable();
+            $table->decimal('hdmf_loan',10, 2)->nullable();
+            $table->decimal('employee_purchase',10, 2)->nullable();
+            $table->decimal('uniform',10, 2)->nullable();
+            $table->decimal('cash_advance',10, 2)->nullable();
+            $table->decimal('otherdeduction',10, 2)->nullable();
+
+
+            $table->decimal('employer_sss_premcontribution',10, 2)->nullable();
+            $table->decimal('employer_sss_wisp',10, 2)->nullable();
+            $table->decimal('employer_phic',10, 2)->nullable();
+            $table->decimal('employer_hdmf',10, 2)->nullable();
+
+            $table->decimal('tax_sss_premcontribution',10, 2)->nullable();
+            $table->decimal('tax_sss_wisp',10, 2)->nullable();
+            $table->decimal('tax_phic',10, 2)->nullable();
+            $table->decimal('tax_hdmf',10, 2)->nullable();
+            $table->decimal('totalremittance',10, 2)->nullable();
+            $table->decimal('taxable_income',10, 2)->nullable();
+            $table->decimal('tax_cl',10, 2)->nullable();
+            $table->decimal('tax_excess',10, 2)->nullable();
+
+            $table->decimal('tax_rate_percentage',10, 2)->nullable();
+            $table->decimal('tax_rate',10, 2)->nullable();
+            $table->decimal('fixed_rate',10, 2)->nullable();
+            $table->decimal('tax_month',10, 2)->nullable();
+            $table->decimal('tax_cutoff',10, 2)->nullable();
+            $table->decimal('total_deduction',10, 2)->nullable();
+            $table->decimal('netpay',10, 2)->nullable();
 
             //remitances
             $table->string('sss_number')->nullable();
