@@ -108,6 +108,19 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Middle name</label>
+                                        <input type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" placeholder="Optional" />
+                                        @error('middle_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Last name</label>
@@ -119,6 +132,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Email</label>
@@ -204,14 +218,18 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Phone number</label>
-                                        <input type="number" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" id="phone_number" value="{{ old('phone_number') }}">
-                                        @error('phone_number')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+                                         <label class="col-form-label">Phone Number</label>
+                                         <div class="input-group">
+                                                <span class="input-group-text">+63</span>
+                                                <input class="form-control" type="text" @error('phone_number') is-invalid @enderror" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" placeholder="Enter 10 digit phone number Ex. 9123456789">
+
+                                                @error('phone_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                          </div>
+                                     </div>
                                 </div>
                             </div>
                             <h3>Emergency Contact</h3>
@@ -229,15 +247,20 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="emergency_phonenumber" class="col-form-label">Contact no</label>
-                                        <input type="number" class="form-control @error('emergency_phonenumber') is-invalid @enderror" name="emergency_phonenumber" id="emergency_phonenumber" value="{{ old('emergency_phonenumber') }}">
-                                        @error('emergency_phonenumber')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <label for="emergency_phonenumber" class="col-form-label">Contact No.</label>
+                                        <div class="input-group">
+                                               <span class="input-group-text">+63</span>
+                                               <input class="form-control" type="text" @error('emergency_phonenumber') is-invalid @enderror" name="emergency_phonenumber" id="emergency_phonenumber" value="{{ old('emergency_phonenumber') }}" placeholder="Enter 10 digit phone number Ex. 9123456789">
+
+                                               @error('emergency_phonenumber')
+                                               <span class="invalid-feedback" role="alert">
+                                                   <strong>{{ $message }}</strong>
+                                               </span>
+                                           @enderror
+                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="emergency_relationship" class="col-form-label">Relationship</label>
@@ -275,9 +298,9 @@
     </div>
     <!-- /Page Wrapper -->
     @section('script')
-    <script>
 
-        $(document).ready(function() {
+    <script>
+      /*  $(document).ready(function() {
             $('#phone_number').on('input', function() {
                 if (this.value.length > 10) {
                     this.value = this.value.slice(0, 10);
@@ -289,7 +312,22 @@
                     this.value = this.value.slice(0, 10);
                 }
             });
-        });
+        }); */
+
+        const phoneNumber = document.getElementById('phone_number');
+        const contactNumber = document.getElementById('emergency_phonenumber');
+
+        function slicedText() {
+            if(phoneNumber.value > 10) {
+                phoneNumber.value = phoneNumber.value.slice(0, 10);
+            }
+            if(contactNumber.value > 10) {
+                contactNumber.value = contactNumber.value.slice(0, 10);
+            }
+        }
+        phoneNumber.addEventListener('input', slicedText);
+        contactNumber.addEventListener('input', slicedText);
+
     </script>
 
  <script>

@@ -1,6 +1,6 @@
 
 Todo:
-  ☐ Validations on adding employees (phone number etc.)
-  ☐ Inputs on phone numbers
-  ☐ employees schemas (add default values on absences, regular worked days etc.)
-  ☐ Overtime function
+  ✔ Validations on adding employees (phone number etc.) @done(24-08-05 10:24)
+  ✔ Inputs on phone numbers @done(24-08-05 10:24)
+  ✔ employees schemas (add default values on absences, regular worked days etc.) @done(24-08-05 10:24)
+  ✔ Overtime function @done(24-08-05 10:24)

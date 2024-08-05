@@ -97,7 +97,7 @@
                         <li><a class="{{set_active(['form/daily/reports/page'])}}" href="{{ route('form/daily/reports/page') }}"> Daily Report </a></li>
                     </ul>
                 </li>
-                <li class="menu-title"> <span>Performance</span> </li>
+               {{-- <li class="menu-title"> <span>Performance</span> </li>
                 <li class="{{set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page']) ? 'noti-dot' : '' }}"><i class="la la-graduation-cap"></i>
                     <span> Performance </span> <span class="menu-arrow"></span></a>
@@ -106,8 +106,9 @@
                         <li><a class="{{set_active(['form/performance/page'])}}" href="{{ route('form/performance/page') }}"> Performance Review </a></li>
                         <li><a class="{{set_active(['form/performance/appraisal/page'])}}" href="{{ route('form/performance/appraisal/page') }}"> Performance Appraisal </a></li>
                     </ul>
-                </li>
-                <li class="{{set_active(['form/training/list/page','form/trainers/list/page'])}} submenu">
+                </li> --}}
+
+              {{-- <li class="{{set_active(['form/training/list/page','form/trainers/list/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/training/list/page','form/trainers/list/page']) ? 'noti-dot' : '' }}"><i class="la la-edit"></i>
                     <span> Training </span> <span class="menu-arrow"></span></a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
@@ -116,6 +117,7 @@
                         <li><a class="{{set_active(['form/training/type/list/page'])}}" href="{{ route('form/training/type/list/page') }}"> Training Type </a></li>
                     </ul>
                 </li>
+
                 <li class="menu-title"> <span>Administration</span> </li>
                 <li> <a href="assets.html"><i class="la la-object-ungroup">
                     </i> <span>Assets</span></a>
@@ -137,7 +139,8 @@
                         <li><a class="{{set_active(['page/schedule/timing'])}}" href="{{ route('page/schedule/timing') }}"> Schedule timing </a></li>
                         <li><a class="{{set_active(['page/aptitude/result'])}}" href="{{ route('page/aptitude/result') }}"> Aptitude Results </a></li>
                     </ul>
-                </li>
+                </li> --}}
+
             </ul>
         </div>
     </div>

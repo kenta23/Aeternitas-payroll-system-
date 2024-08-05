@@ -188,14 +188,14 @@
                                             <div class="form-group">
                                                 <label class="col-form-label">Monthly Pay (₱)</label>
 
-                                            <select class="select form-control @error('monthly_pay') is-invalid @enderror" style="width: 100%;" id="monthly_pay" name="monthly_pay">
+                                            <select onchange="calculateTotals()" class="select form-control @error('monthly_pay') is-invalid @enderror" style="width: 100%;" id="monthly_pay" name="monthly_pay">
                                                 <option value="">-- Select --</option>
-                                                <option value="16000.00" {{ $employees[0]->monthly_pay == '16000.00' ? 'selected' : '' }}>₱16,000.00</option>
-                                                <option value="18000.00" {{ $employees[0]->monthly_pay == '18000.00' ? 'selected' : '' }}>₱18,000.00</option>
-                                                <option value="20000.00" {{ $employees[0]->monthly_pay == '20000.00' ? 'selected' : '' }}>₱20,000.00</option>
-                                                <option value="22000.00" {{ $employees[0]->monthly_pay == '22000.00' ? 'selected' : '' }}>₱22,000.00</option>
-                                                <option value="25000.00" {{ $employees[0]->monthly_pay == '25000.00' ? 'selected' : '' }}>₱25,000.00</option>
-                                                <option value="30000.00" {{ $employees[0]->monthly_pay == '30000.00' ? 'selected' : '' }}>₱30,000.00</option>
+                                                <option value="16000.00" {{ $employees[0]->monthly_pay == '16000.00' ? 'selected' : '' }} >₱16,000.00</option>
+                                                <option value="18000.00" {{ $employees[0]->monthly_pay == '18000.00' ? 'selected' : '' }} >₱18,000.00</option>
+                                                <option value="20000.00" {{ $employees[0]->monthly_pay == '20000.00' ? 'selected' : '' }} >₱20,000.00</option>
+                                                <option value="22000.00" {{ $employees[0]->monthly_pay == '22000.00' ? 'selected' : '' }} >₱22,000.00</option>
+                                                <option value="25000.00" {{ $employees[0]->monthly_pay == '25000.00' ? 'selected' : '' }} >₱25,000.00</option>
+                                                <option value="30000.00" {{ $employees[0]->monthly_pay == '30000.00' ? 'selected' : '' }} >₱30,000.00</option>
                                             </select>
 
                                             @error('monthly_pay')
@@ -335,42 +335,43 @@
 
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
      //Calculate and display total monthly and bi-monthly totals
-     const monthlyPayInput = document.getElementById('monthly_pay');
-     const allowanceInput = document.getElementById('allowance');
-     const equivalentDailyRateInput = document.getElementById('daily_rate');
+        const monthlyPayInput = document.getElementById('monthly_pay');
+        const allowanceInput = document.getElementById('allowance');
+        const totalMonthlyInput = document.getElementById('total_monthly');
+        const biMonthlyInput = document.getElementById('bi_monthly');
+        const dailyRateInput = document.getElementById('daily_rate');
 
 
     function calculateTotals() {
+        const monthlyPay = parseFloat(monthlyPayInput.value) || 0;
+        const allowance = parseFloat(allowanceInput.value) || 0;
 
-         const monthlyPay = parseFloat(monthlyPayInput.value);
-         const allowance = parseFloat(allowanceInput.value);
-
-
-
-        if (!isNaN(monthlyPay) && !isNaN(allowance)) {
+        if (monthlyPay || allowance) {
             const totalMonthly = monthlyPay + allowance;
-            const biMonthlyTotal = totalMonthly / 2;
-            const dailyRate = (totalMonthly * 12) / 313;    //will change to basic pay later on.
+            const biMonthlyTotal = monthlyPay / 2;
+            const dailyRate = (monthlyPay * 12) / 313;
 
-            document.getElementById('total_monthly').value = totalMonthly.toFixed(2);
-            document.getElementById('bi_monthly').value = biMonthlyTotal.toFixed(2);
-            document.getElementById('daily_rate').value = dailyRate.toFixed(2);
+            totalMonthlyInput.value = totalMonthly.toFixed(2);
+            biMonthlyInput.value = biMonthlyTotal.toFixed(2);
+            dailyRateInput.value = dailyRate.toFixed(2);
         }
 
         console.log('MONTHLY PAY', monthlyPay);
         console.log('ALLOWANCE', allowance);
     }
 
-       window.onload = function () {
-            calculateTotals();
-        };
+       // Initial calculation on page load
+     window.onload = function () {
+        calculateTotals();
+    };
 
      //addEventListener Function
-     document.getElementById('monthly_pay').addEventListener('change', calculateTotals);
-     document.getElementById('allowance').addEventListener('input', calculateTotals);
-  })
+     monthlyPayInput.addEventListener('change', function() {
+              console.log('Monthly Pay changed:', monthlyPayInput.value);
+              calculateTotals();
+    });
+     allowanceInput.addEventListener('input', calculateTotals);
 
   </script>
 

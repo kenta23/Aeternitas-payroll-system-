@@ -144,8 +144,8 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label>BASIC SALARY</label>
-                <input type="number" id="show_basic_pay" name="show_basic_pay" value="#" class="form-control" readonly>
+                <label>Monthly Sallary</label>
+                <input type="number" id="monthly" name="monthly" value="{{ $employee->per_month}}" class="form-control" readonly>
                 <label>SSS Prem. Contribution</label>
                 <input type="number" id="tax_sss_premcontribution" name="tax_sss_premcontribution" value="{{ $employee->tax_sss_premcontribution }}" class="form-control" readonly>
                 <label>SSS WISP</label>

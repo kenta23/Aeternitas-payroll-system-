@@ -50,10 +50,12 @@ public function saveRecord(Request $request)
     //try {
         \Log::info('Request data:', $request->all());
 
+
         $validatedData = $request->validate([
          'first_name' => 'required|string|max:255',
          'last_name' => 'required|string|max:255',
          'email' => 'required|string|email|max:255|unique:employees,email',
+         'middle_name' => 'nullable|string|max:255',
          'birth_date' => 'required|date',
          'gender' => 'required|string',
          'position' => 'required|string',
@@ -125,14 +127,6 @@ public function saveRecord(Request $request)
         $computedOtRate100 = round(($employee->per_day / 8) * 2.00, 2); // Assuming double rate for 100%
         $computedOtAmount100 = round($computedOtRate100 * $employee->ot_hours100, 2);
 
-        //lates
-        $computedRateLates = round(($employee->per_day / 8) / 60, 2);
-
-        // Total OT amount
-        $totalOtAmount = round($computedOtAmount25 + $computedOtAmount30 + $computedOtAmount100, 2);
-
-        //night differential
-        $nightDifferentialRate = round(($employee->per_day / 8) * 0.1 , 2);
 
         $response = [
             'id' => $employee->id,
@@ -151,24 +145,24 @@ public function saveRecord(Request $request)
             'bi_monthly' => $employee->bi_monthly,
 
             // Overtimes
-            'ot_rate25' => $computedOtRate25,
+            'ot_rate25' => $employee->ot_rate25,
             'ot_hours25' => $employee->ot_hours25,
-            'ot_amount25' => $computedOtAmount25,
-            'ot_rate30' => $computedOtRate30,
+            'ot_amount25' => $employee->ot_amount25,
+            'ot_rate30' => $employee->ot_rate30,
             'ot_hours30' => $employee->ot_hours30,
-            'ot_amount30' => $computedOtAmount30,
-            'ot_rate100' => $computedOtRate100,
+            'ot_amount30' => $employee->ot_amount30,
+            'ot_rate100' => $employee->ot_rate100,
             'ot_hours100' => $employee->ot_hours100,
-            'ot_amount100' => $computedOtAmount100,
-            'total_ot' => $totalOtAmount,
+            'ot_amount100' => $employee->ot_amount100,
+            'total_ot' => $employee->total_ot,
 
             //lates
-            'late_rate' => $computedRateLates,
+            'late_rate' => $employee->late_rate,
             'late_amount' => $employee->late_amount,
             'number_of_minutes_late' => $employee->number_of_minutes_late,
 
             //night differential
-            'night_differential' => $nightDifferentialRate,
+            'night_differential' => $employee->nd_rate,
             'nd_rate' => $employee->nd_rate,
             'nd_hours' => $employee->nd_hours,
             'nd_amount' => $employee->nd_amount,
@@ -286,6 +280,18 @@ public function saveRecord(Request $request)
         DB::beginTransaction();
 
         try {
+            $computedOtRate25 = round(($request->daily_rate / 8) * 1.25, 2);
+            $computedOtRate30 = round(($request->daily_rate / 8) * 1.30, 2);
+            $computedOtRate100 = round(($request->daily_rate / 8) * 2.00, 2); // Assuming double rate for 100%
+
+            $specialRate = round($request->daily_rate * 0.3, 2);
+
+              //lates
+            $computedRateLates = round(($request->daily_rate / 8) / 60, 2);
+
+            //night differential
+            $nightDifferentialRate = round(($request->daily_rate / 8) * 0.1 , 2);
+
             // update table Employee
             $updateEmployee = [
                 'first_name'=>$request->firstname,
@@ -304,6 +310,13 @@ public function saveRecord(Request $request)
                 'per_month'=>$request->input('total_monthly'),
                 'bi_monthly'=>$request->input('bi_monthly'),
                 'per_day'=>$request->input('daily_rate'),
+                'special_rate' => $specialRate,
+                'ot_rate25' => $computedOtRate25,
+                'ot_rate30' => $computedOtRate30,
+                'ot_rate100' => $computedOtRate100,
+                'nd_rate' => $nightDifferentialRate,
+                'late_rate' => $computedRateLates,
+                'actual_days_worked' => 13,
             ];
 
             //dd($updateEmployee);
