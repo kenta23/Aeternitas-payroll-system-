@@ -164,6 +164,8 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
         Route::get('employees/timekeeping', 'timekeeping')->middleware('auth')->name('employees/timekeeping');
 
+        Route::post('employee/taxes/{id}', 'employeeTaxes')->middleware('auth');
+
         //contributions
         Route::get('employees/contributions', 'contributions')->middleware('auth')->name('employees/contributions');
         Route::get('employees/edit/contributions/{employeeId}', 'editEmployeeContributions')->middleware('auth');

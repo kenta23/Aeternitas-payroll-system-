@@ -447,7 +447,7 @@
                                   <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="used_credit">Used (current cut off)</label>
-                                        <input type="number" class="form-control" id="used_credit" name="used_credit" step="0.01">
+                                        <input type="number" class="form-control" readonly id="used_credit" name="used_credit" step="0.01">
                                     </div>
                                   </div>
 
@@ -457,6 +457,13 @@
                                         <input type="number" class="form-control" id="leave_amount" name="leave_amount" step="0.01" readonly>
                                     </div>
                              </div>
+
+                             <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="leave_amount">Vacation Leave/Sick Leave <span class="text-primary italic">(Input per day, 0.50 = Half Day)</span></label>
+                                    <input type="number" class="form-control" id="vlsl" name="vlsl" step="0.01">
+                                </div>
+                         </div>
                         </div>
                    </div>
 
@@ -574,68 +581,6 @@
                       $('#leave_dailyrate').val(data.daily_rate);
                       $('#leave_amount').val(data.leave_amount);
               }).catch((error) => console.error('There was an error fetching the data!', error) );
-
-
-             /* $.ajax({
-                  url: '{{ url("employee/timekeeping/edit") }}/' + employeeId,
-                  type: 'GET',
-                  success: function(response) {
-                      $('#id').val(response.id)
-                      $('#employee_id').val(response.employee_id);
-                      $('#daily_rate').val(response.daily_rate);
-                      $('#name').val(response.name);
-                      $('#position').val(response.position);
-                      $('#regular_worked_days').val(response.regular_worked_days);
-                      $('#absences').val(response.absences);
-
-                      $('#legal_worked_days').val(response.legal_worked_days);
-                      $('#lhd_amount').val(response.lhd_amount);
-
-                      $('#special_rate').val(response.special_rate);
-                      $('#special_amount').val(response.special_amount);
-                      $('#special_worked_days').val(response.special_worked_days);
-
-                      //overtime
-                      $('#ot_rate25').val(response.ot_rate25);
-                      $('#ot_hours25').val(response.ot_hours25);
-                      $('#ot_amount25').val(response.ot_amount25);
-
-                      $('#ot_rate30').val(response.ot_rate30);
-                      $('#ot_hours30').val(response.ot_hours30);
-                      $('#ot_amount30').val(response.ot_amount30);
-
-                      $('#ot_rate100').val(response.ot_rate100);
-                      $('#ot_hours100').val(response.ot_hours100);
-                      $('#ot_amount100').val(response.ot_amount100);
-                      $('#total_ot').val(response.total_ot);
-
-                      //lates
-                      $('#deduction_rate').val(response.late_rate);
-                      $('#late_amount').val(response.late_amount);
-                      $('#no_of_minutes').val(response.number_of_minutes_late);
-
-                      //night differential
-                      $('#nd_rate').val(response.nd_rate);
-                      $('#nd_hours').val(response.nd_hours);
-                      $('#nd_amount').val(response.nd_amount);
-
-                      //total amounts
-                      $('#basic_pay_plus_ot').val(response.total_basic_pay_plus_ot);
-                      $('#basic_pay').val(response.total_basic_pay);
-                      $('#gross_pay').val(response.gross_pay);
-                      $('#bi_monthly').val(response.bi_monthly);
-
-                      //allowances
-                      $('#half-allowance').val(response.half_allowance);
-                      $('#meal').val(response.meal_allowance);
-
-                      //leave
-                      $('#leave_dailyrate').val(response.daily_rate);
-                      $('#leave_amount').val(response.leave_amount);
-                      //$('#used_credit').val(response.used_credit);
-
-                  }
-              }); */
           });
       });
   </script>
@@ -702,6 +647,7 @@
      const usedCurrentCutOff = document.getElementById('used_credit');
      const leaveAmount = document.getElementById('leave_amount');
      const leaveDailyRate = document.getElementById('leave_dailyrate');
+     const vlsl = document.getElementById('vlsl');
 
      //Lates
      const lateAmount = document.getElementById('late_amount');
@@ -713,15 +659,21 @@
      function calculateLeaveAmount() {
         const parsedDailyRateInLeave = parseFloat(leaveDailyRate.value) || 0;
         const parsedUsedCurrentCutOff = parseFloat(usedCurrentCutOff.value) || 0;
+        const parsedVlsl = parseFloat(vlsl.value) || 0;
+
+        if (parsedVlsl && parsedVlsl > 0) {
+            usedCurrentCutOff.value = parsedVlsl;
+        }
 
         if (parsedDailyRateInLeave && parsedUsedCurrentCutOff) {
-            const leaveAmountVal = parsedDailyRateInLeave * parsedUsedCurrentCutOff;
+            const leaveAmountVal = parsedDailyRateInLeave * parsedVlsl;
 
             leaveAmount.value = leaveAmountVal.toFixed(2);
 
             calculateRwdAmount();
             calculateGrossPay();
         }
+        console.log("VLSL", parsedVlsl)
     }
 
     //calculate Basic Pay
@@ -1007,6 +959,8 @@
 
     meal.addEventListener('input', calculateGrossPay);
     allowance.addEventListener('input', calculateGrossPay);
+
+    vlsl.addEventListener('input', calculateLeaveAmount);
 
   </script>
  @endsection

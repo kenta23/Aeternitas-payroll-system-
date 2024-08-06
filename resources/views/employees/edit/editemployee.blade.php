@@ -88,6 +88,13 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Current Address</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="address" name="address" value="{{ $employees[0]->current_address }}">
+                                    </div>
+                                </div>
+
                                  <div class="form-group row">
                                     <label class="col-form-label col-md-2">Phone Number</label>
                                      <div class="input-group col-md-10">

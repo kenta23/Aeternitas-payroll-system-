@@ -303,6 +303,7 @@ public function saveRecord(Request $request)
                 'position'=>$request->position,
                 'department_id'=>$request->department_id,
                 'sss_number' => $request->sss_number,
+                'current_address' => $request->address,
                 'philhealth_number' => $request->philhealth,
                 'tin_number' => $request->tin_number,
                 'monthly_pay' => $request->input('monthly_pay'),
@@ -350,6 +351,61 @@ public function saveRecord(Request $request)
             Toastr::error('Delete record fail :)','Error');
             return redirect()->back();
         }
+    }
+
+    /* update employee taxes */
+    public function employeeTaxes($id, Request $request) {
+        try {
+            DB::beginTransaction();
+            $employee = Employee::find($id);
+
+
+
+            $updateValues = [
+                'employee_purchase' => $request->input('employee_purchase'),
+                'cash_advance' => $request->input('cash_advance'),
+                'uniform' => $request->input('uniform'),
+                'sss_loan' => $request->input('sss_loan'),
+                'hdmf_loan' => $request->input('hdmf_loan'),
+                'other_deduction' => $request->input('other_deduction'),
+                'sss_premcontribution' => $request->input('employee_sss_premcontribution'),
+                'employer_sss_premcontribution' => $request->input('employer_sss_premcontribution'),
+                'sss_wisp' => $request->input('employee_sss_wisp'),
+                'employer_sss_wisp' => $request->input('employer_sss_wisp'),
+                'phic' => $request->input('employee_phic'),
+                'employer_phic' => $request->input('employer_phic'),
+                'hdmf' => $request->input('employee_hdmf'),
+                'employer_hdmf' => $request->input('employer_hdmf'),
+                'tax' => $request->input('tax'),
+                'total_deduction' => $request->input('total_deduction'),
+                'tax_sss_premcontribution' => $request->input('tax_sss_premcontribution'),
+                'tax_sss_wisp' => $request->input('tax_sss_wisp'),
+                'tax_phic' => $request->input('tax_phic'),
+                'tax_hdmf' => $request->input('tax_hdmf'),
+                'total_remittance' => $request->input('total_remittance'),
+                'taxable_income' => $request->input('taxable_income'),
+                'tax_cl' => $request->input('tax_cl'),
+                'tax_excess' => $request->input('tax_excess'),
+                'tax_rate_percentage' => $request->input('tax_rate_percentage'),
+                'tax_rate' => $request->input('tax_rate'),
+                'fixed_rate' => $request->input('fixed_rate'),
+                'tax_month' => $request->input('tax_month'),
+                'tax_cutoff' => $request->input('tax_cutoff'),
+                'netpay' => $request->input('netpay'),
+             ];
+
+            $employee->update($updateValues);
+            DB::commit();
+            Toastr::success('Record successfully updated','Success');
+            return redirect()->route('employees/contributions');
+
+        }
+        catch(\Exception $e) {
+            DB::rollback();
+            Toastr::error('Department delete fail :)','Error');
+            return redirect()->back();
+        }
+
     }
 
     /** employee search */
