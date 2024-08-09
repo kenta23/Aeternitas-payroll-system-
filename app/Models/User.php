@@ -67,10 +67,10 @@ class User extends Authenticatable
             } else {
                 $nextID = 1;
             }
-            $model->user_id = 'PH_' . sprintf("%04s", $nextID);
+            $model->user_id = 'ADMIN_' . sprintf("%04s", $nextID);
             while (self::where('user_id', $model->user_id)->exists()) {
                 $nextID++;
-                $model->user_id = 'PH_' . sprintf("%04s", $nextID);
+                $model->user_id = 'ADMIN_' . sprintf("%04s", $nextID);
             }
         });
     }

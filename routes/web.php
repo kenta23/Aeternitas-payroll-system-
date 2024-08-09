@@ -166,6 +166,11 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
         Route::post('employee/taxes/{id}', 'employeeTaxes')->middleware('auth');
 
+
+        //search
+        Route::post('employee/timekeeping/search', 'employeeTimekeepingSearch')->name('employee/timekeeping/search');
+        Route::post('employee/search/tax-and-contributions', 'employeeTaxSearch')->name('employee/search/tax-and-contribution');
+
         //contributions
         Route::get('employees/contributions', 'contributions')->middleware('auth')->name('employees/contributions');
         Route::get('employees/edit/contributions/{employeeId}', 'editEmployeeContributions')->middleware('auth');
@@ -233,6 +238,9 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
         Route::get('extra/report/pdf', 'reportPDF')->middleware('auth');
         Route::get('extra/report/excel', 'reportExcel')->middleware('auth');
+
+        //download pdf
+        Route::post('payslip/download/{id}', 'downloadPDF')->middleware('auth');
     });
 
     // ---------------------------- reports  ----------------------------//

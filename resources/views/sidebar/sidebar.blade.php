@@ -61,7 +61,7 @@
                     </ul>
                 </li>
                 <li class="menu-title"> <span>HR</span> </li>
-                <li class="{{set_active(['create/estimate/page','form/estimates/page','payments','expenses/page'])}} submenu">
+               {{--<li class="{{set_active(['create/estimate/page','form/estimates/page','payments','expenses/page'])}} submenu">
                     <a href="#" class="{{ set_active(['create/estimate/page','form/estimates/page','payments','expenses/page']) ? 'noti-dot' : '' }}">
                         <i class="la la-files-o"></i>
                         <span> Sales </span>
@@ -72,7 +72,8 @@
                         <li><a class="{{set_active(['payments'])}}" href="{{ route('payments') }}">Payments</a></li>
                         <li><a class="{{set_active(['expenses/page'])}}" href="{{ route('expenses/page') }}">Expenses</a></li>
                     </ul>
-                </li>
+                </li> --}}
+
                 <li class="{{set_active(['form/salary/page','form/payroll/items'])}} submenu">
                     <a href="#" class="{{ set_active(['form/salary/page','form/payroll/items']) ? 'noti-dot' : '' }}"><i class="la la-money"></i>
                     <span> Payroll </span> <span class="menu-arrow"></span></a>

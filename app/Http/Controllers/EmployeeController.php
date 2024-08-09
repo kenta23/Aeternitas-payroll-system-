@@ -448,11 +448,69 @@ public function saveRecord(Request $request)
 
         $employees = $query->get();
 
-        // Return the rendered view as JSON for AJAX
-        //$html = view('employees.employee_list', ['employees' => $employees])->render();
-
         return view('employees.allemployeecard', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
     }
+
+
+    public function employeeTimekeepingSearch(Request $request)
+    {
+        $query = Employee::query();
+        $position = positionType::all();
+        $departments = department::all();
+
+        if ($request->filled('employee_id')) {
+            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
+        }
+
+        if ($request->filled('name')) {
+            $fullname = trim($request->name);
+            $parts = explode(' ', $fullname);
+            $firstname = $parts[0];
+            $lastname = isset($parts[1]) ? $parts[1] : '';
+
+            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
+                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
+        }
+
+        if ($request->filled('position')) {
+            $query->where('position', 'LIKE', '%' . $request->position . '%');
+        }
+
+        $employees = $query->get();
+
+        return view('employees.timekeeping', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
+    }
+
+
+    public function employeeTaxSearch(Request $request)
+    {
+        $query = Employee::query();
+        $position = positionType::all();
+        $departments = department::all();
+
+        if ($request->filled('employee_id')) {
+            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
+        }
+
+        if ($request->filled('name')) {
+            $fullname = trim($request->name);
+            $parts = explode(' ', $fullname);
+            $firstname = $parts[0];
+            $lastname = isset($parts[1]) ? $parts[1] : '';
+
+            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
+                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
+        }
+
+        if ($request->filled('position')) {
+            $query->where('position', 'LIKE', '%' . $request->position . '%');
+        }
+
+        $employees = $query->get();
+
+        return view('employees.contributions', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
+    }
+
 
     /** list search employee */
     public function employeeListSearch(Request $request)
@@ -533,24 +591,24 @@ public function saveRecord(Request $request)
         DB::beginTransaction();
         try {
 
-            $department = department::where('department',$request->department)->first();
+            $department = department::where('name',$request->department)->first();
             if ($department === null)
             {
                 $department = new department;
-                $department->department = $request->department;
+                $department->name = $request->department;
                 $department->save();
 
                 DB::commit();
-                Toastr::success('Add new department successfully :)','Success');
+                Toastr::success('Successfully added department','Success');
                 return redirect()->back();
             } else {
                 DB::rollback();
-                Toastr::error('Add new department exits :)','Error');
+                Toastr::error('Department already exits','Error');
                 return redirect()->back();
             }
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('Add new department fail :)','Error');
+            Toastr::error('Failed to add new department','Error');
             return redirect()->back();
         }
     }
@@ -563,16 +621,16 @@ public function saveRecord(Request $request)
             // update table departments
             $department = [
                 'id'=>$request->id,
-                'department'=>$request->department,
+                'name'=>$request->department,
             ];
             department::where('id',$request->id)->update($department);
 
             DB::commit();
-            Toastr::success('updated record successfully :)','Success');
+            Toastr::success('Successfully updated department','Success');
             return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('updated record fail :)','Error');
+            Toastr::error('Failed to update department','Error');
             return redirect()->back();
         }
     }

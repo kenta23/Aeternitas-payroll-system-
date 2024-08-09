@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use DB;
-use PDF;
 use App\Exports\SalaryExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\StaffSalary;
 use Brian2694\Toastr\Facades\Toastr;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class PayrollController extends Controller
 {
@@ -19,6 +21,16 @@ class PayrollController extends Controller
         $employees = Employee::whereNotNull('netpay')->where('netpay','!=',0)->get();
 
         return view('payroll.employeesalary',compact('employees'));
+    }
+
+    public function downloadPDF($id) {
+        $employee = Employee::find($id);
+
+        $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'))->setPaper('a6', 'portrait');
+
+        $todayDate = Carbon::now()->format('d-m-Y');
+
+        return $pdf->download('employee'.$employee->id.'-'.$todayDate.'.pdf');
     }
 
     public function getEmployeeSalary($employeeId)
@@ -34,7 +46,7 @@ class PayrollController extends Controller
         'employee_id' => $employee->employee_id,
         'name' => $employee->first_name . ' ' . $employee->last_name,
         'position' => $employee->position,
-        'basic_pay' => $employee->basic_pay,
+        'basic_pay' => $employee->total_basic_pay,
         'phone_number' =>$employee->phone_number,
         'per_day' => $employee->per_day,
         'allowance'=>$employee->allowance,

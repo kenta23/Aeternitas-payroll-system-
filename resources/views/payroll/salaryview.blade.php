@@ -321,10 +321,10 @@
         </div>
 
         <!-- Export Buttons -->
-        <div class="btn-group btn-group-sm no-print">
-            <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button>
-            <button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> <a href="pdf">PDF</a></button>
-            <button onclick="window.print();" class="btn btn-secondary"><i class="fa fa-print fa-lg"></i> Print Payslip</button>
-        </div>
+            <div class="btn-group btn-group-sm no-print">
+                <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button>
+                <a href="{{ url('payslip/download'. $employee->id) }}"><button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> <a href="pdf">PDF</a></button></a>
+                <button onclick="window.print();" class="btn btn-secondary"><i class="fa fa-print fa-lg"></i> Print Payslip</button>
+            </div>
     </div>
 @endsection

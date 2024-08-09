@@ -15,10 +15,10 @@
             <!-- Page Header -->
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Employee Salary <span id="year"></span></h3>
+                    <h3 class="page-title">Employee Sallary <span id="year"></span></h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Salary</li>
+                        <li class="breadcrumb-item active">Sallary</li>
                     </ul>
                 </div>
             </div>
@@ -63,9 +63,9 @@
                                     <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a></td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                            <a href="#" data-toggle="modal" class="userSalary" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><button class="btn btn-sm btn-dark">Edit</button></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item userSalary" href="#" data-toggle="modal" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                {{--<a class="dropdown-item userSalary" href="#" data-toggle="modal" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
                                                 <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
                                         </div>

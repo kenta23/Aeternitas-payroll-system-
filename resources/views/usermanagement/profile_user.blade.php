@@ -39,7 +39,7 @@
                                                 <small class="text-muted">{{ Session::get('position') }}</small>
                                                 <div class="staff-id">User ID : {{ Session::get('user_id') }}</div>
                                                 <div class="small doj text-muted">Date of Join : {{ Session::get('join_date') }}</div>
-                                                <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div>
+                                               <!-- <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> -->
                                             </div>
                                         </div>
                                         <div class="col-md-7">
@@ -816,18 +816,6 @@
                                             <option value="Single">Single</option>
                                             <option value="Married">Married</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Employment of spouse</label>
-                                        <input class="form-control @error('employment_of_spouse') is-invalid @enderror" type="text" name="employment_of_spouse">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>No. of children </label>
-                                        <input class="form-control @error('children') is-invalid @enderror" type="text" name="children">
                                     </div>
                                 </div>
                             </div>

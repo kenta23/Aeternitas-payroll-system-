@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@section('styles')
+
 
  <div class="main-wrapper">
         <div class="main-content">
