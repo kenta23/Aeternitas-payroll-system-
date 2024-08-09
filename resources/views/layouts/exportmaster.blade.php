@@ -4,11 +4,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-	<meta name="description" content="SoengSouy Admin Template">
+	<meta name="description" content="Payslip">
 	<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-	<meta name="author" content="SoengSouy Admin Template">
+	<meta name="author" content="Aeternitas">
 	<meta name="robots" content="noindex, nofollow">
-	<title>Reports</title>
+	@yield('title')
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/logo.png') }}">
 	<!-- Bootstrap CSS -->
@@ -26,7 +26,6 @@
 	<!-- Chart CSS -->
 	<link rel="stylesheet" href="{{ URL::to('ssets/plugins/morris/morris.css') }}">
 	<!-- Main CSS -->
-	<link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
  <!--font family -->
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

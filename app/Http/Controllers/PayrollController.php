@@ -16,12 +16,7 @@ class PayrollController extends Controller
     /** view page salary */
     public function sallary()
     {
-        //$users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
-        //$users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get();
-       // $userList         = DB::table('users')->get();
-       // $permission_lists = DB::table('permission_lists')->get();
-
-        $employees = Employee::all();
+        $employees = Employee::whereNotNull('netpay')->where('netpay','!=',0)->get();
 
         return view('payroll.employeesalary',compact('employees'));
     }
@@ -105,7 +100,7 @@ class PayrollController extends Controller
     /** salary view detail */
     public function salaryView($user_id)
     {
-        $employee = Employee::find($user_id);
+        $employee = Employee::with('department')->find($user_id);
 
         return view('payroll.salaryview', compact('employee'));
 

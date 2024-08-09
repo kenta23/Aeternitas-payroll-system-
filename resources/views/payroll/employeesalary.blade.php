@@ -40,7 +40,7 @@
                                     <th>Email</th>
                                     <th>Join Date</th>
                                     <th>Pay Type</th>
-                                    <th>Salary</th>
+                                    <th>Sallary</th>
                                     <th>Payslip</th>
                                     <th class="text-right">Action</th>
                                 </tr>
@@ -59,8 +59,8 @@
                                     <td>{{ $emp->email }}</td>
                                     <td>{{$emp->created_at}}</td>
                                     <td>Monthly</td>
-                                    <td class="salary">{{ $emp->basic_pay }}</td>
-                                    <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->employee_id) }}" target="_blank">Generate Slip</a></td>
+                                    <td class="salary">{{ $emp->netpay }}</td>
+                                    <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a></td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>

@@ -1,254 +1,330 @@
 
 @extends('layouts.exportmaster')
 
-@section('styles')
-   <style>
-        .broken-underline {
-        text-decoration: underline;
-        text-decoration-style: dashed; /* or dotted */
-    }
-
-    @media print {
-        .no-print {
-            display: none !important;
-        }
-    }
-   .basic-pay-and-deductions {
-     display: flex;
-     align-items: center;
-     gap: 0 25px;
-   }
-   .amount {
-     text-decoration: underline;
-   }
-   .payslip-info {
-       border: 0.5px dashed gray;
-   }
-
-   </style>
+@section('title')
+   <title>Payslip - {{ $employee->first_name }} {{ $employee->last_name }}</title>
 @endsection
 
+@section('styles')
+<style>
+    @media print {
+        @page {
+            size: A4; /* Adjust to fit your paper size */
+            margin: 10mm; /* Adjust margins to your preference */
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            overflow: hidden; /* Hide overflow to prevent content spill */
+            font-size: 10pt; /* Reduce font size for print */
+        }
+        .container {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: none;
+            page-break-after: always; /* Ensure content does not split across pages */
+        }
+        .header {
+            text-align: center;
+            margin: 0;
+            padding-top: 0;
+            font-size: 12pt; /* Font size for header */
+        }
+        .header img {
+            width: 80px; /* Adjust size for better fit */
+        }
+        .no-print {
+            display: none;
+        }
 
+        .details th, .breakdown th {
+           background-color: #134261;
+           color: white
+      }
+    }
+
+    /* Default Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        font-size: 12pt; /* Default font size */
+    }
+    .footer {
+        margin-top: 35px;
+    }
+    .container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px 20px; /* Padding around the content */
+        border: 1px solid #ffffff;
+        box-sizing: border-box; /* Ensure padding and border are included in the total width */
+    }
+    .header {
+        text-align: center;
+        margin: 0 0 10px; /* Margin below header */
+        padding-top: 10px; /* Add top padding for spacing in default view */
+        font-size: 14pt; /* Font size for header */
+    }
+    .header h1 {
+        margin: 0; /* Remove default margin */
+        line-height: 1.2; /* Adjust line height for closer spacing */
+    }
+    .header p {
+        margin: 0; /* Remove default margin */
+        line-height: 1.2; /* Adjust line height for closer spacing */
+    }
+    .details {
+         margin-top: 35px;
+         margin-bottom: 25px;
+    }
+    .details, .breakdown {
+        margin-bottom: 10px; /* Reduce space between sections */
+    }
+    .details table, .breakdown table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px; /* Reduce space between tables */
+    }
+    .details th, .breakdown th, .details td, .breakdown td {
+        border: 1px solid #ddd;
+        padding: 6px; /* Reduced padding for smaller font size */
+        text-align: left;
+        font-size: 10pt; /* Font size for table cells */
+    }
+    .details th, .breakdown th {
+        background-color: #134261;
+        color: white
+    }
+    .breakdown {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 10px 0;
+    }
+    .breakdown .left, .breakdown .right {
+        width: 48%;
+    }
+    .breakdown .right {
+        text-align: right;
+    }
+    .total {
+        font-weight: bold;
+        font-size: 10pt; /* Font size for total amounts */
+    }
+</style>
+@endsection
 
 @section('content')
-    <!-- Page Wrapper -->
-    <div class="">
-    <div class="page-wrapper">
-        <!-- Page Content -->
-        <div class="content" id="app">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h3 class="page-title">Eternal Bright Sanctuary Inc.</h3>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item active">Payslip</li>
-                        </ul>
-                    </div>
+    <div class="container">
+        <div class="header">
+            <img src="{{ asset('assets/img/aeternitas logo with bg.png') }}" alt="Company Logo">
+            <h1>Aeternitas</h1>
+            <p>Blk. 44 Lot 5 & 6, Commonwealth Ave.,</p>
+            <p>Brgy. Batasan Hills, Quezon City, Metro Manila, Philippines</p>
+        </div>
 
-                    <div class="col-auto float-right ml-auto no-print">
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button>
-                            <button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> <a href="hjgj">PDF</a></button>
-                            <a href="" target="_blank" @click.prevent="printme">
-                                <button class="btn btn-white" style="color: black"><i class="fa fa-print fa-lg"></i> Print</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <div class="details">
+            <h4>Employee Details</h4>
+            <table>
+                <tr>
+                    <th>Employee ID</th>
+                    <td>{{ $employee->employee_id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ $employee->first_name }} {{ $employee->last_name }}</td>
+                </tr>
+                <tr>
+                    <th>Position</th>
+                    <td>{{ $employee->position }}</td>
+                </tr>
+                <tr>
+                    <th>Department</th>
+                    <td>{{ $employee->department->name }}</td>
+                </tr>
+            </table>
+        </div>
 
-            <div class="row">
-                <div class="col-md-10">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="payslip-title">Payslip for the month of {{ \Carbon\Carbon::now()->format('M') }}   {{ \Carbon\Carbon::now()->year }}  </h4>
-                            <div class="row">
-                                <div class="col-sm-6 m-b-20">
-                                    <ul class="list-unstyled mb-2">
-                                        <li>Name: </li>
-                                        <li>Position:</li>
-                                        <li>Department:</li>
-                                        <li>Basic Compensation:</li>
-                                    </ul>
-                                </div>
-
-
-                                <div class="col-sm-6 m-b-20">
-                                    <div class="invoice-details">
-                                        <h3 class="text-uppercase">Payslip #49029</h3>
-                                        <ul class="list-unstyled">
-                                            <li>Salary Month: <span>{{ \Carbon\Carbon::now()->format('M') }}  , {{ \Carbon\Carbon::now()->year }}  </span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='dashed' />
-
-
-                            <div class="row payslip-info px-2 pt-3 pb-1">
-                                <div class="col-sm-6">
-                                    <h3>Basic Pay</h3>
-
-                                    <h3 class="text-right">Amount</h3>
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Days of work: </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Regular days worked: </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Legal Holiday: </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Speial Holiday: </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Total Basic Pay: </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Less late (mins): </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-
-                                    <div class="d-flex align-items-center gap-4">
-                                        <p class="">Net basic pay: </p>
-                                        <p class="">13 Days</p>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-sm-6">
-                                        <h3>Deductions</h3>
-                                        <h3 class="text-right">Amount</h3>
-
-                                        <div>
-                                            <p class="">SSS: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">PHIC: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">HDMF: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">WHTax: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">SSS Loans: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">Company Loans: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">Cash Advances: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">Absences: </p>
-                                            <p class=""></p>
-                                        </div>
-
-                                        <div>
-                                            <p class="">Other Charges: </p>
-                                            <p class=""></p>
-                                        </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                      <h3>Other Pay</h3>
-
-                                      <div>
-                                         <p>Reg. OT (hrs): </p>
-                                         <p></p>
-                                      </div>
-
-                                      <div>
-                                        <p>Night Diff. (hrs): </p>
-                                        <p></p>
-                                     </div>
-
-                                     <div>
-                                        <p>Meal Allowance: </p>
-                                        <p></p>
-                                     </div>
-
-                                     <div>
-                                        <p>Transpo Allowance</p>
-                                        <p>Incentive Leave</p>
-                                     </div>
-
-                                     <div>
-                                         <p>Adjustments: </p>
-                                         <p></p>
-                                     </div>
-
-                                     <div>
-                                         <p class="font-weight-bold">Total Other Pay: </p>
-                                         <p></p>
-                                     </div>
-                                </div>
-
-
-                                <div class="col-sm-6 my-auto">
-                                    <div>
-                                         <p class="font-weight-bold">Total Deductions: </p>
-                                         <p></p>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-sm-10">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="mt-2">
-                                            <p class="font-weight-bold">Gross Pay: </p>
-                                            <p></p>
-                                        </div>
-
-
-                                        <div class="mt-2">
-                                            <p class="font-weight-bold">Net Pay: </p>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-sm-6 mt-4">
-                                    <p>RECEIVED BY:</p>
-                                    <p class="text-underline">Employee name</p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="breakdown">
+            <div class="left">
+                <h4>BASIC PAY</h4>
+                <table>
+                    <tr>
+                        <th>Description</th>
+                        <th></th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>Days of Work</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Reg. days worked</td>
+                        <td>{{ number_format($employee->regular_worked_days, 2) }}</td>
+                        <td>₱{{ number_format($employee->rwd_amount, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Legal Hol.</td>
+                        <td>{{ number_format($employee->legal_worked_days, 2) }}</td>
+                        <td>₱{{ number_format($employee->lhd_amount, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Spcl. Hol.</td>
+                        <td>{{ number_format($employee->special_worked_days, 2) }}</td>
+                        <td>₱{{ number_format($employee->special_amount, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Basic Pay</td>
+                        <td></td>
+                        <td>₱{{ number_format($employee->total_basic_pay, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Less: Late (mins.):</td>
+                        <td>{{ number_format($employee->number_of_minutes_late, 2) }}</td>
+                        <td>₱{{ number_format($employee->late_amount, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="total">Net Basic Pay:</td>
+                        <td></td>
+                        <td class="total">₱{{ number_format($employee->total_basic_pay - $employee->late_amount, 2) }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="right">
+                <h4>DEDUCTION</h4>
+                <table>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>SSS</td>
+                        <td>₱{{ number_format($employee->sss_premcontribution + $employee->sss_wisp, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>PHIC</td>
+                        <td>₱{{ number_format($employee->phic, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>HDMF</td>
+                        <td>₱{{ number_format($employee->hdmf, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>WHTax</td>
+                        <td>₱{{ number_format($employee->tax_cutoff, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>SSS Loans</td>
+                        <td>₱{{ number_format($employee->sss_loan, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>HDMF Loans</td>
+                        <td>₱{{ number_format($employee->hdmf_loan, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Company Loans</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cash Advances</td>
+                        <td>₱{{ number_format($employee->cash_advance, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Absences</td>
+                        <td>₱{{ number_format($employee->absences, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Other Charges</td>
+                        <td>₱{{ number_format($employee->employee_purchase, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="total">Total Deductions:</td>
+                        <td class="total">₱{{ number_format($employee->sss_premcontribution + $employee->sss_wisp + $employee->phic + $employee->hdmf + $employee->tax_cutoff + $employee->sss_loan + $employee->hdmf_loan + $employee->cash_advance + $employee->absences + $employee->employee_purchase, 2) }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
-        <!-- /Page Content -->
-    </div>
-    <!-- /Page Wrapper -->
-    </div>
 
+        <div class="breakdown">
+            <div class="left">
+                <h4>OTHER PAY</h4>
+                <table>
+                    <tr>
+                        <th>Description</th>
+                        <th></th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>Reg. OT (hrs):</td>
+                        <td>{{ number_format($employee->ot_hours25, 2) }}</td>
+                        <td>₱{{ number_format($employee->ot_amount25, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Night Diff. (hrs):</td>
+                        <td>{{ number_format($employee->nd_hours, 2) }}</td>
+                        <td>₱{{ number_format($employee->nd_amount, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Meal Allowance</td>
+                        <td></td>
+                        <td>₱{{ number_format($employee->meal_allowance, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Transpo Allowance</td>
+                        <td></td>
+                        <td>₱{{ number_format($employee->half_allowance, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Incentive Leave:</td>
+                        <td>{{ number_format($employee->vlsl, 2) }}</td>
+                        <td>₱{{ number_format($employee->leave_amount, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Adjustments:</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="total">Total Other Pay:</td>
+                        <td></td>
+                        <td class="total">₱{{ number_format(($employee->ot_amount25 + $employee->nd_amount + $employee->meal_allowance + $employee->half_allowance + $employee->leave_amount), 2) }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="right">
+                <h4>TOTAL PAY</h4>
+                <table>
+                    <tr>
+                        <td>GROSS PAY:</td>
+                        <td>₱{{ number_format($employee->gross_pay , 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="total">NET PAY:</td>
+                        <td class="total">₱{{ number_format($employee->netpay , 2) }}</td>
+                    </tr>
+                </table>
+                <p style="text-align: left;">RECEIVED BY:</p>
+            </div>
+        </div>
+
+        <div class="footer" style="text-align: center;">
+            <p>Thank you for your hard work!</p>
+            <p>AETERNITAS ETERNAL BRIGHT</p>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="btn-group btn-group-sm no-print">
+            <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button>
+            <button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> <a href="pdf">PDF</a></button>
+            <button onclick="window.print();" class="btn btn-secondary"><i class="fa fa-print fa-lg"></i> Print Payslip</button>
+        </div>
+    </div>
 @endsection

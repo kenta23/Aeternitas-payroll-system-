@@ -219,7 +219,7 @@
 
                                 <div class="form-group">
                                     <label>Absences</label>
-                                    <input class="form-control" type="number" name="absences" id="absences" value="">
+                                    <input class="form-control" type="number" name="absences" id="absences" value="0">
                                 </div>
                                 @error('absences')
                                   <span class="invalid-feedback" role="alert">
@@ -658,21 +658,20 @@
      //Calculate Leave
      function calculateLeaveAmount() {
         const parsedDailyRateInLeave = parseFloat(leaveDailyRate.value) || 0;
-        const parsedUsedCurrentCutOff = parseFloat(usedCurrentCutOff.value) || 0;
         const parsedVlsl = parseFloat(vlsl.value) || 0;
+        usedCurrentCutOff.value = parsedVlsl.toFixed(2); // Update usedCurrentCutOff based on vlsl input
 
-        if (parsedVlsl && parsedVlsl > 0) {
-            usedCurrentCutOff.value = parsedVlsl;
+        const parsedUsedCurrentCutOff = parseFloat(usedCurrentCutOff.value) || 0;
+
+         if (parsedDailyRateInLeave && parsedVlsl) {
+             const leaveAmountVal = parsedDailyRateInLeave * parsedUsedCurrentCutOff;
+             leaveAmount.value = leaveAmountVal.toFixed(2);
+        } else {
+            leaveAmount.value = '0.00';
         }
 
-        if (parsedDailyRateInLeave && parsedUsedCurrentCutOff) {
-            const leaveAmountVal = parsedDailyRateInLeave * parsedVlsl;
-
-            leaveAmount.value = leaveAmountVal.toFixed(2);
-
-            calculateRwdAmount();
-            calculateGrossPay();
-        }
+        calculateRwdAmount();
+        calculateGrossPay();
         console.log("VLSL", parsedVlsl)
     }
 
@@ -687,6 +686,7 @@
 
             basicPay.value = totalBasicPay.toFixed(2);
        }
+       calculateBasicPayPlusOT();
        calculateGrossPay();
        console.log('TOTAL OT', totalOt.value);
     }
@@ -714,7 +714,7 @@
         console.log('total ot ', parsedTotalOT);
 
     // If there is no OT amount, just use the basic pay
-       if (parsedTotalOT <= 0) {
+       if (!parsedTotalOT) {
            basicPayPlusOt.value = totalBasicPay.toFixed(2);
        } else {
            const totalBasicPayPlusOT = totalBasicPay + parsedTotalOT;
@@ -782,7 +782,9 @@
             const finalAmount = (parsedBiMonthlyRate - parsedLeaveAmount) - ( (parsedMonthRatePaidDays - parsedRegularWorkedDays - parseduUsedCurrentCutOff) * parsedDailyRate);
 
             rwdAmount.value = finalAmount.toFixed(2);
+            console.log('RWD', finalAmount);
         }
+
           calculateBasicPay();
     }
 

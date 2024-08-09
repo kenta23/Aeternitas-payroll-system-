@@ -166,13 +166,13 @@
             </div>
 
             <div class="col-md-6">
-                <label>CL</label>
+                <label>CL <i class="text text-danger">Enter 0 if none</i></label>
                 <input type="number" id="tax_cl" name="tax_cl" value="{{ $employee->tax_cl }}" class="form-control" >
 
-                <label>Excess <i class="text text-danger">Please update first to calculate!</i></label>
+                <label>Excess</label>
                 <input type="number" id="tax_excess" name="tax_excess" value="{{ $employee->tax_excess }}" class="form-control" readonly>
 
-                <label>Tax Rate (Decimal Ex. 15% = 0.15)</label>
+                <label>Tax Rate (ex. 15 = 15%)</label>
                 <input type="number" id="tax_rate_percentage" name="tax_rate_percentage" step="0.01" value="{{ $employee->tax_rate_percentage }}" class="form-control" >
 
                 <input type="number" id="tax_rate" name="tax_rate" step="0.01" value="{{ $employee->tax_rate }}" class="form-control" readonly>
@@ -181,7 +181,7 @@
                 <input type="number" id="fixed_rate" name="fixed_rate" step="0.01" value="{{ $employee->fixed_rate }}" class="form-control" >
 
                 <label>WHTax/month</label>
-                <input type="number" id="tax_month" name="tax_month" step="0.01" value="{{ $employee->tax_month }} " class="form-control" readonly>
+                <input type="number" id="tax_month" name="tax_month" step="0.01" value="{{ $employee->tax_month }}" class="form-control" readonly>
 
                 <label>WHTax/cut-off</label>
                 <input type="number" id="tax_cutoff" name="tax_cutoff" step="0.01" value="{{ $employee->tax_cutoff }}" class="form-control" readonly>
@@ -193,7 +193,7 @@
                 <input type="number" id="total_deduction" name="total_deduction" step="0.01" value="{{ $employee->total_deduction }}" class="form-control" readonly>
 
                 <label> TAX (₱)</label>
-                <input type="number" id="tax" name="tax" value="" class="form-control" readonly>
+                <input type="number" id="tax" name="tax" value="{{ $employee->tax }}" class="form-control" readonly>
 
             </div>
 
@@ -337,9 +337,6 @@
     const parsedTaxableIncome = parseFloat(taxableIncome.value) || 0;
     const parsedCL = parseFloat(taxCl.value) || 0;
 
-    if(!parsedCL) {
-        taxExcess.value = '0.00';
-    }
     if (parsedTaxableIncome) {
         const total = parsedTaxableIncome - parsedCL;
 
@@ -353,10 +350,8 @@
     const parsedTaxPercentage = parseFloat(taxRatePercentage.value) || 0;
     const parsedTaxExcess = parseFloat(taxExcess.value) || 0;
 
-    if(parsedTaxExcess) {
-        const total = (parsedTaxPercentage / 100) * parsedTaxExcess;
-        taxRate.value = total.toFixed(2);
-    }
+    const total = (parsedTaxPercentage / 100) * parsedTaxExcess;
+    taxRate.value = total.toFixed(2);
 
     calculateTaxMonth();
   }
@@ -365,10 +360,9 @@
     const parsedFixrate = parseFloat(fixedRate.value) || 0;
     const parsedTaxRate = parseFloat(taxRate.value) || 0;
 
-    if(parsedTaxRate) {
-        const total = parsedFixrate + parsedTaxRate;
-        taxMonth.value = total.toFixed(2);
-    }
+    const total = parsedFixrate + parsedTaxRate;
+    taxMonth.value = total.toFixed(2);
+
     calculateTaxCutOff();
   }
 
@@ -380,9 +374,9 @@
         const total = parsedTaxMonth / 2;
 
         taxCutoff.value = total.toFixed(2);
-        tax.value = total.toFixed(2);
-        calculateTotalDeductions();
+        tax.value = total.toFixed(2); //tax value will shows up if the values of tax rate, tax month and tax cut off has filled up.
     }
+    calculateTotalDeductions();
   }
 
   //calculate total deduction
@@ -401,6 +395,7 @@
     const parsedGrossPay = parseFloat(grossPay.value) || 0;
 
     let netPayTotal;
+
 
     if (parsedTax) {
         const totalDeductions = parsedEmployeePurchase + parsedSssLoan + parsedHdmfLoan + parsedEmployeeSssPremContribution + parsedEmployeeSssWisp + parsedEmployeePhic + parsedEmployeeHdmf + parsedTax;

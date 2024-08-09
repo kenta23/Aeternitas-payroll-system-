@@ -50,7 +50,6 @@ public function saveRecord(Request $request)
     //try {
         \Log::info('Request data:', $request->all());
 
-
         $validatedData = $request->validate([
          'first_name' => 'required|string|max:255',
          'last_name' => 'required|string|max:255',
@@ -234,6 +233,7 @@ public function saveRecord(Request $request)
              'total_basic_pay_plus_ot' => $request->input('basic_pay_plus_ot'),
              'gross_pay' => $request->gross_pay,
              'total_basic_pay' => $request->basic_pay,
+             'rwd_amount' => $request->rwd_amount,
 
         ];
 
@@ -292,6 +292,10 @@ public function saveRecord(Request $request)
             //night differential
             $nightDifferentialRate = round(($request->daily_rate / 8) * 0.1 , 2);
 
+            //half allowance
+            $halfAllowance = round($request->input('allowance') / 2, 2);
+
+
             // update table Employee
             $updateEmployee = [
                 'first_name'=>$request->firstname,
@@ -318,6 +322,7 @@ public function saveRecord(Request $request)
                 'nd_rate' => $nightDifferentialRate,
                 'late_rate' => $computedRateLates,
                 'actual_days_worked' => 13,
+                'half_allowance' => $halfAllowance,
             ];
 
             //dd($updateEmployee);
@@ -368,21 +373,29 @@ public function saveRecord(Request $request)
                 'sss_loan' => $request->input('sss_loan'),
                 'hdmf_loan' => $request->input('hdmf_loan'),
                 'other_deduction' => $request->input('other_deduction'),
-                'sss_premcontribution' => $request->input('employee_sss_premcontribution'),
+
+                //employer
                 'employer_sss_premcontribution' => $request->input('employer_sss_premcontribution'),
-                'sss_wisp' => $request->input('employee_sss_wisp'),
                 'employer_sss_wisp' => $request->input('employer_sss_wisp'),
-                'phic' => $request->input('employee_phic'),
                 'employer_phic' => $request->input('employer_phic'),
-                'hdmf' => $request->input('employee_hdmf'),
                 'employer_hdmf' => $request->input('employer_hdmf'),
-                'tax' => $request->input('tax'),
-                'total_deduction' => $request->input('total_deduction'),
+
+                //employee
+                'sss_premcontribution' => $request->input('employee_sss_premcontribution'),
+                'sss_wisp' => $request->input('employee_sss_wisp'),
+                'phic' => $request->input('employee_phic'),
+                'hdmf' => $request->input('employee_hdmf'),
+
+                //taxes
                 'tax_sss_premcontribution' => $request->input('tax_sss_premcontribution'),
                 'tax_sss_wisp' => $request->input('tax_sss_wisp'),
                 'tax_phic' => $request->input('tax_phic'),
                 'tax_hdmf' => $request->input('tax_hdmf'),
-                'total_remittance' => $request->input('total_remittance'),
+
+
+                'totalremittance' => $request->input('total_remittance'),
+                'total_deduction' => $request->input('total_deduction'),
+                'tax' => $request->input('tax'),
                 'taxable_income' => $request->input('taxable_income'),
                 'tax_cl' => $request->input('tax_cl'),
                 'tax_excess' => $request->input('tax_excess'),
