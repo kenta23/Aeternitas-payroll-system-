@@ -78,10 +78,10 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Gender</label>
+                                    <label class="col-form-label col-md-2">Sex</label>
                                     <div class="col-md-10">
-                                        <select class="select form-control" id="gender" name="gender">
-                                            <option value="{{ $employees[0]->gender }}" {{ ( $employees[0]->gender == $employees[0]->gender) ? 'selected' : '' }}>{{ $employees[0]->gender }} </option>
+                                        <select class="select form-control" id="sex" name="sex">
+                                            <option value="{{ $employees[0]->sex }}" {{ ( $employees[0]->sex == $employees[0]->sex) ? 'selected' : '' }}>{{ $employees[0]->sex }} </option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>

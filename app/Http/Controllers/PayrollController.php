@@ -10,8 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\StaffSalary;
 use Brian2694\Toastr\Facades\Toastr;
 use Barryvdh\DomPDF\Facade\Pdf;
-
-
+use Illuminate\Support\Carbon;
 
 class PayrollController extends Controller
 {
@@ -23,14 +22,28 @@ class PayrollController extends Controller
         return view('payroll.employeesalary',compact('employees'));
     }
 
-    public function downloadPDF($id) {
-        $employee = Employee::find($id);
+    public function downloadPDF(int $id) {
+        $employee = Employee::with('department')->findOrFail($id);
+        $data = ['employee' => $employee];
 
-        $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'))->setPaper('a6', 'portrait');
+
+        $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
+        $pdf->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+
 
         $todayDate = Carbon::now()->format('d-m-Y');
 
         return $pdf->download('employee'.$employee->id.'-'.$todayDate.'.pdf');
+    }
+
+    public function payslipsample() {
+        $employee = Employee::with('department')->findOrFail(1);
+        $todayDate = Carbon::now()->format('d-m-Y');
+        return view ('payroll.sample', compact('employee'));
     }
 
     public function getEmployeeSalary($employeeId)

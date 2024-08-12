@@ -28,7 +28,7 @@ class EmployeeRequest extends FormRequest
         'lastname' => 'required|string|max:255',
         'email' => 'required|email|max:255',
         'birthdate' => 'required|date',
-        'gender' => 'required|string|max:10',
+        'sex' => 'required|string|max:10',
         'phone_number' => 'nullable|string|max:20',
         'position' => 'required|string|max:255',
         'department_id' => 'required|integer|exists:departments,id',

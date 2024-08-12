@@ -557,10 +557,10 @@
               axios.get('{{ url("employee/timekeeping/edit") }}/' + employeeId).then((res) => {
                       const data = res.data;
 
-                      $('#id').val(data.id)
+                      $('#id').val(data.id);
+                      $('#name').val(data.name);
                       $('#employee_id').val(data.employee_id);
                       $('#daily_rate').val(data.daily_rate);
-                      $('#name').val(data.name);
                       $('#position').val(data.position);
                       $('#regular_worked_days').val(data.regular_worked_days);
                       $('#absences').val(data.absences);

@@ -22,11 +22,11 @@
         }
         .container {
             width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            border: none;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px 20px; /* Padding around the content */
+            border: 1px solid #ffffff;
+            box-sizing: border-box; /* Ensure padding and border are included in the total width */
             page-break-after: always; /* Ensure content does not split across pages */
         }
         .header {
@@ -47,77 +47,81 @@
            color: white
       }
     }
+         /* Default Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 12pt; /* Default font size */
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px 20px; /* Padding around the content */
+            border: 1px solid #ffffff;
+            box-sizing: border-box; /* Ensure padding and border are included in the total width */
+        }
+        .header {
+            text-align: center;
+            margin: 0 0 20px; /* Margin below header */
+            padding-top: 10px; /* Add top padding for spacing in default view */
+            font-size: 14pt; /* Font size for header */
+        }
+        .header h1 {
+            margin: 0; /* Remove default margin */
+            line-height: 1.2; /* Adjust line height for closer spacing */
+        }
+        .header p {
+            font-size: 16px;
+            margin: 0; /* Remove default margin */
+            line-height: 1.2; /* Adjust line height for closer spacing */
+        }
+        .details, .breakdown {
+            margin-bottom: 10px; /* Reduce space between sections */
+        }
+        .details table, .breakdown table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px; /* Reduce space between tables */
+        }
+        .details th, .breakdown th, .details td, .breakdown td {
+            border: 1px solid #ddd;
+            padding: 6px; /* Reduced padding for smaller font size */
+            text-align: left;
+            font-size: 10pt; /* Font size for table cells */
+        }
+        .details th, .breakdown th {
+            background-color: #134261;
+            color: #ffff;
+        }
+        .breakdown {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .breakdown .left, .breakdown .right {
+            width: 48%;
+        }
+        .breakdown .right {
+            text-align: right;
+        }
 
-    /* Default Styles */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        font-size: 12pt; /* Default font size */
-    }
-    .footer {
-        margin-top: 35px;
-    }
-    .container {
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 10px 20px; /* Padding around the content */
-        border: 1px solid #ffffff;
-        box-sizing: border-box; /* Ensure padding and border are included in the total width */
-    }
-    .header {
-        text-align: center;
-        margin: 0 0 10px; /* Margin below header */
-        padding-top: 10px; /* Add top padding for spacing in default view */
-        font-size: 14pt; /* Font size for header */
-    }
-    .header h1 {
-        margin: 0; /* Remove default margin */
-        line-height: 1.2; /* Adjust line height for closer spacing */
-    }
-    .header p {
-        margin: 0; /* Remove default margin */
-        line-height: 1.2; /* Adjust line height for closer spacing */
-    }
-    .details {
-         margin-top: 35px;
-         margin-bottom: 25px;
-    }
-    .details, .breakdown {
-        margin-bottom: 10px; /* Reduce space between sections */
-    }
-    .details table, .breakdown table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 10px; /* Reduce space between tables */
-    }
-    .details th, .breakdown th, .details td, .breakdown td {
-        border: 1px solid #ddd;
-        padding: 6px; /* Reduced padding for smaller font size */
-        text-align: left;
-        font-size: 10pt; /* Font size for table cells */
-    }
-    .details th, .breakdown th {
-        background-color: #134261;
-        color: white
-    }
-    .breakdown {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin: 10px 0;
-    }
-    .breakdown .left, .breakdown .right {
-        width: 48%;
-    }
-    .breakdown .right {
-        text-align: right;
-    }
-    .total {
-        font-weight: bold;
-        font-size: 10pt; /* Font size for total amounts */
-    }
+        .breakdown .left h4 {
+             font-size: 25px;
+        }
+        .breakdown .right h4 {
+             font-size: 25px;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 10pt; /* Font size for total amounts */
+        }
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+        }
 </style>
 @endsection
 
@@ -323,7 +327,7 @@
         <!-- Export Buttons -->
             <div class="btn-group btn-group-sm no-print">
                 <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button>
-                <a href="{{ url('payslip/download'. $employee->id) }}"><button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> <a href="pdf">PDF</a></button></a>
+                <a href="{{ url('payslip/download/'. $employee->id) }}"><button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> PDF</button></a>
                 <button onclick="window.print();" class="btn btn-secondary"><i class="fa fa-print fa-lg"></i> Print Payslip</button>
             </div>
     </div>

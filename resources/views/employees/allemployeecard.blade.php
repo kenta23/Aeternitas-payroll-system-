@@ -159,13 +159,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Gender</label>
-                                        <select class="select form-control @error('gender') is-invalid @enderror" style="width: 100%;" id="gender" name="gender">
+                                        <label>Sex</label>
+                                        <select class="select form-control @error('sex') is-invalid @enderror" style="width: 100%;" id="sex" name="sex">
                                             <option value="">-- Select --</option>
-                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                            <option value="male" {{ old('sex') == 'male' ? 'selected' : '' }}>Male</option>
+                                            <option value="female" {{ old('sex') == 'female' ? 'selected' : '' }}>Female</option>
                                         </select>
-                                        @error('gender')
+                                        @error('sex')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -218,7 +218,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                         <label class="col-form-label">Phone Number</label>
+                                         <label class="col-form-label">Phone Number <i class="text-danger">Make sure the format is correct ex. 9909***</i></label>
                                          <div class="input-group">
                                                 <span class="input-group-text">+63</span>
                                                 <input class="form-control" type="text" @error('phone_number') is-invalid @enderror" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" placeholder="Enter 10 digit phone number Ex. 9123456789">

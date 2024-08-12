@@ -15,13 +15,14 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
+            $table->string('employee_id');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('suffix')->nullable();
             $table->string('email');
             $table->string('birth_date');
-            $table->string('gender');
-            $table->string('employee_id');
+            $table->string('sex')->nullable();
+            $table->integer('age')->nullable();
             $table->string('position');
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->string('phone_number')->nullable();
@@ -35,6 +36,11 @@ class CreateEmployeesTable extends Migration
             $table->decimal('bi_monthly', 10, 2)->default(0);
             $table->integer('actual_days_worked')->default(0);
             $table->decimal('absences', 10, 2)->default(0);
+
+
+            //payslip
+            $table->date('start_date_payroll')->nullable();
+            $table->date('end_date_payroll')->nullable();
 
 
             $table->decimal('vlsl', 10, 2)->nullable();

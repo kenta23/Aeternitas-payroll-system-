@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Jobs\SendPayslipEmail;
+use App\Mail\PayslipMail;
 use Illuminate\Http\Request;
 use DB;
 use Brian2694\Toastr\Facades\Toastr;
@@ -12,6 +14,9 @@ use App\Models\User;
 use App\Models\module_permission;
 use App\Models\permission_list;
 use App\Models\positionType;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -56,7 +61,7 @@ public function saveRecord(Request $request)
          'email' => 'required|string|email|max:255|unique:employees,email',
          'middle_name' => 'nullable|string|max:255',
          'birth_date' => 'required|date',
-         'gender' => 'required|string',
+         'sex' => 'nullable|string',
          'position' => 'required|string',
          'department_id' => 'required|exists:departments,id',
          'phone_number' => 'nullable|string|regex:/^9[0-9]{9}$/',
@@ -130,7 +135,7 @@ public function saveRecord(Request $request)
         $response = [
             'id' => $employee->id,
             'employee_id' => $employee->employee_id,
-            'name' => $employee->first_name . ' ' . $employee->last_name,
+            'name' => "{$employee->first_name} {$employee->last_name}",
             'daily_rate'=>$employee->per_day,
             'position' => $employee->position,
             'regular_worked_days' => $employee->regular_worked_days,
@@ -302,7 +307,7 @@ public function saveRecord(Request $request)
                 'last_name'=>$request->lastname,
                 'email'=>$request->email,
                 'birth_date'=>$request->birthdate,
-                'gender'=>$request->gender,
+                'sex' => $request->sex,
                 'phone_number'=>$request->phone_number,
                 'position'=>$request->position,
                 'department_id'=>$request->department_id,
@@ -640,12 +645,12 @@ public function saveRecord(Request $request)
     {
         try {
             department::destroy($request->id);
-            Toastr::success('Department deleted successfully :)','Success');
+            Toastr::success('Department deleted successfully', 'Success');
             return redirect()->back();
 
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('Department delete fail :)','Error');
+            Toastr::error('Department delete fail :)', 'Error');
             return redirect()->back();
         }
     }
@@ -668,4 +673,43 @@ public function saveRecord(Request $request)
         return view('employees.overtime');
     }
 
+    //sending mails
+ public function sendPayslipMail (int $id)
+ {
+     try {
+         //first, creating pdf file for payslip
+         $employee = Employee::findOrFail($id);
+         $todayDate = Carbon::now()->format('d-m-Y');
+
+         $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
+         $pdf->setOptions([
+             'isHtml5ParserEnabled' => true,
+             'isRemoteEnabled' => true
+         ]);
+         $pdf->setPaper('A4', 'portrait');
+         $pdfStream = $pdf->output();
+
+
+         Mail::to($employee->email)->send(new PayslipMail($employee, $pdfStream));
+         Toastr::success('Payslip has been sent to '. $employee->email, 'Success');
+         return redirect()->back();
+
+     } catch (\Exception $e) {
+         Toastr::error('Failed to send email', 'Error');
+         return redirect()->back();
+     }
+ }
+
+ public function sendBulkMails () {
+
+    $employees = Employee::all();
+
+    foreach ($employees as $employee) {
+        SendPayslipEmail::dispatch($employee);
+    }
+ }
+
+
 }
+
+

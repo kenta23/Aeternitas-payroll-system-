@@ -194,6 +194,10 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::post('form/overtime/save', 'saveRecordOverTime')->middleware('auth')->name('form/overtime/save');
         Route::post('form/overtime/update', 'updateRecordOverTime')->middleware('auth')->name('form/overtime/update');
         Route::post('form/overtime/delete', 'deleteRecordOverTime')->middleware('auth')->name('form/overtime/delete');
+
+
+        //FOR SENDING MAIL
+        Route::get('payslip/mali/send/{id}', 'sendPayslipMail')->middleware('auth');
     });
 
     // ------------------------- profile employee --------------------------//
@@ -240,7 +244,8 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('extra/report/excel', 'reportExcel')->middleware('auth');
 
         //download pdf
-        Route::post('payslip/download/{id}', 'downloadPDF')->middleware('auth');
+        Route::get('payslip/download/{id}', 'downloadPDF')->middleware('auth');
+        Route::get('payslip/example/1', 'payslipsample')->middleware('auth');
     });
 
     // ---------------------------- reports  ----------------------------//

@@ -98,10 +98,10 @@
                                     <td>{{ $emp->tax }}</td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
-                                            <a href="" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="" href=" {{ url('employees/edit/contributions/'.$emp->employee_id) }}" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i>Edit</a>
-                                                <a href="" href="{{ url('') }}">View Slip</a>
+                                                <a class="dropdown-item employeeInfo" href=" {{ url('employees/edit/contributions/'.$emp->employee_id) }}"  data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item" href="#" href="{{ url('') }}" data-id="{{ $emp->employee_id }}">View Slip</a>
                                             </div>
                                         </div>
                                     </td>
@@ -116,9 +116,9 @@
         </div>
 
 
-        @section('script')
-                  <script>
+@section('script')
+  <script>
 
-                  </script>
-        @endsection
+  </script>
+@endsection
 @endsection

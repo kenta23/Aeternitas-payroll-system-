@@ -64,6 +64,7 @@
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" data-toggle="modal" class="userSalary" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><button class="btn btn-sm btn-dark">Edit</button></a>
+                                            <a href="{{ url('payslip/mali/send/'.$emp->id)}}">Send Payslip via email</a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 {{--<a class="dropdown-item userSalary" href="#" data-toggle="modal" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
                                                 <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
