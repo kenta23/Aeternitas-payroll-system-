@@ -306,7 +306,7 @@
     const parsedTaxPhic = parseFloat(taxPhic.value) || 0;
     const parsedTaxEmployeeHdmf = parseFloat(taxHdmf.value) || 0;
 
-    if(parsedTaxSssemployee && parsedTaxSssWisp && parsedTaxPhic && parsedTaxEmployeeHdmf) {
+    if(parsedTaxSssemployee || parsedTaxSssWisp || parsedTaxPhic || parsedTaxEmployeeHdmf) {
        // const total = doubledSSS + doubledPhic + doubledSssWisp + doubledHdmf;
         const total = parsedTaxSssemployee + parsedTaxSssWisp + parsedTaxPhic  + parsedTaxEmployeeHdmf;
 
@@ -343,6 +343,7 @@
         taxExcess.value = total.toFixed(2);
      }
      calculateTaxRate();
+
   }
 
   //calculate tax rate
@@ -350,10 +351,12 @@
     const parsedTaxPercentage = parseFloat(taxRatePercentage.value) || 0;
     const parsedTaxExcess = parseFloat(taxExcess.value) || 0;
 
+
     const total = (parsedTaxPercentage / 100) * parsedTaxExcess;
     taxRate.value = total.toFixed(2);
 
     calculateTaxMonth();
+    calculateTotalDeductions();
   }
 
   function calculateTaxMonth() {
@@ -370,12 +373,12 @@
   function calculateTaxCutOff() {
     const parsedTaxMonth = parseFloat(taxMonth.value) || 0;
 
-    if(parsedTaxMonth) {
+
         const total = parsedTaxMonth / 2;
 
         taxCutoff.value = total.toFixed(2);
         tax.value = total.toFixed(2); //tax value will shows up if the values of tax rate, tax month and tax cut off has filled up.
-    }
+
     calculateTotalDeductions();
   }
 
@@ -384,10 +387,13 @@
     const parsedEmployeePurchase = parseFloat(employeePurchase.value) || 0;
     const parsedSssLoan = parseFloat(sssLoan.value) || 0;
     const parsedHdmfLoan = parseFloat(hdmfLoan.value) || 0;
+
     const parsedEmployeeSssPremContribution = parseFloat(employeeSssPremContribution.value) || 0;
     const parsedEmployeeSssWisp = parseFloat(employeeSssWisp.value) || 0;
     const parsedEmployeePhic = parseFloat(employeePhic.value) || 0;
     const parsedEmployeeHdmf = parseFloat(employeeHdmf.value) || 0;
+
+
     const parsedTax = parseFloat(tax.value) || 0;
 
 
@@ -397,11 +403,11 @@
     let netPayTotal;
 
 
-    if (parsedTax) {
+
         const totalDeductions = parsedEmployeePurchase + parsedSssLoan + parsedHdmfLoan + parsedEmployeeSssPremContribution + parsedEmployeeSssWisp + parsedEmployeePhic + parsedEmployeeHdmf + parsedTax;
         totalDeduction.value = totalDeductions.toFixed(2);
 
-        const netPayTotal = parsedGrossPay - totalDeductions;
+        netPayTotal = parsedGrossPay - totalDeductions;
         console.log('gross pay', parsedGrossPay);
 
         if(parsedGrossPay <= 0) {
@@ -411,7 +417,7 @@
             netPay.value = '0.00';
         }
         netPay.value = netPayTotal.toFixed(2);
-    }
+
   }
 
   employeeSssPremContribution.addEventListener('input', showSSSpremContribution);
