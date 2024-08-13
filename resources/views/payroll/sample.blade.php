@@ -7,7 +7,84 @@
     <title>Payslip</title>
 
     <style>
-        @media print {
+             /* Default Styles */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                font-size: 12pt; /* Default font size */
+            }
+            .container {
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 10px 20px; /* Padding around the content */
+                border: 1px solid #ffffff;
+                box-sizing: border-box; /* Ensure padding and border are included in the total width */
+            }
+            .header {
+                text-align: center;
+                margin: 0 0 40px; /* Margin below header */
+                padding-top: 10px; /* Add top padding for spacing in default view */
+                font-size: 14pt; /* Font size for header */
+            }
+            .header h1 {
+                margin: 0; /* Remove default margin */
+                line-height: 1.2; /* Adjust line height for closer spacing */
+            }
+            .header p {
+                font-size: 16px;
+                margin: 0; /* Remove default margin */
+                line-height: 1.2; /* Adjust line height for closer spacing */
+            }
+
+            .details, .breakdown {
+                margin-bottom: 24px; /* Reduce space between sections */
+            }
+            .details table, .breakdown table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 10px; /* Reduce space between tables */
+            }
+            .details th, .breakdown th, .details td, .breakdown td {
+                border: 1px solid #ddd;
+                padding: 6px; /* Reduced padding for smaller font size */
+                text-align: left;
+                font-size: 10pt; /* Font size for table cells */
+            }
+            .details th, .breakdown th {
+                background-color: #134261;
+                color: #ffff;
+            }
+            .breakdown {
+                display: flex;
+                justify-content: space-between;
+            }
+            .breakdown .left, .breakdown .right {
+                width: 48%;
+            }
+            .breakdown .right {
+                text-align: right;
+            }
+
+            .breakdown .left h4 {
+                 font-size: 20px;
+            }
+            .breakdown .right h4 {
+                 font-size: 20px;
+            }
+
+            .total {
+                font-weight: bold;
+                font-size: 10pt; /* Font size for total amounts */
+            }
+            .footer {
+                margin-top: 20px;
+                font-size: 12px;
+            }
+
+
+            @media print {
             @page {
                 size: A4; /* Adjust to fit your paper size */
                 margin: 10mm; /* Adjust margins to your preference */
@@ -37,100 +114,34 @@
             }
             .header img {
                 width: 80px; /* Adjust size for better fit */
+                height: auto;
             }
             .no-print {
                 display: none;
-             }
-          .details th, .breakdown th {
-                   background-color: #134261;
-               color: white
-          }
-        }
+            }
 
-        @media screen and (max-width: 480px) {
-              .breakdown .left, .breakdown .right {
-                 width: 46%;
-              }
-              .breakdown {
-                 gap: 0 45px;
-              }
-            }
-             /* Default Styles */
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                font-size: 12pt; /* Default font size */
-            }
-            .container {
-                width: 100%;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 10px 20px; /* Padding around the content */
-                border: 1px solid #ffffff;
-                box-sizing: border-box; /* Ensure padding and border are included in the total width */
-            }
-            .header {
-                text-align: center;
-                margin: 0 0 20px; /* Margin below header */
-                padding-top: 10px; /* Add top padding for spacing in default view */
-                font-size: 14pt; /* Font size for header */
-            }
-            .header h1 {
-                margin: 0; /* Remove default margin */
-                line-height: 1.2; /* Adjust line height for closer spacing */
-            }
-            .header p {
-                font-size: 16px;
-                margin: 0; /* Remove default margin */
-                line-height: 1.2; /* Adjust line height for closer spacing */
-            }
-            .details, .breakdown {
-                margin-bottom: 10px; /* Reduce space between sections */
-            }
-            .details table, .breakdown table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 10px; /* Reduce space between tables */
-            }
-            .details th, .breakdown th, .details td, .breakdown td {
-                border: 1px solid #ddd;
-                padding: 6px; /* Reduced padding for smaller font size */
-                text-align: left;
-                font-size: 10pt; /* Font size for table cells */
-            }
             .details th, .breakdown th {
                 background-color: #134261;
                 color: #ffff;
             }
-            .breakdown {
-                display: flex;
-                justify-content: space-between;
+        }
+
+        @media screen and (max-width: 480px) {
+             .breakdown {
+                  width: 100%;
+                  display: inline-flex;
+                  min-width: min-content;
+              }
+             .breakdown .left, .breakdown .right {
+                width: 38%;
             }
-            .breakdown .left, .breakdown .right {
-                width: 48%;
+            .breakdown .left h4, .breakdown .right h4  {
+                font-size: 17px;
             }
-            .breakdown .right {
-                text-align: right;
-            }
-          .breakdown .left h4 {
-                 font-size: 22px;
-            }
-            .breakdown .right h4 {
-                 font-size: 22px;
-            }
-          .total {
-                font-weight: bold;
-                font-size: 10pt; /* Font size for total am    ounts */
-            }
-            .footer {
-                margin-top: 25px;
-                font-size: 12px;
-            }
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="header">
             <img src="{{ asset('assets/img/aeternitas logo with bg.png') }}" alt="Company Logo">
@@ -157,6 +168,13 @@
                 <tr>
                     <th>Department</th>
                     <td>{{ $employee->department->name }}</td>
+                </tr>
+                <tr>
+                     <th>Payroll Period</th>
+                     <td>
+                         {{ \Carbon\Carbon::parse($employee->start_date_payroll)->format('F d') }} -
+                         {{ \Carbon\Carbon::parse($employee->end_date_payroll)->format('F d, Y') }}
+                     </td>
                 </tr>
             </table>
         </div>

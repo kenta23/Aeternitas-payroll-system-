@@ -690,7 +690,7 @@ public function saveRecord(Request $request)
          $pdfStream = $pdf->output();
 
 
-         Mail::to($employee->email)->send(new PayslipMail($employee, $pdfStream));
+         Mail::mailer('smtp')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
          Toastr::success('Payslip has been sent to '. $employee->email, 'Success');
          return redirect()->back();
 
@@ -704,12 +704,25 @@ public function saveRecord(Request $request)
 
     $employees = Employee::all();
 
-    foreach ($employees as $employee) {
-        SendPayslipEmail::dispatch($employee);
+    try {
+        foreach ($employees as $employee) {
+            // Generate the PDF for each employee
+            $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
+            $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+            $pdfContent = $pdf->output();
+
+            // Dispatch the job for each employee
+            SendPayslipEmail::dispatch($pdfContent, $employee);
+        }
+
+      Toastr::success('Successfully sent mails to all employees', 'Success');
+      return redirect()->back();
     }
+    catch(\Exception $e) {
+         Toastr::error('Failed to send bulk mails', 'Error');
+         return redirect()->back();
+      }
+   }
  }
-
-
-}
 
 

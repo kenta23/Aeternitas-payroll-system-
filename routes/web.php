@@ -198,6 +198,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
         //FOR SENDING MAIL
         Route::get('payslip/mali/send/{id}', 'sendPayslipMail')->middleware('auth');
+        Route::get('payslip/mail/send/all', 'sendBulkMails')->middleware('auth');
     });
 
     // ------------------------- profile employee --------------------------//

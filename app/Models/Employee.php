@@ -31,6 +31,8 @@ class Employee extends Model
         'monthly_pay',
         'bi_monthly',
         'actual_days_worked',
+        'start_date_payroll',
+        'end_date_payroll',
         'absences',
         'vlsl',
         'regular_worked_days',

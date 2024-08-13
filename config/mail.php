@@ -49,8 +49,11 @@ return [
         ],
 
         'mailgun' => [
-            'transport' => 'mailgun',
-        ],
+          'transport' => 'mailgun',
+          'domain' => env('MAILGUN_DOMAIN'),
+          'secret' => env('MAILGUN_SECRET'),
+          'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+       ],
 
         'postmark' => [
             'transport' => 'postmark',
@@ -89,6 +92,7 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
+
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),

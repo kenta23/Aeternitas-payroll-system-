@@ -55,7 +55,7 @@ class PayslipMail extends Mailable
     public function build () {
         $todayDate = Carbon::now()->format('d-m-Y');
 
-        return $this->view('emails.payslip2')
+        return $this->view('emails.payslip')
                     ->subject('Your Payslip is here')
                     ->with('employee', $this->employee)
                     ->attachData($this->pdf, 'Payslip-' . $this->employee->last_name . '-' . $todayDate . '.pdf', ['mime' => 'application/pdf', ]);  //passing employee to get the employee data

@@ -23,6 +23,10 @@
                 </div>
             </div>
 
+            <div style="margin: 15px 0 5 0;">
+                  <a href="{{ url('payslip/mail/send/all')}}" class="btn btn-sm btn-info"><i class="fa fa-envelope m-r-5"></i>Send Payslip to All</a>
+            </div>
+
             <!-- Search Filter -->
             <div class="row filter-row">
                 <!-- [Include search filters here if needed] -->
@@ -32,14 +36,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable" style="width: 100%">
+                        <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                                 <tr>
                                     <th>Employee</th>
                                     <th>Employee ID</th>
                                     <th>Email</th>
-                                    <th>Join Date</th>
                                     <th>Pay Type</th>
+                                    <th>Join Date</th>
+                                    <th>Payroll Start date</th>
+                                    <th>Payroll End date</th>
                                     <th>Sallary</th>
                                     <th>Payslip</th>
                                     <th class="text-right">Action</th>
@@ -57,17 +63,24 @@
                                     <td class="employee_id">{{ $emp->employee_id }}</td>
                                     <td hidden class="id">{{ $emp->id }}</td>
                                     <td>{{ $emp->email }}</td>
-                                    <td>{{$emp->created_at}}</td>
                                     <td>Monthly</td>
+                                    <td>{{$emp->created_at}}</td>
+                                    <td>{{$emp->start_date_payroll}}</td>
+                                    <td>{{$emp->end_date_payroll}}</td>
                                     <td class="salary">{{ $emp->netpay }}</td>
-                                    <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a></td>
+                                    <td>
+                                        @if ($emp->end_date_payroll != null)
+                                          <a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a>
+                                        @else
+                                          <button class="btn btn-sm btn-primary" disabled>Generate Slip</button>
+                                        @endif
+                                    </td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" data-toggle="modal" class="userSalary" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><button class="btn btn-sm btn-dark">Edit</button></a>
-                                            <a href="{{ url('payslip/mali/send/'.$emp->id)}}">Send Payslip via email</a>
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                {{--<a class="dropdown-item userSalary" href="#" data-toggle="modal" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
-                                                <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item userSalary" href="#" data-toggle="modal" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item text-primary" href="{{ url('payslip/mali/send/'.$emp->id)}}"><i class="fa fa-envelope m-r-5"></i>Send Payslip</a>
                                             </div>
                                         </div>
                                     </td>
@@ -145,76 +158,17 @@
                                 </div>
                             </div>
 
-                        <h4 class="text-primary">Employee Details</h4>
+                        <h4 class="text-primary">Payroll</h4>
 
                             <div class="row">
-
-                               <div class='col-sm-6'>
-                                <div class="form-group">
-                                    <label>Basic Pay</label>
-                                    <input class="form-control" type="text" name="basic_pay" id="e_basic-pay" value="">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                         <label for="">Payroll Period</label>
+                                         <input type="date" name="period" id="period" class="form-control" required>
+                                    </div>
                                 </div>
-                                @error('basic_pay')
-                                  <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                  </span>
-                                @enderror
-                               </div>
 
-                             <div class='col-sm-6'>
-                               <div class="form-group">
-                                  <label>Per day</label>
-                                  <input class="form-control" type="text" name="per_day" id="e_per_day" value="">
-                               </div>
-
-                                @error('basic_pay')
-                                <span class="invalid-feedback" role="alert">
-                                   <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
                              </div>
-
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Allowance</label>
-                                    <input class="form-control" type="text" name="allowance" id="e_allowance" value="">
-                                 </div>
-
-                                 @error('allowance')
-                                 <span class="invalid-feedback" role="alert">
-                                   <strong>{{ $message }}</strong>
-                                 </span>
-                                @enderror
-                             </div>
-
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Monthly Pay</label>
-                                    <input class="form-control" type="text" name="monthly_pay" id="e_monthly-pay" value="">
-                                 </div>
-
-                                 @error('monthly_pay')
-                                 <span class="invalid-feedback" role="alert">
-                                   <strong>{{ $message }}</strong>
-                                 </span>
-                                @enderror
-                             </div>
-
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Monthly Pay</label>
-                                    <input class="form-control" type="text" name="bi_monthly" id="e_bi-monthly" value="">
-                                 </div>
-
-                                 @error('bi_monthly')
-                                 <span class="invalid-feedback" role="alert">
-                                   <strong>{{ $message }}</strong>
-                                 </span>
-                                @enderror
-                             </div>
-
-                            </div>
-
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn">Update</button>
                             </div>

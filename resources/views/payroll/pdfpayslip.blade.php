@@ -1,21 +1,16 @@
-@php
-    use Carbon\Carbon;
-
-    $startDate = Carbon::parse($employee->start_date_payroll);
-    $endDate = Carbon::parse($employee->end_date_payroll);
-@endphp
-
 <!DOCTYPE html>
- <html lang="en">
- <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Payslip {{ $employee->first_name.' '.$employee->last_name}}</title>
+    <title>Payslip</title>
 
     <style>
-        @media print {
-            @page {
+            /* Default Styles */
+
+            @media print {
+             @page {
                 size: A4; /* Adjust to fit your paper size */
                 margin: 10mm; /* Adjust margins to your preference */
             }
@@ -29,102 +24,112 @@
             }
             .container {
                 width: 100%;
-                height: 100%;
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-                border: none;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 10px 20px; /* Padding around the content */
+                border: 1px solid #ffffff;
+                box-sizing: border-box; /* Ensure padding and border are included in the total width */
                 page-break-after: always; /* Ensure content does not split across pages */
             }
             .header {
                 text-align: center;
-                margin: 0; /* Remove margin to bring header closer to the top */
-                padding-top: 0; /* Ensure no padding pushes the header down */
+                margin: 0;
+                padding-top: 0;
                 font-size: 12pt; /* Font size for header */
             }
             .header img {
                 width: 80px; /* Adjust size for better fit */
+                height: auto;
             }
             .no-print {
                 display: none;
             }
-        }
 
-        /* Default Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            font-size: 12pt; /* Default font size */
+            .details th, .breakdown th {
+                background-color: #134261;
+                color: #ffff;
+            }
         }
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 10px 20px; /* Padding around the content */
-            border: 1px solid #ffffff;
-            box-sizing: border-box; /* Ensure padding and border are included in the total width */
-        }
-        .header {
-            text-align: center;
-            margin: 0 0 10px; /* Margin below header */
-            padding-top: 10px; /* Add top padding for spacing in default view */
-            font-size: 14pt; /* Font size for header */
-        }
-        .header h1 {
-            margin: 0; /* Remove default margin */
-            line-height: 1.2; /* Adjust line height for closer spacing */
-        }
-        .header p {
-            margin: 0; /* Remove default margin */
-            line-height: 1.2; /* Adjust line height for closer spacing */
-        }
-        .details, .breakdown {
-            margin-bottom: 10px; /* Reduce space between sections */
-        }
-        .details table, .breakdown table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px; /* Reduce space between tables */
-        }
-        .details th, .breakdown th, .details td, .breakdown td {
-            border: 1px solid #ddd;
-            padding: 6px; /* Reduced padding for smaller font size */
-            text-align: left;
-            font-size: 10pt; /* Font size for table cells */
-        }
-        .details th, .breakdown th {
-            background-color: #f4f4f4;
-        }
-        .breakdown {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .breakdown .left, .breakdown .right {
-            width: 48%;
-        }
-        .breakdown .right {
-            text-align: right;
-        }
-        .total {
-            font-weight: bold;
-            font-size: 10pt; /* Font size for total amounts */
-        }
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                font-size: 12pt; /* Default font size */
+            }
+            .container {
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 10px 20px; /* Padding around the content */
+                border: 1px solid #ffffff;
+                box-sizing: border-box; /* Ensure padding and border are included in the total width */
+            }
+            .header {
+                text-align: center;
+                margin: 0 0 40px; /* Margin below header */
+                padding-top: 10px; /* Add top padding for spacing in default view */
+                font-size: 14pt; /* Font size for header */
+            }
+            .header h1 {
+                margin: 0; /* Remove default margin */
+                line-height: 1.2; /* Adjust line height for closer spacing */
+            }
+            .header p {
+                font-size: 16px;
+                margin: 0; /* Remove default margin */
+                line-height: 1.2; /* Adjust line height for closer spacing */
+            }
+
+            .details, .breakdown {
+                margin-bottom: 24px; /* Reduce space between sections */
+            }
+            .details table, .breakdown table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 10px; /* Reduce space between tables */
+            }
+            .details th, .breakdown th, .details td, .breakdown td {
+                border: 1px solid #ddd;
+                padding: 6px; /* Reduced padding for smaller font size */
+                text-align: left;
+                font-size: 10pt; /* Font size for table cells */
+            }
+            .details th, .breakdown th {
+                background-color: #134261;
+                color: #ffff;
+            }
+
+            .breakdown {
+                  width: 100%;
+                  display: block;
+                  min-width: min-content;
+            }
+
+            .breakdown .left h4, .breakdown .right h4  {
+                font-size: 17px;
+            }
+
+            .total {
+                font-weight: bold;
+                font-size: 10pt; /* Font size for total amounts */
+            }
+            .footer {
+                margin-top: 20px;
+                font-size: 12px;
+            }
     </style>
-  </head>
-
-  <body>
+</head>
+<body>
     <div class="container">
         <div class="header">
-            {{-- <img src="{{ asset('assets/images/aeternitas.png') }}" alt="Company Logo"> --}}
+           {{-- <img src="{{ asset('assets/img/aeternitas logo with bg.png') }}" alt="Company Logo"> --}}
             <h1>Aeternitas</h1>
             <p>Blk. 44 Lot 5 & 6, Commonwealth Ave.,</p>
             <p>Brgy. Batasan Hills, Quezon City, Metro Manila, Philippines</p>
         </div>
 
         <div class="details">
-            <h2>Employee Details</h2>
+            <h4>Employee Details</h4>
             <table>
                 <tr>
                     <th>Employee ID</th>
@@ -142,12 +147,19 @@
                     <th>Department</th>
                     <td>{{ $employee->department->name }}</td>
                 </tr>
+                <tr>
+                     <th>Payroll Period</th>
+                     <td>
+                         {{ \Carbon\Carbon::parse($employee->start_date_payroll)->format('F d') }} -
+                         {{ \Carbon\Carbon::parse($employee->end_date_payroll)->format('F d, Y') }}
+                     </td>
+                </tr>
             </table>
         </div>
 
         <div class="breakdown">
             <div class="left">
-                <h2>BASIC PAY</h2>
+                <h4>BASIC PAY</h4>
                 <table>
                     <tr>
                         <th>Description</th>
@@ -166,7 +178,7 @@
                     </tr>
                     <tr>
                         <td>Legal Hol.</td>
-                        <td>{{ number_format($employee->legal_worked_days, 2) }}</td>
+                        <td> {{ number_format($employee->legal_worked_days, 2) }}</td>
                         <td>₱{{ number_format($employee->lhd_amount, 2) }}</td>
                     </tr>
                     <tr>
@@ -192,7 +204,7 @@
                 </table>
             </div>
             <div class="right">
-                <h2>DEDUCTION</h2>
+                <h4>DEDUCTION</h4>
                 <table>
                     <tr>
                         <th>Description</th>
@@ -248,7 +260,7 @@
 
         <div class="breakdown">
             <div class="left">
-                <h2>OTHER PAY</h2>
+                <h4>OTHER PAY</h4>
                 <table>
                     <tr>
                         <th>Description</th>
@@ -293,11 +305,11 @@
                 </table>
             </div>
             <div class="right">
-                <h2>TOTAL PAY</h2>
+                <h4>TOTAL PAY</h4>
                 <table>
                     <tr>
                         <td>GROSS PAY:</td>
-                        <td>₱{{ number_format($employee->grosspay , 2) }}</td>
+                        <td>₱{{ number_format($employee->gross_pay , 2) }}</td>
                     </tr>
                     <tr>
                         <td class="total">NET PAY:</td>
@@ -312,15 +324,7 @@
             <p>Thank you for your hard work!</p>
             <p>AETERNITAS ETERNAL BRIGHT</p>
         </div>
-
-        <!-- Export Buttons -->
-        {{-- <div class="no-print" style="text-align: center;">
-            <a href="{{ route('payslip.pdf', $employee->id) }}" class="btn btn-primary">Download PDF</a>
-            <button onclick="window.print();" class="btn btn-secondary">Print Payslip</button>
-        </div> --}}
     </div>
-  </body>
+</body>
 </html>
-
-
 

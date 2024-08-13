@@ -174,7 +174,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Employee</label>
+                                        <label for="name">Employee</label>
                                         <input class="form-control" type="text" name="name" id="name" value='' readonly>
                                     </div>
                                     @error('name')
@@ -186,7 +186,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Position</label>
+                                        <label for="position">Position</label>
                                         <input class="form-control" type="text" name="position" id="position" value='' readonly>
                                     </div>
                                     @error('position')
@@ -198,7 +198,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Employee ID</label>
+                                        <label for="employee_id">Employee ID</label>
                                         <input class="form-control" type="text" name="employee_id" id="employee_id" value='' readonly>
                                     </div>
                                     @error('employee_id')
@@ -210,7 +210,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Daily rate</label>
+                                        <label for="daily_rate">Daily rate</label>
                                         <input class="form-control" type="number" step="0.01" name="daily_rate" id="daily_rate" value=''>
                                     </div>
 
@@ -224,7 +224,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Bi Monthly</label>
+                                        <label for="bi_monthly">Bi Monthly</label>
                                         <input class="form-control" type="number" step="0.01" name="bi_monthly" id="bi_monthly" value='' readonly>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@
                              <div class='col-sm-6'>
                                 <h4 class="text-primary">Regular worked days</h4>
                                 <div class="form-group">
-                                    <label>No. of actual days worked</label>
+                                    <label for="regular_worked_days">No. of actual days worked</label>
                                     <input class="form-control" type="number" readonly name="regular_worked_days" id="regular_worked_days" value="13">
                                 </div>
                                 @error('regular_worked_days')
@@ -246,7 +246,7 @@
                                 @enderror
 
                                 <div class="form-group">
-                                    <label>Absences</label>
+                                    <label for="absences">Absences</label>
                                     <input class="form-control" type="number" name="absences" id="absences" value="0">
                                 </div>
                                 @error('absences')
@@ -256,7 +256,7 @@
                                 @enderror
 
                                 <div class="form-group">
-                                    <label>Monthly rate paid days</label>
+                                    <label for="month_rate_paid_days">Monthly rate paid days</label>
                                     <input class="form-control" type="text" name="month_rate_paid_days" readonly id="month_rate_paid_days" value="13">
                                 </div>
 
@@ -267,12 +267,12 @@
                          <div class="col-sm-6">
                                 <h4 class="text-primary">Legal worked days</h4>
                                  <div class="form-group">
-                                    <label>Legal Holiday Worked Days</label>
+                                    <label for="legal_worked_days">Legal Holiday Worked Days</label>
                                     <input class="form-control" type="text" name="legal_worked_days" id="legal_worked_days" value="">
                                  </div>
 
                                  <div class="form-group">
-                                    <label>Total amount</label>
+                                    <label for="lhd_amount">Total amount</label>
                                     <input class="form-control" type="text" name="lhd_amount" readonly id="lhd_amount" value="">
                                  </div>
 
@@ -287,17 +287,17 @@
                             <h4 class="text-primary">Special Worked Days</h4>
 
                             <div class="form-group">
-                                <label>SNH rate</label>
+                                <label for="special_rate">SNH rate</label>
                                 <input class="form-control" type="number" name="special_rate" id="special_rate" value="" readonly>
                             </div>
 
                             <div class="form-group">
-                                <label>Special Worked Days</label>
+                                <label for="special_worked_days">Special Worked Days</label>
                                 <input class="form-control" type="number" step="0.01" name="special_worked_days" id="special_worked_days" value="">
                             </div>
 
                             <div class="form-group">
-                                <label>Special work total amount</label>
+                                <label for="special_amount">Special work total amount</label>
                                 <input class="form-control" type="number" name="special_amount" id="special_amount" value="" readonly>
                             </div>
                          </div>
@@ -308,27 +308,27 @@
                             <h4 class="text-primary">Total amounts</h4>
 
                             <div class="form-group">
-                                <label>Basic Pay</label>
+                                <label for="basic_pay">Basic Pay</label>
                                 <input class="form-control" type="number" name="basic_pay" id="basic_pay" step="0.01" value="" readonly>
                             </div>
 
                             <div class="form-group">
-                                <label>Basic Pay + OT </label>
+                                <label for="basic_pay_plus_ot">Basic Pay + OT </label>
                                 <input class="form-control" type="number" name="basic_pay_plus_ot" id="basic_pay_plus_ot" step="0.01" value="" readonly>
                             </div>
 
                             <div class="form-group">
-                                <label>Total Worked Days</label>
+                                <label for="total_worked_days">Total Worked Days</label>
                                 <input type="number" id="total_worked_days" name="total_worked_days" value="" step="0.01" class="form-control" readonly>
                             </div>
 
                             <div class="form-group">
-                                <label>Regular work days amount</label>
+                                <label for="rwd_amount">Regular work days amount</label>
                                 <input class="form-control" type="number" name="rwd_amount" id="rwd_amount" step="0.01" value="" readonly>
                             </div>
 
                             <div class="form-group">
-                                 <label for="">Gross pay</label>
+                                 <label for="gross_pay">Gross pay</label>
                                  <input type="number" class="form-control" name="gross_pay" id="gross_pay" step="0.01" value="" readonly>
                             </div>
                          </div>

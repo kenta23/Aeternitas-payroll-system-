@@ -17,15 +17,13 @@ class PayrollController extends Controller
     /** view page salary */
     public function sallary()
     {
-        $employees = Employee::whereNotNull('netpay')->where('netpay','!=',0)->get();
+        $employees = Employee::whereNotNull('netpay')->where('netpay','!=',0)->paginate(15);
 
         return view('payroll.employeesalary',compact('employees'));
     }
 
     public function downloadPDF(int $id) {
         $employee = Employee::with('department')->findOrFail($id);
-        $data = ['employee' => $employee];
-
 
         $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
         $pdf->setOptions([
@@ -135,35 +133,27 @@ class PayrollController extends Controller
     public function updateRecord(Request $request)
     {
         DB::beginTransaction();
-        try{
-            $update = [
 
-                'id'      => $request->id,
-                'name'    => $request->name,
-                'salary'  => $request->salary,
-                'basic'   => $request->basic,
-                'da'      => $request->da,
-                'hra'     => $request->hra,
-                'conveyance' => $request->conveyance,
-                'allowance'  => $request->allowance,
-                'medical_allowance'  => $request->medical_allowance,
-                'tds'  => $request->tds,
-                'esi'  => $request->esi,
-                'pf'   => $request->pf,
-                'leave'     => $request->leave,
-                'prof_tax'  => $request->prof_tax,
-                'labour_welfare'  => $request->labour_welfare,
+        //get the date 1 month before this period
+        $endDate = $request->input('period');
+        $startDate = Carbon::parse($endDate)->subMonth()->format('Y-m-d');
+
+        try {
+            $updateValues = [
+                'start_date_payroll' => $startDate,
+                'end_date_payroll' => $endDate,
             ];
 
+            Employee::find($request->id)->update($updateValues);
 
-            StaffSalary::where('id',$request->id)->update($update);
             DB::commit();
-            Toastr::success('Salary updated successfully :)','Success');
+
+            Toastr::success('Successfully updated record', 'Success');
             return redirect()->back();
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('Salary update fail :)','Error');
+            Toastr::error('Failed to Update Record','Error');
             return redirect()->back();
         }
     }
