@@ -122,7 +122,7 @@
 <body>
     <div class="container">
         <div class="header">
-           {{-- <img src="{{ asset('assets/img/aeternitas logo with bg.png') }}" alt="Company Logo"> --}}
+           {{-- <img src="{{ asset('assets/img/aeternitas logo with bg.ico') }}" alt="Company Logo"> --}}
             <h1>Aeternitas</h1>
             <p>Blk. 44 Lot 5 & 6, Commonwealth Ave.,</p>
             <p>Brgy. Batasan Hills, Quezon City, Metro Manila, Philippines</p>
@@ -169,7 +169,7 @@
                     <tr>
                         <td>Days of Work</td>
                         <td></td>
-                        <td></td>
+                        <td> {{ $employee->actual_days_worked }}</td>
                     </tr>
                     <tr>
                         <td>Reg. days worked</td>

@@ -55,44 +55,50 @@ public function saveRecord(Request $request)
     //try {
         \Log::info('Request data:', $request->all());
 
+       try {
         $validatedData = $request->validate([
-         'first_name' => 'required|string|max:255',
-         'last_name' => 'required|string|max:255',
-         'email' => 'required|string|email|max:255|unique:employees,email',
-         'middle_name' => 'nullable|string|max:255',
-         'birth_date' => 'required|date',
-         'sex' => 'nullable|string',
-         'position' => 'required|string',
-         'department_id' => 'required|exists:departments,id',
-         'phone_number' => 'nullable|string|regex:/^9[0-9]{9}$/',
-         'current_address' => 'nullable|string',
-         'emergency_name' => 'required|string',
-         'emergency_phonenumber' => 'nullable|string|regex:/^9[0-9]{9}$/',
-         'emergency_relationship' => 'required|string',
-         'emergency_address' => 'required|string',
-        ]);
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:employees,email',
+            'middle_name' => 'nullable|string|max:255',
+            'birth_date' => 'required|date',
+            'sex' => 'nullable|string',
+            'position' => 'required|string',
+            'department_id' => 'required|exists:departments,id',
+            'phone_number' => 'nullable|string|regex:/^9[0-9]{9}$/',
+            'current_address' => 'nullable|string',
+            'emergency_name' => 'required|string',
+            'emergency_phonenumber' => 'nullable|string|regex:/^9[0-9]{9}$/',
+            'emergency_relationship' => 'required|string',
+            'emergency_address' => 'required|string',
+           ]);
 
-        // Generate custom ID
-        $latestEmployee = Employee::latest()->first();
-        $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
-        $newId = 'PPH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
+           // Generate custom ID
+           $latestEmployee = Employee::latest()->first();
+           $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
+           $newId = 'PPH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
 
 
-        $employee = new Employee;
-        $employee->fill($validatedData);
-        $employee->employee_id = $newId;
-        $employee->save();
+           $employee = new Employee;
+           $employee->fill($validatedData);
+           $employee->employee_id = $newId;
+           $employee->save();
 
-        Toastr::success('Successully Added employee', 'Success');
-        //return redirect()->route('all/employee/card');
+           Toastr::success('Successully Added employee', 'Success');
+           return redirect()->route('all/employee/card');
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true, 'data' => $employee]);
-        } else {
+         } else {
             return redirect()->route('all/employee/card')->with('success', 'Employee created successfully.');
         }
+       }
 
-}
+       catch(\Exception $e) {
+         Toastr::error('Failed to add employee', 'Error');
+         return redirect()->route('all/employee/card');
+       }
+  }
 
     /** view edit record */
     public function viewRecord($employee_id)
@@ -107,7 +113,7 @@ public function saveRecord(Request $request)
     }
 
     public function timekeeping() {
-        $employees = Employee::paginate(10);
+        $employees = Employee::where('per_month', '!=', 'null')->where('bi_monthly', '!=', 'null')->paginate(15);
 
         $position = PositionType::all();
 
@@ -135,7 +141,7 @@ public function saveRecord(Request $request)
         $response = [
             'id' => $employee->id,
             'employee_id' => $employee->employee_id,
-            'name' => "{$employee->first_name} {$employee->last_name}",
+            'name' => $employee->first_name . ' ' . $employee->last_name,
             'daily_rate'=>$employee->per_day,
             'position' => $employee->position,
             'regular_worked_days' => $employee->regular_worked_days,

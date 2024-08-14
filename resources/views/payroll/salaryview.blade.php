@@ -192,7 +192,7 @@
                 <tr>
                     <td>Days of Work</td>
                     <td></td>
-                    <td></td>
+                    <td>{{$employee->actual_days_worked}}</td>
                 </tr>
                 <tr>
                     <td>Reg. days worked</td>

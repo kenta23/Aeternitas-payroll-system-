@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -201,6 +202,10 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('payslip/mail/send/all', 'sendBulkMails')->middleware('auth');
     });
 
+    // ----------------------------- position  -----------------------------//
+
+    Route::middleware('auth')->resource('position', PositionController::class);
+
     // ------------------------- profile employee --------------------------//
     Route::controller(EmployeeController::class)->group(function () {
         Route::get('employee/profile/{user_id}', 'profileEmployee')->middleware('auth');
@@ -247,6 +252,9 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         //download pdf
         Route::get('payslip/download/{id}', 'downloadPDF')->middleware('auth');
         Route::get('payslip/example/1', 'payslipsample')->middleware('auth');
+
+        //payroll period
+        Route::get('form/payrollperiod', 'viewPayrollPeriod')->middleware('auth')->name('form/payrollperiod');
     });
 
     // ---------------------------- reports  ----------------------------//

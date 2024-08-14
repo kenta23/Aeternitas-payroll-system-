@@ -107,35 +107,15 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @if (!empty($companySettings->mobile_number))
-                                       <div class="input-group">
-                                         <span class="input-group-text" id="mobile-label">+63</span>
-                                         <input type="tel" class="form-control" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
-                                       </div>
-                                    @else
                                       <div class="input-group mb-3">
                                         <span class="input-group-text" id="mobile-label">+63</span>
-                                        <input type="tel" class="form-control" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
+                                        <input type="tel" class="form-control" value="{{ $companySettings->mobile_number }}" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
                                       </div>
-                                    @endif
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="row">
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Fax</label>
-                                    @if (!empty($companySettings->fax))
-                                    <input type="text" class="form-control" name="fax" value="{{ $companySettings->fax }}">
-                                    @else
-                                    <input type="text" class="form-control" name="fax" value="">
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">

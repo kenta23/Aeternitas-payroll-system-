@@ -163,8 +163,15 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                         <label for="">Payroll Period</label>
-                                         <input type="date" name="period" id="period" class="form-control" required>
+                                         <label for="">Start date payroll eriod</label>
+                                         <input type="date" name="start_date" id="start_date" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                         <label for="">End date payroll period</label>
+                                         <input type="date" name="end_date" id="end_date" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -231,6 +238,9 @@
                         $('#e_bi-monthly').val(response.bi_monthly);
                         $('#e_monthly-pay').val(response.monthly_pay);
                         $('#e_phone-number').val(response.phone_number);
+
+                        $('#start_date').val(response.start_date);
+                        $('#end_date').val(response.end_date);
                     }
                 });
             });

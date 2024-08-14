@@ -6,11 +6,14 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use DB;
 use App\Exports\SalaryExcel;
+use App\Models\PayrollperiodModel;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\StaffSalary;
 use Brian2694\Toastr\Facades\Toastr;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Carbon;
+
+
 
 class PayrollController extends Controller
 {
@@ -63,7 +66,8 @@ class PayrollController extends Controller
         'allowance'=>$employee->allowance,
         'monthly_pay'=>$employee->monthly_pay,
         'bi_monthly' => $employee->bi_monthly,
-
+        'start_date' => $employee->start_date_payroll,
+        'end_date' => $employee->end_date_payroll,
     ];
 
     return response()->json($response);
@@ -135,13 +139,13 @@ class PayrollController extends Controller
         DB::beginTransaction();
 
         //get the date 1 month before this period
-        $endDate = $request->input('period');
-        $startDate = Carbon::parse($endDate)->subMonth()->format('Y-m-d');
+       /* $endDate = $request->input('period');
+        $startDate = Carbon::parse($endDate)->subMonth()->format('Y-m-d'); */
 
         try {
             $updateValues = [
-                'start_date_payroll' => $startDate,
-                'end_date_payroll' => $endDate,
+                'start_date_payroll' => $request->start_date,
+                'end_date_payroll' => $request->end_date,
             ];
 
             Employee::find($request->id)->update($updateValues);
@@ -211,4 +215,13 @@ class PayrollController extends Controller
 
             return Excel::download(new SalaryExcel($user_id),'ReportDetailSalary'.'.xlsx');
     }
+
+    public function viewPayrollPeriod() {
+
+         $payrollperiod = PayrollperiodModel::all();
+
+         return view('payroll.payrollperiod', compact('payrollperiod'));
+    }
 }
+
+

@@ -21,9 +21,7 @@ return new class extends Migration
             $table->string('state_province')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('email')->nullable();
-            $table->string('phone_number')->nullable();
             $table->string('mobile_number')->nullable();
-            $table->string('fax')->nullable();
             $table->string('website_url')->nullable();
             $table->timestamps();
         });

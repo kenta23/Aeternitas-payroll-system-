@@ -17,9 +17,7 @@ class CompanySettings extends Model
         'state_province',
         'postal_code',
         'email',
-        'phone_number',
         'mobile_number',
-        'fax',
         'website_url',
     ];
 }
