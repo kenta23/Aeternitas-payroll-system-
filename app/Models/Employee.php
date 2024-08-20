@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
@@ -34,7 +36,6 @@ class Employee extends Model
         'start_date_payroll',
         'end_date_payroll',
         'absences',
-        'vlsl',
         'regular_worked_days',
         'rwd_amount',
         'legal_worked_days',
@@ -113,7 +114,7 @@ class Employee extends Model
     ];
 
 
-    public function attendances()
+    public function attendances(): HasMany
     {
         return $this->hasMany(AttendanceModel::class);
     }
@@ -121,5 +122,8 @@ class Employee extends Model
     public function department()
     {
         return $this->belongsTo(department::class);
+    }
+    public function leave(): HasOne {
+        return $this->hasOne(Leave::class);
     }
 }

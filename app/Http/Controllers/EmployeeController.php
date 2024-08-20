@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmployeeRequest;
 use App\Jobs\SendPayslipEmail;
 use App\Mail\PayslipMail;
+use App\Models\Leave;
 use Illuminate\Http\Request;
 use DB;
 use Brian2694\Toastr\Facades\Toastr;
@@ -121,7 +122,6 @@ public function saveRecord(Request $request)
     }
 
     public function timekeepingEdit($employee_id) {
-
         $employee = Employee::where('employee_id', $employee_id)->first();
 
         if (!$employee) {
@@ -138,6 +138,9 @@ public function saveRecord(Request $request)
         $computedOtAmount100 = round($computedOtRate100 * $employee->ot_hours100, 2);
 
 
+        //leave table
+        $leave = $employee->leave()->first();
+
         $response = [
             'id' => $employee->id,
             'employee_id' => $employee->employee_id,
@@ -153,6 +156,7 @@ public function saveRecord(Request $request)
             'special_rate'=>$employee->special_rate,
             'special_amount' => $employee->special_amount,
             'bi_monthly' => $employee->bi_monthly,
+            'rwd_amount' => $employee->rwd_amount,
 
             // Overtimes
             'ot_rate25' => $employee->ot_rate25,
@@ -187,6 +191,14 @@ public function saveRecord(Request $request)
 
             //leave
             'leave_amount' => $employee->leave_amount,
+            'credits_vl' => ($leave ? $leave->credits_vl : 0),
+            'used_vl' => ($leave ? $leave->used_vl : 0),
+            'balance_vl' => ($leave ? $leave->balance_vl : 0),
+            'credits_sl' => ($leave ? $leave->credits_sl : 0),
+            'used_sl' => ($leave ? $leave->used_sl : 0),
+            'balance_sl' => ($leave ? $leave->balance_sl : 0),
+            'total_credit_points' => ($leave ? $leave->total_credit_points : 0),
+            'total_used_vlsl' => ($leave ? $leave->total_used_vlsl : 0),
 
         ];
 
@@ -231,7 +243,8 @@ public function saveRecord(Request $request)
             'number_of_minutes_late' => $request->input('no_of_minutes'),
 
              //leave
-            'leave_amount' => $request->input('leave_amount'),
+             'leave_amount' => $request->input('leave_amount'),
+
              //night differential
              'nd_rate' => $request->input('nd_rate'),
              'nd_hours' => $request->input('nd_hours'),
@@ -248,8 +261,25 @@ public function saveRecord(Request $request)
 
         ];
 
-           $employee = Employee::find($employeeId);
+           //first update the employee
+           $leaveData = [
+            'credits_vl' => $request->input('credits_vl'),
+            'used_vl' => $request->input('used_vl'),
+            'balance_vl' => $request->input('balance_vl'),
+            'credits_sl' => $request->input('credits_sl'),
+            'used_sl' => $request->input('used_sl'),
+            'balance_sl' => $request->input('balance_sl'),
+            'total_credit_points' => $request->input('credit_points'),
+            'total_used_vlsl' => $request->input('used_credit'),
+           ];
+
+
+           $employee = Employee::findOrFail($employeeId);
+           $employee->leave()->updateOrCreate([], $leaveData);
+
+
            $employee->update($updateValues);
+
            DB::commit();
 
           Toastr::success('Record updated succesfully','Success');
@@ -259,9 +289,8 @@ public function saveRecord(Request $request)
        catch(\Exception $e) {
 
          DB::rollback();
-         Toastr::error('Failed to update please try again','Error');
-         return redirect()->back();
-
+         Toastr::error('Failed to update please try again' . $e->getMessage(),'Error');
+         return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
        }
     }
 

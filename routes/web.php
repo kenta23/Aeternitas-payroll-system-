@@ -2,7 +2,16 @@
 
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\Auth\RegisterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,7 +49,7 @@ Route::group(['middleware'=>'auth'],function()
 
 Auth::routes();
 
-Route::group(['namespace' => 'App\Http\Controllers\Auth'],function()
+Route::group(['namespace' => 'App\Http\Controllers\Auth'], function()
 {
     // -----------------------------login----------------------------------------//
     Route::controller(LoginController::class)->group(function () {
@@ -66,7 +75,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'],function()
         Route::get('reset-password/{token}', 'getPassword');
         Route::post('reset-password', 'updatePassword');
     });
-});
+})->middleware('auth');
 
 Route::group(['namespace' => 'App\Http\Controllers'],function()
 {
@@ -112,7 +121,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
     });
 
     // --------------------------------- job ---------------------------------//
-    Route::controller(JobController::class)->group(function () {
+   /* Route::controller(JobController::class)->group(function () {
         Route::get('form/job/list','jobList')->name('form/job/list');
         Route::get('form/job/view/{id}', 'jobView');
         Route::get('user/dashboard/index', 'userDashboard')->middleware('auth')->name('user/dashboard/index');
@@ -148,7 +157,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
         Route::post('jobtypestatus/update', 'jobTypeStatusUpdate')->name('jobtypestatus/update'); // update status job type ajax
 
-    });
+    }); */
 
     // ---------------------------- form employee ---------------------------//
     Route::controller(EmployeeController::class)->group(function () {
@@ -212,20 +221,22 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
     });
 
     // --------------------------- form holiday ---------------------------//
-    Route::controller(HolidayController::class)->group(function () {
+  /* Route::controller(HolidayController::class)->group(function () {
         Route::get('form/holidays/new', 'holiday')->middleware('auth')->name('form/holidays/new');
         Route::post('form/holidays/save', 'saveRecord')->middleware('auth')->name('form/holidays/save');
         Route::post('form/holidays/update', 'updateRecord')->middleware('auth')->name('form/holidays/update');
-    });
+    }); */
 
     // -------------------------- form leaves ----------------------------//
     Route::controller(LeavesController::class)->group(function () {
-        Route::get('form/leaves/new', 'leaves')->middleware('auth')->name('form/leaves/new');
+       /* Route::get('form/leaves/new', 'leaves')->middleware('auth')->name('form/leaves/new');
         Route::get('form/leavesemployee/new', 'leavesEmployee')->middleware('auth')->name('form/leavesemployee/new');
         Route::post('form/leaves/save', 'saveRecord')->middleware('auth')->name('form/leaves/save');
         Route::post('form/leaves/edit', 'editRecordLeave')->middleware('auth')->name('form/leaves/edit');
-        Route::post('form/leaves/edit/delete','deleteLeave')->middleware('auth')->name('form/leaves/edit/delete');
-    });
+        Route::post('form/leaves/edit/delete','deleteLeave')->middleware('auth')->name('form/leaves/edit/delete'); */
+
+        Route::get('leave/employee/list', 'viewLeave')->name('leave.index'); //view for leave page
+    })->middleware('auth');
 
     // ------------------------ form attendance  -------------------------//
     Route::controller(LeavesController::class)->group(function () {
@@ -255,20 +266,24 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
         //payroll period
         Route::get('form/payrollperiod', 'viewPayrollPeriod')->middleware('auth')->name('form/payrollperiod');
+
+        //debit memo
+        Route::get('payroll/debitmemo', 'viewDebitMemo')->middleware('auth')->name('debitmemo');
+        Route::get('payroll/getperiod', 'getPeriod')->middleware('auth')->name('debitmemo.index');
     });
 
     // ---------------------------- reports  ----------------------------//
-    Route::controller(ExpenseReportsController::class)->group(function () {
+   /* Route::controller(ExpenseReportsController::class)->group(function () {
         Route::get('form/expense/reports/page', 'index')->middleware('auth')->name('form/expense/reports/page');
         Route::get('form/invoice/reports/page', 'invoiceReports')->middleware('auth')->name('form/invoice/reports/page');
         Route::get('form/daily/reports/page', 'dailyReport')->middleware('auth')->name('form/daily/reports/page');
         Route::get('form/leave/reports/page','leaveReport')->middleware('auth')->name('form/leave/reports/page');
         Route::get('form/payments/reports/page','paymentsReportIndex')->middleware('auth')->name('form/payments/reports/page');
         Route::get('form/employee/reports/page','employeeReportsIndex')->middleware('auth')->name('form/employee/reports/page');
-    });
+    }); */
 
     // --------------------------- performance  -------------------------//
-    Route::controller(PerformanceController::class)->group(function () {
+   /* Route::controller(PerformanceController::class)->group(function () {
         Route::get('form/performance/indicator/page','index')->middleware('auth')->name('form/performance/indicator/page');
         Route::get('form/performance/page', 'performance')->middleware('auth')->name('form/performance/page');
         Route::get('form/performance/appraisal/page', 'performanceAppraisal')->middleware('auth')->name('form/performance/appraisal/page');
@@ -278,7 +293,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::post('form/performance/appraisal/save', 'saveRecordAppraisal')->middleware('auth')->name('form/performance/appraisal/save');
         Route::post('form/performance/appraisal/update', 'updateAppraisal')->middleware('auth')->name('form/performance/appraisal/update');
         Route::post('form/performance/appraisal/delete', 'deleteAppraisal')->middleware('auth')->name('form/performance/appraisal/delete');
-    });
+    }); */
 
     // --------------------------- training  ----------------------------//
     Route::controller(TrainingController::class)->group(function () {
@@ -340,4 +355,4 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
     Route::controller(BankInformationController::class)->group(function () {
         Route::post('bank/information/save', 'saveRecord')->middleware('auth')->name('bank/information/save');
     });
-});
+})->middleware('auth');

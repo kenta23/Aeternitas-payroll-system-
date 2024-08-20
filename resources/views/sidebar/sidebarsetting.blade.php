@@ -15,7 +15,7 @@
                 {{-- <li><a href="invoice-settings.html"><i class="la la-pencil-square"></i><span>Invoice Settings</span></a></li> --}}
                {{-- <li class="{{set_active(['salary/settings/page'])}}"><a href="{{ route('salary/settings/page') }}"><i class="la la-money"></i><span>Salary Settings</span></a></li> --}}
                {{--<li><a href="notifications-settings.html"><i class="la la-globe"></i><span>Notifications</span></a></li> --}}
-                <li class="{{set_active(['rchange/password'])}}"><a href="{{ route('change/password') }}"><i class="la la-lock"></i><span>Change Password</span></a></li>
+                <li class="{{set_active(['change/password'])}}"><a href="{{ route('change/password') }}"><i class="la la-lock"></i><span>Change Password</span></a></li>
                {{-- <li><a href="leave-type.html"><i class="la la-cogs"></i><span>Leave Type</span></a></li>
                 <li><a href="toxbox-setting.html"><i class="la la-comment"></i><span>ToxBox Settings</span></a></li>
                 <li><a href="cron-setting.html"><i class="la la-rocket"></i><span>Cron Settings</span></a></li> --}}

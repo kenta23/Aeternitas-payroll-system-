@@ -222,6 +222,46 @@ class PayrollController extends Controller
 
          return view('payroll.payrollperiod', compact('payrollperiod'));
     }
+
+    public function viewDebitMemo() {
+
+         $employees = Employee::all();
+
+         $employeesPayroll = Employee::select('start_date_payroll','end_date_payroll')
+            ->where('start_date_payroll', '!=', null)->where('end_date_payroll', '!=', null)
+            ->get();
+
+         return view('payroll.debitmemo', compact('employees', 'employeesPayroll'));
+    }
+    public function getPeriod (Request $request) {
+        if ($request->has('payrollperiod')) {
+
+            $selectedPeriod = $request->get('payrollperiod');
+
+            // Ensure both startDate and endDate are set before proceeding
+            if ($selectedPeriod) {
+                $explodeSelectedPeriod = explode(' - ', $selectedPeriod);
+                $startDate = $explodeSelectedPeriod[0];
+                $endDate = $explodeSelectedPeriod[1];
+
+               /* $employees = Employee::whereBetween('start_date_period', [$startDate, $endDate])
+                    ->orWhereBetween('end_date_period', [$startDate, $endDate])
+                    ->get(); */
+
+                $employees = Employee::where('start_date_payroll', $startDate)->where('end_date_payroll', $endDate)->get();
+
+                $employeesPayroll = Employee::select('start_date_payroll','end_date_payroll')
+                ->where('start_date_payroll', '!=', null)->where('end_date_payroll', '!=', null)
+                ->get();
+
+                return view('payroll.debitmemo', compact('employees', 'employeesPayroll', 'selectedPeriod'));
+               //return response()->json(['employees' => $employees]);
+            }
+        }
+
+        Toastr::error('Error Fetching employees', 'Error');
+        return redirect()->back()->with('error', 'Invalid payroll period.');
+    }
 }
 
 

@@ -41,7 +41,7 @@
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['all/employee/list','all/employee/card'])}} {{ request()->is('all/employee/view/edit/*','employee/profile/*') ? 'active' : '' }}" href="{{ route('all/employee/card') }}">All Employees</a></li>
-                        <li><a class="{{set_active(['form/holidays/new'])}}" href="{{ route('form/holidays/new') }}">Holidays</a></li>
+                       {{-- <li><a class="{{set_active(['form/holidays/new'])}}" href="{{ route('form/holidays/new') }}">Holidays</a></li>  --}}
                       {{--<li><a class="{{set_active(['form/leaves/new'])}}" href="{{ route('form/leaves/new') }}">Leaves (Admin)
                             <span class="badge badge-pill bg-primary float-right">1</span></a>
                         </li> --}}
@@ -53,6 +53,7 @@
                         <li><a class="{{set_active(['employees/contributions'])}}" href="{{ route('employees/contributions') }}">Contributions and Taxes</a></li>
                         <li><a class="{{set_active(['form/departments/page'])}}" href="{{ route('form/departments/page') }}">Departments</a></li>
                         <li><a class="{{set_active(['position.index'])}}" href="{{ route('position.index') }}">Positions</a></li>
+                        <li><a href="{{ route('leave.index') }}" class="{{ set_active(['']) }}">Leave</a></li>
                        {{--<li><a class="{{set_active(['form/designations/page'])}}" href="{{ route('form/designations/page') }}">Designations</a></li>
                         <li><a class="{{set_active(['form/timesheet/page'])}}" href="{{ route('form/timesheet/page') }}">Timesheet</a></li>
                         <li><a class="{{set_active(['form/shiftscheduling/page'])}}" href="{{ route('form/shiftscheduling/page') }}">Shift & Schedule</a></li>
@@ -79,6 +80,7 @@
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/sallary/page'])}}" href="{{ route('form/sallary/page') }}"> Employee's Payroll </a></li>
                         <li><a class="{{set_active(['form/payrollperiod'])}}" href="{{ route('form/payrollperiod') }}"> Payroll period</a></li>
+                        <li><a class="{{set_active(['debitmemo'])}}" href="{{ route('debitmemo') }}">Debit Memo</a></li>
                         {{--<li><a href="{{ route('form/sallary/page') }}"> Employee's Summary </a></li>
                         <li><a href="{{ route('form/sallary/page') }}"> Payslip </a></li>
                         <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payroll Items </a></li>--}}

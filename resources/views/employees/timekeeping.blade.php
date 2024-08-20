@@ -174,10 +174,10 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Employee</label>
-                                        <input class="form-control" type="text" name="name" id="name" value='' readonly>
+                                        <label for="e_name">Employee</label>
+                                        <input class="form-control" type="text" name="name" id="e_name" value='' readonly>
                                     </div>
-                                    @error('name')
+                                    @error('e_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -467,14 +467,14 @@
 
                                   <div class="col-sm-6">
                                        <div class="form-group">
-                                         <label for="credit_points">Credit Points</label>
-                                         <input type="number" class="form-control" id="credit_points" name="credit_points" step="0.01">
+                                         <label for="credit_points">Total Credit Points</label>
+                                         <input type="number" class="form-control" id="credit_points" name="credit_points" step="0.01" readonly>
                                        </div>
                                   </div>
 
                                   <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="used_credit">Used (current cut off)</label>
+                                        <label for="used_credit">Total Used</label>
                                         <input type="number" class="form-control" readonly id="used_credit" name="used_credit" step="0.01">
                                     </div>
                                   </div>
@@ -485,13 +485,54 @@
                                         <input type="number" class="form-control" id="leave_amount" name="leave_amount" step="0.01" readonly>
                                     </div>
                              </div>
-
-                             <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="leave_amount">Vacation Leave/Sick Leave <span class="text-primary italic">(Input per day, 0.50 = Half Day)</span></label>
-                                    <input type="number" class="form-control" id="vlsl" name="vlsl" step="0.01">
-                                </div>
                          </div>
+
+
+
+
+                      <div class="row">
+                             <!-- VL -->
+                             <div class="col-sm-6">
+                                <h4 class="text-primary">VL</h4>
+
+                               <div class="form-group">
+                                   <label for="credits_vl">Credits</label>
+                                   <input type="number" class="form-control" id="credits_vl" name="credits_vl" step="0.01">
+                               </div>
+
+
+                               <div class="form-group">
+                                   <label for="used_vl">Used <span class="text-primary italic">(Input per day, 0.50 = Half Day)</span></label>
+                                   <input type="number" class="form-control" id="used_vl" name="used_vl" step="0.01">
+                               </div>
+
+                               <div class="form-group">
+                                   <label for="balance_vl">Balance</label>
+                                   <input type="number" class="form-control" id="balance_vl" name="balance_vl" step="0.01" readonly>
+                               </div>
+                             </div>
+
+
+                        <!--SICK LEAVE -->
+                          <div class="col-sm-6">
+                              <h4 class="text-primary">SL</h4>
+                              <div class="form-group">
+                                <label for="credits_sl">Credits</label>
+                                <input type="number" class="form-control" id="credits_sl" name="credits_sl" step="0.01">
+                              </div>
+
+                              <div class="form-group">
+                                  <label for="used_sl">Used <span class="text-primary italic">(Input per day, 0.50 = Half Day)</span></label>
+                                  <input type="number" class="form-control" id="used_sl" name="used_sl" step="0.01">
+                              </div>
+
+                              <div class="form-group">
+                                  <label for="balance_sl">Balance</label>
+                                  <input type="number" class="form-control" id="balance_sl" name="balance_sl" step="0.01" readonly>
+                              </div>
+                         </div>
+
+                        <!--SICK LEAVE -->
                         </div>
                    </div>
 
@@ -548,7 +589,6 @@
   @section('script')
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
    <script>
       $(document).ready(function() {
           $(document).on('click', '.employeeInfo', function() {
@@ -556,9 +596,8 @@
 
               axios.get('{{ url("employee/timekeeping/edit") }}/' + employeeId).then((res) => {
                       const data = res.data;
-
                       $('#id').val(data.id);
-                      $('#name').val(data.name);
+                      $('#e_name').val(data.name);
                       $('#employee_id').val(data.employee_id);
                       $('#daily_rate').val(data.daily_rate);
                       $('#position').val(data.position);
@@ -571,6 +610,7 @@
                       $('#special_rate').val(data.special_rate);
                       $('#special_amount').val(data.special_amount);
                       $('#special_worked_days').val(data.special_worked_days);
+                      $('#rwd_amount').val(data.rwd_amount);
 
                       //overtime
                       $('#ot_rate25').val(data.ot_rate25);
@@ -609,6 +649,15 @@
                       //leave
                       $('#leave_dailyrate').val(data.daily_rate);
                       $('#leave_amount').val(data.leave_amount);
+
+                      $('#credits_vl').val(data.credits_vl);
+                      $('#credits_sl').val(data.credits_sl);
+                      $('#used_vl').val(data.used_vl);
+                      $('#used_sl').val(data.used_sl);
+                      $('#balance_vl').val(data.balance_vl);
+                      $('#balance_sl').val(data.balance_sl);
+                      $('#credit_points').val(data.total_credit_points);
+                      $('#used_credit').val(data.total_used_vlsl);
               }).catch((error) => console.error('There was an error fetching the data!', error) );
           });
       });
@@ -673,10 +722,19 @@
      const ndAmount = document.getElementById('nd_amount');
 
      //LEAVE
-     const usedCurrentCutOff = document.getElementById('used_credit');
+     const usedCurrentCutOff = document.getElementById('used_credit'); //subtract to credit_points
      const leaveAmount = document.getElementById('leave_amount');
      const leaveDailyRate = document.getElementById('leave_dailyrate');
-     const vlsl = document.getElementById('vlsl');
+
+     const vacationLeave = document.getElementById('used_vl');
+     const sickLeave = document.getElementById('used_sl');
+     const slCreditPoints = document.getElementById('credits_sl');
+     const vlCreditPoints = document.getElementById('credits_vl');
+     const SLbalance = document.getElementById('balance_sl');
+     const VLbalance = document.getElementById('balance_vl');
+     const totalCredit = document.getElementById('credit_points');
+     const totalUsed = document.getElementById('used_credit');
+
 
      //Lates
      const lateAmount = document.getElementById('late_amount');
@@ -687,21 +745,74 @@
      //Calculate Leave
      function calculateLeaveAmount() {
         const parsedDailyRateInLeave = parseFloat(leaveDailyRate.value) || 0;
-        const parsedVlsl = parseFloat(vlsl.value) || 0;
-        usedCurrentCutOff.value = parsedVlsl.toFixed(2); // Update usedCurrentCutOff based on vlsl input
-
+        const parsedVleave = parseFloat(vacationLeave.value) || 0;
+        const parsedSleave = parseFloat(sickLeave.value) || 0;
+        const parsedSLcredits = parseFloat(slCreditPoints.value) || 0;
+        const parsedVLcredits = parseFloat(vlCreditPoints.value) || 0;
+        const parsedSLbalance = parseFloat(SLbalance.value) || 0;
+        const parsedVLbalance = parseFloat(VLbalance.value) || 0;
         const parsedUsedCurrentCutOff = parseFloat(usedCurrentCutOff.value) || 0;
+        const parsedtotalCredit = parseFloat(totalCredit.value) || 0;
 
-         if (parsedDailyRateInLeave && parsedVlsl) {
-             const leaveAmountVal = parsedDailyRateInLeave * parsedUsedCurrentCutOff;
-             leaveAmount.value = leaveAmountVal.toFixed(2);
+
+        if (parsedSLcredits === 0 || isNaN(parsedSLcredits)) {
+            //disable sick leave input
+            sickLeave.disabled = true;
+            //reset sick leave input
+            SLbalance.value = '0.00';
+
+        } else {
+            sickLeave.disabled = false;
+
+            if(parsedSleave > parsedSLcredits ) {
+                const difference = parsedSleave - parsedSLcredits;
+                totalCredit.value = (parsedtotalCredit + difference).toFixed(2);
+                SLbalance.value = '0.00';
+            }
+           else {
+             const TotalSLbalance = parsedSLcredits - parsedSleave;
+             SLbalance.value = TotalSLbalance.toFixed(2);
+           }
+
+        }
+
+        if (parsedVLcredits === 0 || isNaN(parsedVLcredits)) {
+            //disable vacation leave input
+            vacationLeave.disabled = true;
+            //reset vacation leave input
+            VLbalance.value = '0.00';
+
+        } else {
+            vacationLeave.disabled = false;
+
+            if(parsedVleave > parsedVLcredits ) {
+                const difference = parsedVleave - parsedVLcredits;
+                totalCredit.value = (parsedtotalCredit + difference).toFixed(2);
+                VLbalance.value = '0.00';
+            }
+           else {
+             const TotalVLBalance = parsedVLcredits - parsedVleave;
+             VLbalance.value = TotalVLBalance.toFixed(2);
+           }
+        }
+
+        if (parsedDailyRateInLeave && usedCurrentCutOff) {
+            const leaveAmountVal = parsedDailyRateInLeave * (parsedSleave + parsedVleave);
+            leaveAmount.value = leaveAmountVal.toFixed(2);
         } else {
             leaveAmount.value = '0.00';
         }
 
+        if(slCreditPoints && vlCreditPoints) {
+             const totalUsedCredits = parsedSLcredits + parsedVLcredits;
+             totalCredit.value = totalUsedCredits.toFixed(2);
+        }
+        if(sickLeave || vacationLeave) {
+            usedCurrentCutOff.value = (parsedSleave + parsedVleave).toFixed(2);
+        }
+
         calculateRwdAmount();
         calculateGrossPay();
-        console.log("VLSL", parsedVlsl)
     }
 
     //calculate Basic Pay
@@ -991,7 +1102,11 @@
     meal.addEventListener('input', calculateGrossPay);
     allowance.addEventListener('input', calculateGrossPay);
 
-    vlsl.addEventListener('input', calculateLeaveAmount);
+    vacationLeave.addEventListener('input', calculateLeaveAmount);
+    sickLeave.addEventListener('input', calculateLeaveAmount);
+
+    vlCreditPoints.addEventListener('input', calculateLeaveAmount);
+    slCreditPoints.addEventListener('input', calculateLeaveAmount);
 
   </script>
  @endsection

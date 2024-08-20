@@ -43,7 +43,7 @@ class CreateEmployeesTable extends Migration
             $table->date('end_date_payroll')->nullable();
 
 
-            $table->decimal('vlsl', 10, 2)->nullable();
+            //TOTAL AMOUNTS
             $table->decimal('regular_worked_days', 10, 2)->default(13);
             $table->decimal('rwd_amount', 10, 2)->default(0);
             $table->decimal('legal_worked_days', 10, 2)->default(0);
@@ -83,6 +83,7 @@ class CreateEmployeesTable extends Migration
             $table->decimal('late_amount', 10, 2)->default(0);
             $table->decimal('missing_charges', 10, 2)->default(0);
             $table->decimal('total_charges', 10, 2)->default(0);
+
 
             //allowances
             $table->decimal('half_allowance', 10, 2)->default(0);

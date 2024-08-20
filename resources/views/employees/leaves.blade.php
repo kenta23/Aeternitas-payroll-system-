@@ -1,5 +1,27 @@
 
 @extends('layouts.master')
+
+@section('style');
+<style>
+    .table th, .table td {
+        padding: 10px 11px;
+        vertical-align: top;
+    }
+
+
+    .total {
+         font-weight: bold;
+    }
+   .total + td,
+   .total ~ td {
+     font-weight: bold;
+   }
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+@endsection
 @section('content')
     <!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -20,6 +42,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Leave Statistics -->
             <div class="row">
                 <div class="col-md-3">
@@ -107,64 +130,108 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 datatable">
+                        <table class="table table-striped custom-table mb-0 dataTable">
                             <thead>
                                 <tr>
-                                    <th>Employee</th>
-                                    <th>Leave Type</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>No of Days</th>
-                                    <th>Reason</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-right">Actions</th>
+                                    <th colspan="2"></th>
+                                    <th class="tg-gpd3" colspan="6">Total&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="tg-gpd3" colspan="3">Combined</th>
                                 </tr>
                             </thead>
 
-                            <tbody>
-                                @if(!empty($leaves))
-                                    @foreach ($leaves as $items )
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}" alt="{{ $items->name }}"></a>
-                                                    <a href="#">{{ $items->name }}<span>{{ $items->position }}</span></a>
-                                                </h2>
-                                            </td>
-                                            <td hidden class="id">{{ $items->id }}</td>
-                                            <td class="leave_type">{{$items->leave_type}}</td>
-                                            <td hidden class="from_date">{{ $items->from_date }}</td>
-                                            <td>{{date('d F, Y',strtotime($items->from_date)) }}</td>
-                                            <td hidden class="to_date">{{$items->to_date}}</td>
-                                            <td>{{date('d F, Y',strtotime($items->to_date)) }}</td>
-                                            <td class="day">{{$items->day}} Day</td>
-                                            <td class="leave_reason">{{$items->leave_reason}}</td>
-                                            <td class="text-center">
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa fa-dot-circle-o text-purple"></i> New
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-purple"></i> New</a>
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-info"></i> Pending</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item leaveUpdate" data-toggle="modal" data-id="'.$items->id.'" data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item leaveDelete" href="#" data-toggle="modal" data-target="#delete_approve"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
+                       @if (!@empty($employees))
+                          <tbody>
+                            <tr>
+                                <td class="tg-j3py" colspan="2"></td>
+                                <td class=" text-center" colspan="3">SL</td>
+                                <td class=" text-center" colspan="3">VL</td>
+                                <td class="text-center" colspan="3">SL/VL</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-0pky">Employee ID</td>
+                                <td class="tg-0pky">Employee Name</td>
+                                <td class="tg-gpd3">Credits</td>
+                                <td class="tg-1rm3">Used</td>
+                                <td class="tg-tj1c">Balance</td>
+
+                                <td class="tg-c3ow">Credits</td>
+                                <td class="tg-dvpl">Used</td>
+                                <td class="tg-c3ow">Balance</td>
+
+                                <td class="tg-gpd3">Credits</td>
+                                <td class="tg-1rm3">Used</td>
+                                <td class="tg-1rm3">Balance</td>
+                            </tr>
+
+                         @php
+                            $total_credits_sl = 0;
+                            $total_used_sl = 0;
+                            $total_balance_sl = 0;
+                            $total_credits_vl = 0;
+                            $total_used_vl = 0;
+                            $total_balance_vl = 0;
+                            $total_total_credit_points = 0;
+                            $total_total_used_vlsl = 0;
+                            $total_total_balance_vlsl = 0;
+                         @endphp
+
+                         @foreach ($employees as $emp)
+                            <tr>
+                                <td class="tg-phtq">{{ $emp->employee_id }}</td>
+                                <td class="id" hidden> {{ $emp->id }}</td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
+                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
+                                    </h2>
+                                </td>
+                                <td class="tg-gpd3">{{ $emp->leave->credits_sl }}</td>
+                                <td class="tg-ofsl">{{ $emp->leave->used_sl }}</td>
+                                <td class="tg-tj1c">{{ $emp->leave->balance_sl }}</td>
+
+                                <td class="tg-svo0">{{ $emp->leave->credits_vl }}</td>
+                                <td class="tg-ydyv">{{ $emp->leave->used_vl }}</td>
+                                <td class="tg-svo0">{{ $emp->leave->balance_vl }}</td>
+
+                               @php
+                                  $totalBalance = $emp->leave->balance_sl + $emp->leave->balance_vl;
+                               @endphp
+
+                                     <td class="tg-gpd3">{{ $emp->leave->total_credit_points }}</td>
+                                     <td class="tg-ofsl">{{ $emp->leave->total_used_vlsl }}</td>
+                                     <td class="tg-ofsl">{{ $totalBalance }}</td>
+                            </tr>
+
+                            @php
+                                $total_credits_sl += $emp->leave->credits_sl;
+                                $total_used_sl += $emp->leave->used_sl;
+                                $total_balance_sl += $emp->leave->balance_sl;
+
+                                $total_credits_vl += $emp->leave->credits_vl;
+                                $total_used_vl += $emp->leave->used_vl;
+                                $total_balance_vl += $emp->leave->balance_vl;
+
+                                $total_total_credit_points += $emp->leave->total_credit_points;
+                                $total_total_used_vlsl += $emp->leave->total_used_vlsl;
+                                $total_total_balance_vlsl += $totalBalance;
+                            @endphp
+                           @endforeach
+                            <tr>
+                                <td class="total">Total</td>
+                                <td class=""></td>
+                                <td class="">{{ $total_credits_sl }}</td>
+                                <td class="">{{ $total_used_sl }}</td>
+                                <td class="">{{ $total_balance_sl }}</td>
+                                <td class="">{{ $total_credits_vl }}</td>
+                                <td class="">{{ $total_used_vl }}</td>
+                                <td class="">{{ $total_balance_vl }}</td>
+                                <td class="">{{ $total_total_credit_points }}</td>
+                                <td class="">{{ $total_total_used_vlsl }}</td>
+                                <td class="">{{ $total_total_balance_vlsl }}</td>
+                            </tr>
+                        </tbody>
+                       @endif
+
                         </table>
                     </div>
                 </div>
@@ -183,7 +250,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('form/leaves/save') }}" method="POST">
+                        <form action="" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label>Leave Type <span class="text-danger">*</span></label>
@@ -232,7 +299,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('form/leaves/edit') }}" method="POST">
+                        <form action="" method="POST">
                             @csrf
                             <input type="hidden" id="e_id" name="id" value="">
                             <div class="form-group">
@@ -309,7 +376,7 @@
                             <p>Are you sure want to delete this leave?</p>
                         </div>
                         <div class="modal-btn delete-action">
-                            <form action="{{ route('form/leaves/edit/delete') }}" method="POST">
+                            <form action="" method="POST">
                                 @csrf
                                 <input type="hidden" name="id" class="e_id" value="">
                                 <div class="row">

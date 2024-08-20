@@ -7,19 +7,27 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Models\LeavesAdmin;
 use DB;
 use DateTime;
-use App\Http\Controllers\Employee;
 use App\Models\AttendanceModel;
-use App\Models\Employee as ModelsEmployee;
 use Carbon\Carbon;
+use App\Models\Employee;
+
 
 class LeavesController extends Controller
 {
+
     /** leaves page */
-    public function leaves()
+   /* public function leaves()
     {
         $leaves = DB::table('leaves_admins')->join('users', 'users.user_id','leaves_admins.user_id')->select('leaves_admins.*', 'users.position','users.name','users.avatar')->get();
         return view('employees.leaves',compact('leaves'));
-    }
+    } */
+
+     public function viewLeave() {
+         $employees = Employee::with('leave')->get();
+
+
+         return view('employees.leaves', compact('employees'));
+     }
 
     /** save record */
     public function saveRecord(Request $request)
