@@ -80,7 +80,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item userSalary" href="#" data-toggle="modal" data-target="#edit_salary" data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item text-primary" href="{{ url('payslip/mali/send/'.$emp->id)}}"><i class="fa fa-envelope m-r-5"></i>Send Payslip</a>
+                                                <a class="dropdown-item text-primary"  href="{{ url('payslip/mali/send/'.$emp->id)}}"><i class="fa fa-envelope m-r-5"></i>Send Payslip</a>
                                             </div>
                                         </div>
                                     </td>

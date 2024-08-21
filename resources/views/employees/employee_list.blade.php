@@ -1,5 +1,5 @@
 @foreach ($employees as $emp )
-<div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+<div class="col-md-4 mt-4 col-sm-6 col-12 col-lg-4 col-xl-3">
     <div class="profile-widget">
         <div class="profile-img">
             <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar">
