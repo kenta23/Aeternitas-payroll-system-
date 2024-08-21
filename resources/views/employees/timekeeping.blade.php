@@ -94,7 +94,7 @@
 
                                 <td>
                                     <h2 class="table-avatar">
-                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
+                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="employee avatar" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
                                         <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                     </h2>
                                 </td>

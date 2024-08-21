@@ -85,7 +85,7 @@
 
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
+                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="employee avatar" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
                                             <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                         </h2>
                                     </td>
@@ -101,7 +101,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item employeeInfo" href=" {{ url('employees/edit/contributions/'.$emp->employee_id) }}"  data-id="{{ $emp->employee_id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" href="{{ url('') }}" data-id="{{ $emp->employee_id }}">View Slip</a>
+                                                <a class="dropdown-item" target="_blank"  href="{{ url('form/salary/view/'.$emp->id) }}" data-id="{{ $emp->employee_id }}">View Slip</a>
                                             </div>
                                         </div>
                                     </td>

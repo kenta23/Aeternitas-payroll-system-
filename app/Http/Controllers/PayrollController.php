@@ -225,14 +225,15 @@ class PayrollController extends Controller
 
     public function viewDebitMemo() {
 
-         $employees = Employee::all();
+        $employees = Employee::all();
+        $selectedPeriod = '';
 
-         $employeesPayroll = Employee::select('start_date_payroll','end_date_payroll')
-            ->where('start_date_payroll', '!=', null)->where('end_date_payroll', '!=', null)
-            ->get();
+        $employeesPayroll = Employee::select('start_date_payroll','end_date_payroll')
+           ->where('start_date_payroll', '!=', null)->where('end_date_payroll', '!=', null)
+           ->get();
 
-         return view('payroll.debitmemo', compact('employees', 'employeesPayroll'));
-    }
+        return view('payroll.debitmemo', compact('employees', 'employeesPayroll', 'selectedPeriod'));
+   }
     public function getPeriod (Request $request) {
         if ($request->has('payrollperiod')) {
 

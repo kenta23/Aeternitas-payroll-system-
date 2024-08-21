@@ -462,7 +462,7 @@ public function saveRecord(Request $request)
     }
 
     /** employee search */
-    public function employeeSearch(Request $request)
+    public function employeeSearch(Request $request, $viewName)
     {
         $query = Employee::query();
         $position = positionType::all();
@@ -488,103 +488,31 @@ public function saveRecord(Request $request)
 
         $employees = $query->get();
 
-        return view('employees.allemployeecard', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
+        return view($viewName, ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
     }
 
 
     public function employeeTimekeepingSearch(Request $request)
     {
-        $query = Employee::query();
-        $position = positionType::all();
-        $departments = department::all();
-
-        if ($request->filled('employee_id')) {
-            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
-        }
-
-        if ($request->filled('name')) {
-            $fullname = trim($request->name);
-            $parts = explode(' ', $fullname);
-            $firstname = $parts[0];
-            $lastname = isset($parts[1]) ? $parts[1] : '';
-
-            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
-                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
-        }
-
-        if ($request->filled('position')) {
-            $query->where('position', 'LIKE', '%' . $request->position . '%');
-        }
-
-        $employees = $query->get();
-
-        return view('employees.timekeeping', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
+       return $this->employeeSearch($request, 'employees.timekeeping');
     }
 
 
     public function employeeTaxSearch(Request $request)
     {
-        $query = Employee::query();
-        $position = positionType::all();
-        $departments = department::all();
-
-        if ($request->filled('employee_id')) {
-            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
-        }
-
-        if ($request->filled('name')) {
-            $fullname = trim($request->name);
-            $parts = explode(' ', $fullname);
-            $firstname = $parts[0];
-            $lastname = isset($parts[1]) ? $parts[1] : '';
-
-            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
-                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
-        }
-
-        if ($request->filled('position')) {
-            $query->where('position', 'LIKE', '%' . $request->position . '%');
-        }
-
-        $employees = $query->get();
-
-        return view('employees.contributions', ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
+        return $this->employeeSearch($request, 'employees.contributions');
     }
 
 
     /** list search employee */
     public function employeeListSearch(Request $request)
     {
-        $query = Employee::query();
-        $position = positionType::all();
-        $departments = department::all();
-
-        if ($request->filled('employee_id')) {
-            $query->where('employee_id', 'LIKE', '%' . $request->employee_id . '%');
-        }
-
-        if ($request->filled('name')) {
-            $fullname = trim($request->name);
-            $parts = explode(' ', $fullname);
-            $firstname = $parts[0];
-            $lastname = isset($parts[1]) ? $parts[1] : '';
-
-            $query->where('first_name', 'LIKE', '%' . $firstname . '%')
-                  ->where('last_name', 'LIKE', '%' . $lastname . '%');
-        }
-
-        if ($request->filled('position')) {
-            $query->where('position', 'LIKE', '%' . $request->position . '%');
-        }
-
-        $employees = $query->get();
-
-        // Return the rendered view as JSON for AJAX
-        //$html = view('employees.employee_list', ['employees' => $employees])->render();
-
-        return view('employees.employeelist',compact('employees','position','departments'));
+        return $this->employeeSearch($request, 'employees.employeelist');
     }
 
+    public function employeeLeaveSearch(Request $request) {
+         return $this->employeeSearch($request, 'employees.leaves');
+    }
     /** employee profile with all controller user */
     public function profileEmployee($user_id)
     {

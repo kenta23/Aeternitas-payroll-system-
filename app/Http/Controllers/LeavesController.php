@@ -25,7 +25,6 @@ class LeavesController extends Controller
      public function viewLeave() {
          $employees = Employee::with('leave')->get();
 
-
          return view('employees.leaves', compact('employees'));
      }
 

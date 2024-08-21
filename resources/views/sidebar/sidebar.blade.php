@@ -79,7 +79,6 @@
                     <span> Payroll </span> <span class="menu-arrow"></span></a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/sallary/page'])}}" href="{{ route('form/sallary/page') }}"> Employee's Payroll </a></li>
-                        <li><a class="{{set_active(['form/payrollperiod'])}}" href="{{ route('form/payrollperiod') }}"> Payroll period</a></li>
                         <li><a class="{{set_active(['debitmemo'])}}" href="{{ route('debitmemo') }}">Debit Memo</a></li>
                         {{--<li><a href="{{ route('form/sallary/page') }}"> Employee's Summary </a></li>
                         <li><a href="{{ route('form/sallary/page') }}"> Payslip </a></li>
@@ -143,7 +142,6 @@
                         <li><a class="{{set_active(['page/aptitude/result'])}}" href="{{ route('page/aptitude/result') }}"> Aptitude Results </a></li>
                     </ul>
                 </li> --}}
-
             </ul>
         </div>
     </div>

@@ -236,6 +236,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::post('form/leaves/edit/delete','deleteLeave')->middleware('auth')->name('form/leaves/edit/delete'); */
 
         Route::get('leave/employee/list', 'viewLeave')->name('leave.index'); //view for leave page
+        Route::post('leave/employee/search', [EmployeeController::class, 'employeeLeaveSearch'])->name('leave/employee/search');
     })->middleware('auth');
 
     // ------------------------ form attendance  -------------------------//
