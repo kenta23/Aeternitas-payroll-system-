@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmployeeRequest;
-use App\Jobs\SendPayslipEmail;
-use App\Mail\PayslipMail;
-use App\Models\Leave;
-use Illuminate\Http\Request;
 use DB;
-use Brian2694\Toastr\Facades\Toastr;
-use App\Models\Employee;
-use App\Models\department;
-use App\Models\User;
-use App\Models\module_permission;
-use App\Models\permission_list;
-use App\Models\positionType;
-use Illuminate\Support\Facades\Mail;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Leave;
+use App\Models\Employee;
+use App\Mail\PayslipMail;
+use App\Models\department;
+use App\Models\positionType;
+use Illuminate\Http\Request;
+use App\Jobs\SendPayslipEmail;
+use App\Models\permission_list;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\module_permission;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\EmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -385,15 +385,19 @@ public function saveRecord(Request $request)
     {
         DB::beginTransaction();
         try{
-            Employee::where('employee_id',$employee_id)->delete();
-            //module_permission::where('employee_id',$employee_id)->delete();
+            $employee = Employee::find($employee_id)->first();
+            if ($employee) {
+                $employee->leave()->delete();
+                $employee->attendances()->delete();
+                $employee->delete();
+            }
 
             DB::commit();
-            Toastr::success('Delete record successfully :)','Success');
+            Toastr::success('Delete record successfully','Success');
             return redirect()->route('all/employee/card');
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('Delete record fail :)','Error');
+            Toastr::error($e->getMessage(),'Error');
             return redirect()->back();
         }
     }

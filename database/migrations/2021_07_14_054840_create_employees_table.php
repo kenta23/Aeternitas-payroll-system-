@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateEmployeesTable extends Migration
 {
@@ -137,10 +137,10 @@ class CreateEmployeesTable extends Migration
             $table->string('name_dependents')->nullable();
 
             //emergency
-            $table->string('emergency_name');
-            $table->string('emergency_phonenumber');
-            $table->string('emergency_relationship');
-            $table->mediumText('emergency_address');
+            $table->string('emergency_name')->nullable();
+            $table->string('emergency_phonenumber')->nullable();
+            $table->string('emergency_relationship')->nullable();
+            $table->mediumText('emergency_address')->nullable();
 
             //separation date
             $table->timestamp('separation_date')->nullable();

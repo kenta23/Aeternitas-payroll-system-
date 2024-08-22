@@ -22,13 +22,17 @@
 	<!-- Lineawesome CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/line-awesome.min.css') }}">
 	<!-- Datatable CSS -->
-	<link rel="stylesheet" href="{{ URL::to('assets/css/dataTables.bootstrap4.min.css') }}">
+
+    <link href="https://cdn.datatables.net/v/bs5/dt-2.1.4/af-2.7.0/b-3.1.1/b-html5-3.1.1/b-print-3.1.1/cr-2.0.4/r-3.0.2/sc-2.4.3/datatables.min.css" rel="stylesheet">
+
+
+	{{-- <link rel="stylesheet" href="{{ URL::to('assets/css/dataTables.bootstrap4.min.css') }}">  --}}
 	<!-- Select2 CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/select2.min.css') }}">
 	<!-- Datetimepicker CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap-datetimepicker.min.css') }}">
 	<!-- Chart CSS -->
-	<link rel="stylesheet" href="{{ URL::to('ssets/plugins/morris/morris.css') }}">
+	<link rel="stylesheet" href="{{ URL::to('assets/plugins/morris/morris.css') }}">
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
      <!--font family -->
@@ -42,6 +46,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 
 <body style="position: relative;">
@@ -53,6 +58,9 @@
 		.error{
 			color: red;
 		}
+        .dataTables_wrapper .dataTables_paginate {
+          justify-content: flex-end;
+        }
 	</style>
 	<!-- Main Wrapper -->
 	<div class="main-wrapper">
@@ -345,8 +353,10 @@
 	<!-- /Main Wrapper -->
 
 	<!-- jQuery -->
-	<script src="{{ URL::to('assets/js/jquery-3.5.1.min.js') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	{{-- <script src="{{ URL::to('assets/js/jquery-3.5.1.min.js') }}"></script>  --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+
 
 	<!-- Bootstrap Core JS -->
 	<script src="{{ URL::to('assets/js/popper.min.js') }}"></script>
@@ -371,14 +381,77 @@
 	<script src="{{ URL::to('assets/js/moment.min.js') }}"></script>
 	<script src="{{ URL::to('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 	<!-- Datatable JS -->
-	<script src="{{ URL::to('assets/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ URL::to('assets/js/dataTables.bootstrap4.min.js') }}"></script>
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/bs5/dt-2.1.4/af-2.7.0/b-3.1.1/b-html5-3.1.1/b-print-3.1.1/cr-2.0.4/r-3.0.2/sc-2.4.3/datatables.min.js"></script>
+
+
+
+
+	{{-- <script src="{{ URL::to('assets/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ URL::to('assets/js/dataTables.bootstrap4.min.js') }}"></>  --}}
 	<!-- Multiselect JS -->
 	<script src="{{ URL::to('assets/js/multiselect.min.js') }}"></script>
 	<!-- validation-->
 	<script src="{{ URL::to('assets/js/jquery.validate.js') }}"></script>
 	<!-- Custom JS -->
 	<script src="{{ URL::to('assets/js/app.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                'dom': '<"row  mb-2"<"col-sm-12 col-md-3 col-lg-6"B><"col-sm-12 col-md-3 col-lg-6"f>>' +'rt' + '<"d-flex justify-content-between mt-2"<i> <p>>',
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-success text-white border border-white border-2'
+                    },
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-btn-info text-white border-white border-2'
+                    },
+                    {
+                        extend: 'copy',
+                        className: 'btn btn-dark text-white border-white border-2'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-danger text-white border-white border-2'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-primary text-white border-white border-2'
+                    }
+                ],
+                "columnDefs": [
+                    { "responsivePriority": 1, "targets": 0 },
+                    { "responsivePriority": 2, "targets": -1 }
+                ]
+            }).buttons().container().appendTo('#dataTable_wrapper .col-md-6:eq(0)');
+        });
+
+        $(document).ready(function() {
+            $('#dataTable2').DataTable({
+                'dom': 'Bfrtip',
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columnDefs": [
+                    { "responsivePriority": 1, "targets": 0 },
+                    { "responsivePriority": 2, "targets": -1 }
+                ]
+            }).buttons().container().appendTo('#dataTable2_wrapper .col-md-6:eq(0)');
+        });
+    </script>
 
 	@yield('script')
 </body>

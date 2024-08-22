@@ -159,11 +159,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 dataTable">
+                        <table class="table table-striped custom-table mb-0">
                             <thead>
                                 <tr>
                                     <th colspan="2"></th>
-                                    <th class="tg-gpd3" colspan="6">Total&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="tg-gpd3 text-center" colspan="6">Total&nbsp;&nbsp;&nbsp;</th>
                                     <th class="tg-gpd3" colspan="3">Combined</th>
                                 </tr>
                             </thead>
@@ -172,11 +172,12 @@
                           <tbody>
                             <tr>
                                 <td class="tg-j3py" colspan="2"></td>
-                                <td class=" text-center" colspan="3">SL</td>
-                                <td class=" text-center" colspan="3">VL</td>
-                                <td class="text-center" colspan="3">SL/VL</td>
+                                <td  class="text-center" colspan="5">SL</td>
+                                <td  class="text-center">VL</td>
+                                <td  colspan="5" class="text-center">SL/VL</td>
                             </tr>
                             <tr>
+                                <td>#</td>
                                 <td class="tg-0pky">Employee ID</td>
                                 <td class="tg-0pky">Employee Name</td>
                                 <td class="tg-gpd3">Credits</td>
@@ -205,59 +206,83 @@
                          @endphp
 
                          @foreach ($employees as $emp)
-                            <tr>
-                                <td class="tg-phtq">{{ $emp->employee_id }}</td>
-                                <td class="id" hidden> {{ $emp->id }}</td>
-                                <td>
-                                    <h2 class="table-avatar">
-                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
-                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
-                                    </h2>
-                                </td>
-                                <td class="tg-gpd3">{{ $emp->leave->credits_sl }}</td>
-                                <td class="tg-ofsl">{{ $emp->leave->used_sl }}</td>
-                                <td class="tg-tj1c">{{ $emp->leave->balance_sl }}</td>
+                         <tr>
+                             <td>{{ $emp->id }}</td>
+                             <td class="tg-phtq">{{ $emp->employee_id }}</td>
+                             <td class="id" hidden> {{ $emp->id }}</td>
+                             <td>
+                                 <h2 class="table-avatar">
+                                     <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
+                                     <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
+                                 </h2>
+                             </td>
 
-                                <td class="tg-svo0">{{ $emp->leave->credits_vl }}</td>
-                                <td class="tg-ydyv">{{ $emp->leave->used_vl }}</td>
-                                <td class="tg-svo0">{{ $emp->leave->balance_vl }}</td>
+                             {{-- Check if leave is not null before accessing its properties --}}
+                             @if ($emp->leave)
+                                 <td class="tg-gpd3">{{ $emp->leave->credits_sl }}</td>
+                                 <td class="tg-ofsl">{{ $emp->leave->used_sl }}</td>
+                                 <td class="tg-tj1c">{{ $emp->leave->balance_sl }}</td>
 
-                               @php
-                                  $totalBalance = $emp->leave->balance_sl + $emp->leave->balance_vl;
-                               @endphp
+                                 <td class="tg-svo0">{{ $emp->leave->credits_vl }}</td>
+                                 <td class="tg-ydyv">{{ $emp->leave->used_vl }}</td>
+                                 <td class="tg-svo0">{{ $emp->leave->balance_vl }}</td>
 
-                                     <td class="tg-gpd3">{{ $emp->leave->total_credit_points }}</td>
-                                     <td class="tg-ofsl">{{ $emp->leave->total_used_vlsl }}</td>
-                                     <td class="tg-ofsl">{{ $totalBalance }}</td>
-                            </tr>
+                                 @php
+                                     $totalBalance = $emp->leave->balance_sl + $emp->leave->balance_vl;
+                                 @endphp
 
-                            @php
-                                $total_credits_sl += $emp->leave->credits_sl;
-                                $total_used_sl += $emp->leave->used_sl;
-                                $total_balance_sl += $emp->leave->balance_sl;
+                                 <td class="tg-gpd3">{{ $emp->leave->total_credit_points }}</td>
+                                 <td class="tg-ofsl">{{ $emp->leave->total_used_vlsl }}</td>
+                                 <td class="tg-ofsl">{{ $totalBalance }}</td>
 
-                                $total_credits_vl += $emp->leave->credits_vl;
-                                $total_used_vl += $emp->leave->used_vl;
-                                $total_balance_vl += $emp->leave->balance_vl;
+                                 @php
+                                     $total_credits_sl += $emp->leave->credits_sl;
+                                     $total_used_sl += $emp->leave->used_sl;
+                                     $total_balance_sl += $emp->leave->balance_sl;
 
-                                $total_total_credit_points += $emp->leave->total_credit_points;
-                                $total_total_used_vlsl += $emp->leave->total_used_vlsl;
-                                $total_total_balance_vlsl += $totalBalance;
-                            @endphp
-                           @endforeach
-                            <tr>
-                                <td class="total">Total</td>
-                                <td class=""></td>
-                                <td class="">{{ $total_credits_sl }}</td>
-                                <td class="">{{ $total_used_sl }}</td>
-                                <td class="">{{ $total_balance_sl }}</td>
-                                <td class="">{{ $total_credits_vl }}</td>
-                                <td class="">{{ $total_used_vl }}</td>
-                                <td class="">{{ $total_balance_vl }}</td>
-                                <td class="">{{ $total_total_credit_points }}</td>
-                                <td class="">{{ $total_total_used_vlsl }}</td>
-                                <td class="">{{ $total_total_balance_vlsl }}</td>
-                            </tr>
+                                     $total_credits_vl += $emp->leave->credits_vl;
+                                     $total_used_vl += $emp->leave->used_vl;
+                                     $total_balance_vl += $emp->leave->balance_vl;
+
+                                     $total_total_credit_points += $emp->leave->total_credit_points;
+                                     $total_total_used_vlsl += $emp->leave->total_used_vlsl;
+                                     $total_total_balance_vlsl += $totalBalance;
+                                 @endphp
+                             @else
+                                 <td class="tg-gpd3">0</td>
+                                 <td class="tg-ofsl">0</td>
+                                 <td class="tg-tj1c">0</td>
+
+                                 <td class="tg-svo0">0</td>
+                                 <td class="tg-ydyv">0</td>
+                                 <td class="tg-svo0">0</td>
+
+                                 @php
+                                     $totalBalance = 0;
+                                 @endphp
+
+                                 <td class="tg-gpd3">0</td>
+                                 <td class="tg-ofsl">0</td>
+                                 <td class="tg-ofsl">0</td>
+                             @endif
+                         </tr>
+                     @endforeach
+
+                     <tr>
+                        <td class="total">Total</td>
+                        <td class=""></td>
+                        <td></td>
+                        <td class="">{{ $total_credits_sl }}</td>
+                        <td class="">{{ $total_used_sl }}</td>
+                        <td class="">{{ $total_balance_sl }}</td>
+                        <td class="">{{ $total_credits_vl }}</td>
+                        <td class="">{{ $total_used_vl }}</td>
+                        <td class="">{{ $total_balance_vl }}</td>
+                        <td class="">{{ $total_total_credit_points }}</td>
+                        <td class="">{{ $total_total_used_vlsl }}</td>
+                        <td class="">{{ $total_total_balance_vlsl }}</td>
+                    </tr>
+
                         </tbody>
                        @endif
 

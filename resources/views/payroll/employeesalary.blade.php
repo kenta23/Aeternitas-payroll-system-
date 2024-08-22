@@ -33,14 +33,15 @@
             </div>
             <!-- /Search Filter -->
 
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 datatable">
+                        <table class="table table-striped custom-table mb-0" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>Employee</th>
+                                    <th hidden></th>
                                     <th>Employee ID</th>
+                                    <th>Employee</th>
                                     <th>Email</th>
                                     <th>Pay Type</th>
                                     <th>Join Date</th>
@@ -54,14 +55,14 @@
                             <tbody>
                                 @foreach ($employees as $emp)
                                 <tr>
+                                    <td hidden class="id">{{ $emp->id }}</td>
+                                    <td class="employee_id">{{ $emp->employee_id }}</td>
                                     <td>
                                         <h2 class="table-avatar">
                                             <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
                                             <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                         </h2>
                                     </td>
-                                    <td class="employee_id">{{ $emp->employee_id }}</td>
-                                    <td hidden class="id">{{ $emp->id }}</td>
                                     <td>{{ $emp->email }}</td>
                                     <td>Monthly</td>
                                     <td>{{$emp->created_at}}</td>
