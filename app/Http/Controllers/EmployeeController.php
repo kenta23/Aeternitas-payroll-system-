@@ -19,21 +19,17 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\EmployeeRequest;
 
+
 class EmployeeController extends Controller
 {
     /** all employee card view */
-    public function cardAllEmployee(Request $request)
+    public function cardAllEmployee()
     {
         $position = positionType::all();
 
-        /*$users = DB::table('users')
-                    ->join('employees','users.user_id','employees.employee_id')
-                    ->select('users.*','employees.birth_date', 'employees.gender','employees.position')
-                    ->get(); */
-
         $employees = Employee::all();
         $departments = department::all();
-        //$permission_lists = DB::table('permission_lists')->get();
+
 
         return view('employees.allemployeecard',compact('employees', 'position','departments'));
     }
@@ -96,7 +92,7 @@ public function saveRecord(Request $request)
        }
 
        catch(\Exception $e) {
-         Toastr::error('Failed to add employee', 'Error');
+         Toastr::error('Failed to add employee' .$e->getMessage(), 'Error');
          return redirect()->route('all/employee/card');
        }
   }
@@ -114,7 +110,7 @@ public function saveRecord(Request $request)
     }
 
     public function timekeeping() {
-        $employees = Employee::where('per_month', '!=', 'null')->where('bi_monthly', '!=', 'null')->paginate(15);
+        $employees = Employee::where('per_month', '!=', 'null')->where('bi_monthly', '!=', 'null')->get();
 
         $position = PositionType::all();
 
@@ -264,14 +260,15 @@ public function saveRecord(Request $request)
            //first update the employee
            $leaveData = [
             'credits_vl' => $request->input('credits_vl'),
-            'used_vl' => $request->input('used_vl'),
+            'used_vl' => $request->input('used_vl') ?? 0.00,
             'balance_vl' => $request->input('balance_vl'),
             'credits_sl' => $request->input('credits_sl'),
-            'used_sl' => $request->input('used_sl'),
+            'used_sl' => $request->input('used_sl') ?? 0.00,
             'balance_sl' => $request->input('balance_sl'),
             'total_credit_points' => $request->input('credit_points'),
             'total_used_vlsl' => $request->input('used_credit'),
            ];
+
 
 
            $employee = Employee::findOrFail($employeeId);
@@ -296,7 +293,7 @@ public function saveRecord(Request $request)
 
     public function contributions() {
 
-        $employees = Employee::paginate(15);
+        $employees = Employee::all();
         $position = PositionType::all();
 
         return view('employees.contributions', compact('employees', 'position'));
@@ -495,6 +492,10 @@ public function saveRecord(Request $request)
         return view($viewName, ['employees' => $employees, 'position' => $position, 'departments' => $departments])->render();
     }
 
+    public function employeeCardSearch(Request $request) {
+        return $this->employeeSearch($request, 'employees.allemployeecard');
+    }
+
 
     public function employeeTimekeepingSearch(Request $request)
     {
@@ -657,12 +658,12 @@ public function saveRecord(Request $request)
          $pdfStream = $pdf->output();
 
 
-         Mail::mailer('smtp')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
+         Mail::mailer('mailgun')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
          Toastr::success('Payslip has been sent to '. $employee->email, 'Success');
          return redirect()->back();
 
      } catch (\Exception $e) {
-         Toastr::error('Failed to send email', 'Error');
+         Toastr::error('Failed to send email' . $e->getMessage(), 'Error');
          return redirect()->back();
      }
  }
@@ -674,19 +675,23 @@ public function saveRecord(Request $request)
     try {
         foreach ($employees as $employee) {
             // Generate the PDF for each employee
-            $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
-            $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
-            $pdfContent = $pdf->output();
+            if ($employee->email) {
+                $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
+                $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+                $pdf->setPaper('A4', 'portrait');
+                $pdfContent = $pdf->output();
 
-            // Dispatch the job for each employee
-            SendPayslipEmail::dispatch($pdfContent, $employee);
+                // Dispatch the job for each employee
+               // SendPayslipEmail::dispatch($pdfContent, $employee);
+               Mail::mailer('smtp')->to($employee->email)->send(new PayslipMail($employee, $pdfContent));
+            }
         }
 
-      Toastr::success('Successfully sent mails to all employees', 'Success');
+      Toastr::success('Successfully sent payslips to all employees ', 'Success');
       return redirect()->back();
     }
     catch(\Exception $e) {
-         Toastr::error('Failed to send bulk mails', 'Error');
+         Toastr::error('Failed to send bulk mails '. $e->getMessage(), 'Error');
          return redirect()->back();
       }
    }

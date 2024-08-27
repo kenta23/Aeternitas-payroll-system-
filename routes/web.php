@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PayrollController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\LeavesController;
-use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\SettingController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -167,7 +167,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('all/employee/view/edit/{employee_id}', 'viewRecord');
         Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
         Route::get('all/employee/delete/{employee_id}', 'deleteRecord')->middleware('auth');
-        Route::post('all/employee/search', 'employeeSearch')->name('all/employee/search');
+        Route::post('all/employee/search', 'employeeCardSearch')->name('all/employee/search');
         Route::post('all/employee/list/search', 'employeeListSearch')->name('all/employee/list/search');
         Route::get('employee/timekeeping/edit/{employee_id}', 'timekeepingEdit')->middleware('auth')->name('employee/timekeeping/edit');
         Route::post('employee/timekeeping/update', 'updateTimekeeping')->middleware('auth')->name('employee/timekeeping/update');

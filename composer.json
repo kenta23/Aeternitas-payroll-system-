@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^2.2",
-        "brian2694/laravel-toastr": "*",
+        "brian2694/laravel-toastr": "^5.59",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
@@ -15,6 +15,8 @@
         "laravel/ui": "^4.2",
         "maatwebsite/excel": "^3.1",
         "mailgun/mailgun-php": "^4.3",
+        "nyholm/psr7": "^1.8",
+        "railsware/mailtrap-php": "^2.0",
         "symfony/http-client": "^7.1",
         "symfony/mailgun-mailer": "^7.1",
         "twbs/bootstrap": "5.0.2"

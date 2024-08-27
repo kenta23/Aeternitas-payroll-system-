@@ -36,7 +36,7 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0" id="dataTable">
+                        <table class="table table-striped custom-table mb-0" style="width: 100%" id="dataTable">
                             <thead>
                                 <tr>
                                     <th hidden></th>
@@ -53,13 +53,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($employees as $emp)
+                             @foreach ($employees as $emp)
                                 <tr>
                                     <td hidden class="id">{{ $emp->id }}</td>
                                     <td class="employee_id">{{ $emp->employee_id }}</td>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
+                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
                                             <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                         </h2>
                                     </td>
@@ -70,7 +70,7 @@
                                     <td>{{$emp->end_date_payroll}}</td>
                                     <td class="salary">{{ $emp->netpay }}</td>
                                     <td>
-                                        @if ($emp->end_date_payroll != null)
+                                        @if ($emp->end_date_payroll)
                                           <a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a>
                                         @else
                                           <button class="btn btn-sm btn-primary" disabled>Generate Slip</button>

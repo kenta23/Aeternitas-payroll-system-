@@ -34,6 +34,9 @@ return [
     */
 
     'mailers' => [
+        'mailtrap' => [
+               'transport' => 'mailtrap'
+        ],
         'smtp' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
@@ -52,6 +55,10 @@ return [
           'transport' => 'mailgun',
           'domain' => env('MAILGUN_DOMAIN'),
           'secret' => env('MAILGUN_SECRET'),
+          'username' => env('MAILGUN_USERNAME'),
+          'password' => env('MAILGUN_PASSWORD'),
+          'port' => env('MAIL_PORT', 587),
+          'encryption' => env('MAIL_ENCRYPTION', 'tls'),
           'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
        ],
 

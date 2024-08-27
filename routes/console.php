@@ -1,8 +1,9 @@
 <?php
 
+use App\Mail\TestMail;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
-
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('send-welcome-mail', function () {
+    Mail::mailer('smtp')->to('dreyx0159@gmail.com')->send(new TestMail("Rusty"));
+})->purpose('Send welcome mail');

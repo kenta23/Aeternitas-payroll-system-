@@ -300,33 +300,27 @@
     @section('script')
 
     <script>
-      /*  $(document).ready(function() {
-            $('#phone_number').on('input', function() {
-                if (this.value.length > 10) {
-                    this.value = this.value.slice(0, 10);
-                }
-            });
-
-            $('#emergency_phonenumber').on('input', function() {
-                if (this.value.length > 11) {
-                    this.value = this.value.slice(0, 10);
-                }
-            });
-        }); */
-
+     
         const phoneNumber = document.getElementById('phone_number');
         const contactNumber = document.getElementById('emergency_phonenumber');
 
-        function slicedText() {
-            if(phoneNumber.value > 10) {
-                phoneNumber.value = phoneNumber.value.slice(0, 10);
+        function slicedText(e) {
+            const keyCode = e.keyCode || e.which;
+            const keyValue = String.fromCharCode(keyCode);
+
+            if (!/^[0-9]+$/.test(keyValue)) {
+                e.preventDefault();
             }
-            if(contactNumber.value > 10) {
-                contactNumber.value = contactNumber.value.slice(0, 10);
+
+            if(phoneNumber.value > 9) {
+                phoneNumber.value = phoneNumber.value.slice(0, 9);
+            }
+            if(contactNumber.value > 9) {
+                contactNumber.value = contactNumber.value.slice(0, 9);
             }
         }
-        phoneNumber.addEventListener('input', slicedText);
-        contactNumber.addEventListener('input', slicedText);
+        phoneNumber.addEventListener('keypress', slicedText);
+        contactNumber.addEventListener('keypress', slicedText);
 
     </script>
 

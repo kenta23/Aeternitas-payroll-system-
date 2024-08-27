@@ -163,18 +163,24 @@
                             <thead>
                                 <tr>
                                     <th colspan="2"></th>
+                                    <th></th>
                                     <th class="tg-gpd3 text-center" colspan="6">Total&nbsp;&nbsp;&nbsp;</th>
-                                    <th class="tg-gpd3" colspan="3">Combined</th>
+                                    <th></th>
+                                    <th class="tg-gpd3" colspan="2">Combined</th>
                                 </tr>
                             </thead>
 
                        @if (!@empty($employees))
                           <tbody>
                             <tr>
-                                <td class="tg-j3py" colspan="2"></td>
-                                <td  class="text-center" colspan="5">SL</td>
-                                <td  class="text-center">VL</td>
-                                <td  colspan="5" class="text-center">SL/VL</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td  class="text-center" colspan="3">SL</td>
+                                <td></td>
+                                <td class="text-center">VL</td>
+                                <td></td>
+                                <td colspan="6" class="text-center">SL/VL</td>
                             </tr>
                             <tr>
                                 <td>#</td>
@@ -212,7 +218,7 @@
                              <td class="id" hidden> {{ $emp->id }}</td>
                              <td>
                                  <h2 class="table-avatar">
-                                     <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/LOGO.png') }}"></a>
+                                     <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
                                      <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                  </h2>
                              </td>

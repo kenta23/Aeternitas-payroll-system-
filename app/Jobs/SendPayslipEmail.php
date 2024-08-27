@@ -39,23 +39,9 @@ class SendPayslipEmail implements ShouldQueue
      */
     public function handle(): void
     {
-       /* $employees = Employee::all();
-        //
-       foreach($employees as $emp) {
-          Mail::to($emp->email)->send(new PayslipMail($emp, $this->pdf));
-       } */
-
-       /* $todayDate = Carbon::now()->format('d-m-Y');
-
-        // Generate PDF
-        $pdf = PDF::loadView('payroll.pdfpayslip', compact('employee'));
-        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
-        $pdfContent = $pdf->output(); */
-
-        // Send Email
-
+         // Send Email
         try {
-            Mail::mailer('mailgun')
+            Mail::mailer('smtp')
                 ->to($this->employee->email)
                 ->send(new PayslipMail($this->employee, $this->pdf));
 
