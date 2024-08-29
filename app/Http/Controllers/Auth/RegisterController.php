@@ -17,8 +17,8 @@ class RegisterController extends Controller
     /** regiter page */
     public function register()
     {
-        $role = DB::table('role_type_users')->get();
-        return view('auth.register',compact('role'));
+
+        return view('auth.register');
     }
 
     /** insert new users */
@@ -50,7 +50,7 @@ class RegisterController extends Controller
         }catch(\Exception $e) {
             \Log::info($e);
             DB::rollback();
-            Toastr::error('Add new employee fail','Error');
+            Toastr::error('Add new employee fail '.$e->getMessage(),'Error');
             return redirect()->back();
         }
     }

@@ -50,7 +50,7 @@ class EmployeeController extends Controller
 public function saveRecord(Request $request)
   {
     //try {
-        \Log::info('Request data:', $request->all());
+    //dd($request->all());
 
        try {
         $validatedData = $request->validate([
@@ -92,7 +92,7 @@ public function saveRecord(Request $request)
        }
 
        catch(\Exception $e) {
-         Toastr::error('Failed to add employee' .$e->getMessage(), 'Error');
+         Toastr::error('Failed to add employee ' .$e->getMessage(), 'Error');
          return redirect()->route('all/employee/card');
        }
   }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('styles')
   <style>
-     .home {
+  .home {
     width: 100%;
     min-height: 100vh;
     height: 100%;
@@ -13,12 +13,6 @@
     /* Make the background image fixed */
     background-attachment: fixed;
     position: relative;
-    }
-    .bg {
-    width: 100%;
-    height: 100;
-    object-fit: cover;
-    object-position: center;
     }
     .btn-container {
         left: 30%;
@@ -75,7 +69,8 @@
 
      @guest
      <a href="#" data-toggle="modal" data-target="#login" class="btn text-lg">Sign in</a>
-
+     @endguest
+  </div>
 {!! Toastr::message() !!}
 
 <!-- Login Modal -->
@@ -136,7 +131,7 @@
                                     <button class="btn btn-primary account-btn" type="submit">Login</button>
                                 </div>
                                 <div class="account-footer">
-                                    <p>Don't have an account yet? <a href="#" id="openRegisterModal">Register</a></p>
+                                    <p>Don't have an account yet? <a href="#" id="openRegisterModal">Register </p></a>
                                 </div>
                             </form>
                         </div>
@@ -148,7 +143,7 @@
 </div>
 
 <!-- Register Modal -->
-<div id="register" class="modal custom-modal1 fade" role="dialog">
+<div id="register" style="" class="modal custom-modal1 fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-body">
@@ -213,11 +208,14 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
+  </div>
+
+
 
 @section('script')
 <script>
-    $(document).ready(function() {
+   $(document).ready(function() {
         $('#openRegisterModal').click(function() {
             $('#login').modal('hide');
             setTimeout(function() {
@@ -244,10 +242,9 @@
             }
         });
     });
-</script>
-@endsection
 
-@endguest
-</div>
+
+  </script>
+@endsection
 
 @endsection

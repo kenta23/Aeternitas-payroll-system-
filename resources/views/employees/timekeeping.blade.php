@@ -219,7 +219,7 @@
                                 @enderror
 
                                 <div class="form-group">
-                                    <label for="absences">Absences</label>
+                                    <label for="absences">Absences <i class="text-primary text-body-secondary text" style="font-size: 14px;">Enter any values or 0 first to calculate Total amounts</i></label>
                                     <input class="form-control" type="number" name="absences" id="absences" value="0">
                                 </div>
                                 @error('absences')
@@ -987,7 +987,7 @@
   function calculateRegularDays() {
     const parsedAbsences = parseFloat(absencesInput.value) || 0;
 
-    if (parsedRegularDays >= 0 && parsedAbsences >= 0) {
+    if (parsedRegularDays) {
         let total = parsedRegularDays - parsedAbsences;
 
         if (total < 0) {

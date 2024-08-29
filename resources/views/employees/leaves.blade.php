@@ -37,9 +37,9 @@
                             <li class="breadcrumb-item active">Leaves</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
+                    {{-- <div class="col-auto float-right ml-auto">
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_leave"><i class="fa fa-plus"></i> Add Leave</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 

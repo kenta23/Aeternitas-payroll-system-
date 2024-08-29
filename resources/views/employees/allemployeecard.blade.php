@@ -300,29 +300,30 @@
     @section('script')
 
     <script>
-     
-        const phoneNumber = document.getElementById('phone_number');
-        const contactNumber = document.getElementById('emergency_phonenumber');
 
-        function slicedText(e) {
-            const keyCode = e.keyCode || e.which;
-            const keyValue = String.fromCharCode(keyCode);
+    const phoneNumber = document.getElementById('phone_number');
+    const contactNumber = document.getElementById('emergency_phonenumber');
 
-            if (!/^[0-9]+$/.test(keyValue)) {
-                e.preventDefault();
-            }
+  // Function to validate and slice input values
+    function slicedText(e) {
+      const input = e.target;
+      input.value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
 
-            if(phoneNumber.value > 9) {
-                phoneNumber.value = phoneNumber.value.slice(0, 9);
-            }
-            if(contactNumber.value > 9) {
-                contactNumber.value = contactNumber.value.slice(0, 9);
-            }
-        }
-        phoneNumber.addEventListener('keypress', slicedText);
-        contactNumber.addEventListener('keypress', slicedText);
+    // Slice the value to the first 9 characters
+      if (input.value.length > 10) {
+        input.value = input.value.slice(0, 10);
+       }
+    }
 
-    </script>
+    if (phoneNumber) {
+       phoneNumber.addEventListener('input', slicedText);
+    }
+
+    if (contactNumber) {
+        contactNumber.addEventListener('input', slicedText);
+    }
+
+ </script>
 
  <script>
     $(document).ready(function() {
