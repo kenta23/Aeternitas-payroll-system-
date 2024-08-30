@@ -184,7 +184,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="daily_rate">Daily rate</label>
-                                        <input class="form-control" type="number" step="0.01" name="daily_rate" id="daily_rate" value=''>
+                                        <input class="form-control" type="number" step="0.01" name="daily_rate" id="daily_rate" value='' readonly>
                                     </div>
 
                                     @error('daily_rate')
@@ -525,7 +525,7 @@
                                   <input type="number" class="form-control" id="late_amount" name="late_amount" step="0.01" readonly>
 
                                   <label for="late_charges">Charges (₱) <span class="text-primary text-sm">Missing/Loss Item Note: Please Input 0 if none or Existing data to recalculate the Total Charge!</span></label>
-                                  <input type="number" class="form-control" id="late_charges" name="late_charges" step="0.01">
+                                  <input type="number" class="form-control" id="missing_charges" name="missing_charges" step="0.01">
 
                                </div>
                           </div>
@@ -600,6 +600,7 @@
                       $('#total_ot').val(data.total_ot);
 
                       //lates
+                      $('#missing_charges').val(data.missing_charges);
                       $('#deduction_rate').val(data.late_rate);
                       $('#late_amount').val(data.late_amount);
                       $('#no_of_minutes').val(data.number_of_minutes_late);
@@ -643,7 +644,7 @@
      const legalWorkedDaysInput = document.getElementById('legal_worked_days');
      //const lhdAmountInput = document.getElementById('lhd_amount');
      const basicPayPlusOt = document.getElementById('basic_pay_plus_ot');
-     //const missingCharges = document.getElementById('missing_charges')
+     const missingCharges = document.getElementById('missing_charges')
 
      const dailyRate = document.getElementById('daily_rate');
      const basicPay = document.getElementById('basic_pay');
@@ -674,7 +675,7 @@
      const totalOt = document.getElementById('total_ot');
 
      // ot rate
-     const otRate30 = document.getElementById('ot_rate30');
+     const otRate30 = document.getElementById(' ');
      const otHours30 = document.getElementById('ot_hours30');
      const otAmount30 = document.getElementById('ot_amount30');
 
@@ -944,7 +945,7 @@
        calculateBasicPay();
        calculateTotalWorkedDays();
    }
-
+// OT Tabs
  function calculateAllOTs() {
     const otRate25Value = parseFloat(otRate25.value) || 0;
     const otRate30Value = parseFloat(otRate30.value) || 0;
@@ -966,7 +967,7 @@
 
     if (otHours100 && otRate100Value) {
         const parsedOtHours100 = parseFloat(otHours100.value) || 0;
-        const totalOt100Amount = otRate100Value * parsedOtHours100;
+        const totalOt100Amount = otRate100Value *    parsedOtHours100;
         otAmount100.value = totalOt100Amount.toFixed(2);
     }
 
