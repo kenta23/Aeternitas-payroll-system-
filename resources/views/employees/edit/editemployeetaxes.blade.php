@@ -89,8 +89,8 @@
 
                 <hr>
 
-                <label> Other Deduction (₱)</label>
-                <input type="number" id="other_deduction" name="other_deduction" value="{{ $employee->otherdeduction }}" class="form-control" step="0.01" >
+                <label> Missing charges (₱)</label>
+                <input type="number" id="missing_charges" name="missing_charges" value="{{ $employee->missing_charges }}" class="form-control" step="0.01" readonly>
 
 
             </div>
@@ -392,6 +392,7 @@
     const parsedEmployeeSssWisp = parseFloat(employeeSssWisp.value) || 0;
     const parsedEmployeePhic = parseFloat(employeePhic.value) || 0;
     const parsedEmployeeHdmf = parseFloat(employeeHdmf.value) || 0;
+    const parsedMissing_charges = parseFloat(missing_charges.value) || 0;
 
 
     const parsedTax = parseFloat(tax.value) || 0;
@@ -404,7 +405,7 @@
 
 
 
-        const totalDeductions = parsedEmployeePurchase + parsedSssLoan + parsedHdmfLoan + parsedEmployeeSssPremContribution + parsedEmployeeSssWisp + parsedEmployeePhic + parsedEmployeeHdmf + parsedTax;
+        const totalDeductions = parsedEmployeePurchase + parsedSssLoan + parsedHdmfLoan + parsedEmployeeSssPremContribution + parsedEmployeeSssWisp + parsedEmployeePhic + parsedEmployeeHdmf + parsedMissing_charges + parsedTax;
         totalDeduction.value = totalDeductions.toFixed(2);
 
         netPayTotal = parsedGrossPay - totalDeductions;

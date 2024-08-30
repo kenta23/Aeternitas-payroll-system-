@@ -127,10 +127,10 @@ public function saveRecord(Request $request)
         $computedOtRate25 = round(($employee->per_day / 8) * 1.25, 2);
         $computedOtAmount25 = round($computedOtRate25 * $employee->ot_hours25, 2);
 
-        $computedOtRate30 = round(($employee->per_day / 8) * 1.30, 2);
+        $computedOtRate30 = round(($employee->per_day / 8) * 0.30, 2);
         $computedOtAmount30 = round($computedOtRate30 * $employee->ot_hours30, 2);
 
-        $computedOtRate100 = round(($employee->per_day / 8) * 2.00, 2); // Assuming double rate for 100%
+        $computedOtRate100 = round(($employee->per_day / 8) * 1.00, 2); // Assuming double rate for 100%
         $computedOtAmount100 = round($computedOtRate100 * $employee->ot_hours100, 2);
 
 
@@ -155,18 +155,20 @@ public function saveRecord(Request $request)
             'rwd_amount' => $employee->rwd_amount,
 
             // Overtimes
-            'ot_rate25' => $employee->ot_rate25,
+            'missing_charges' => $employee->missing_charges,
+            'ot_rate25' => $computedOtRate25,
             'ot_hours25' => $employee->ot_hours25,
             'ot_amount25' => $employee->ot_amount25,
-            'ot_rate30' => $employee->ot_rate30,
+            'ot_rate30' => $computedOtRate30,
             'ot_hours30' => $employee->ot_hours30,
             'ot_amount30' => $employee->ot_amount30,
-            'ot_rate100' => $employee->ot_rate100,
+            'ot_rate100' => $computedOtRate100,
             'ot_hours100' => $employee->ot_hours100,
             'ot_amount100' => $employee->ot_amount100,
             'total_ot' => $employee->total_ot,
 
             //lates
+            'missing_charges' => $employee->missing_charges,
             'late_rate' => $employee->late_rate,
             'late_amount' => $employee->late_amount,
             'number_of_minutes_late' => $employee->number_of_minutes_late,
@@ -234,6 +236,7 @@ public function saveRecord(Request $request)
             'total_ot' => $request->input('total_ot'),
 
             //lates
+            'missing_charges' => $request->input('missing_charges'),
             'late_rate' => $request->input('deduction_rate'),
             'late_amount' => $request->input('late_amount'),
             'number_of_minutes_late' => $request->input('no_of_minutes'),
@@ -658,7 +661,7 @@ public function saveRecord(Request $request)
          $pdfStream = $pdf->output();
 
 
-         Mail::mailer('mailgun')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
+         Mail::mailer('smtp')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
          Toastr::success('Payslip has been sent to '. $employee->email, 'Success');
          return redirect()->back();
 
