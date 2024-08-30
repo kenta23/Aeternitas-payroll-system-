@@ -62,6 +62,9 @@
 @section('content')
 
 <div class="home">
+
+    {!! Toastr::message() !!}
+
   <div class="position-absolute btn-container">
      @auth
        <a href="{{ route('home') }}" class="btn text-lg">Admin</a>
@@ -71,7 +74,7 @@
      <a href="#" data-toggle="modal" data-target="#login" class="btn text-lg">Sign in</a>
      @endguest
   </div>
-{!! Toastr::message() !!}
+
 
 <!-- Login Modal -->
 <div id="login" class="modal custom-modal1 fade" role="dialog">
@@ -130,9 +133,9 @@
                                 <div class="form-group text-center">
                                     <button class="btn btn-primary account-btn" type="submit">Login</button>
                                 </div>
-                                <div class="account-footer">
+                                {{-- <div class="account-footer">
                                     <p>Don't have an account yet? <a href="#" id="openRegisterModal">Register </p></a>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                     </div>

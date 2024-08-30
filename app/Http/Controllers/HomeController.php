@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\department;
+use DB;
+use PDF;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Employee;
+use App\Models\department;
 use App\Models\positionType;
 use Illuminate\Http\Request;
-use DB;
-use Carbon\Carbon;
-use PDF;
-use App\Models\User;
 class HomeController extends Controller
 {
     /**
@@ -34,8 +34,15 @@ class HomeController extends Controller
         $departmentsCount = department::count();
         $positionsCount = positionType::count();
 
+        $employees = Employee::all();
+        // Get the date from one month ago
+        $oneMonthAgo = Carbon::now()->subMonth();
 
-        return view('dashboard.dashboard', compact('employeesCount', 'departmentsCount', 'positionsCount'));
+        // Query employees created within the last month
+        $newEmployees = Employee::where('created_at', '>', $oneMonthAgo)->get();
+
+
+        return view('dashboard.dashboard', compact('employeesCount', 'departmentsCount', 'positionsCount', 'employees', 'newEmployees'));
         
     }
     // employee dashboard

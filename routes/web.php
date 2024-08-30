@@ -174,6 +174,11 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         //FOR SENDING MAIL
         Route::get('payslip/mali/send/{id}', 'sendPayslipMail')->middleware('auth');
         Route::get('payslip/mail/send/all', 'sendBulkMails')->middleware('auth');
+
+        //EMPLOYEES DETAILS
+        Route::get('employee/details', 'employeeDetails')->middleware('auth')->name('employee/details');
+        Route::get('employee/details/edit/{employeeId}', 'employeeDetailsEdit')->middleware('auth');
+        Route::post('employee/details/save', 'employeeDetailsSave')->middleware('auth')->name('employee/details/save');
     });
 
     // ----------------------------- position  -----------------------------//

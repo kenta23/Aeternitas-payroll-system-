@@ -110,7 +110,10 @@ public function saveRecord(Request $request)
     }
 
     public function timekeeping() {
-        $employees = Employee::where('per_month', '!=', 'null')->where('bi_monthly', '!=', 'null')->get();
+        $employees =  Employee::whereNotNull('per_month')
+        ->whereNotNull('bi_monthly')
+        ->whereNull('separation_date')
+        ->get();
 
         $position = PositionType::all();
 
@@ -127,10 +130,10 @@ public function saveRecord(Request $request)
         $computedOtRate25 = round(($employee->per_day / 8) * 1.25, 2);
         $computedOtAmount25 = round($computedOtRate25 * $employee->ot_hours25, 2);
 
-        $computedOtRate30 = round(($employee->per_day / 8) * 1.30, 2);
+        $computedOtRate30 = round(($employee->per_day / 8) * 0.30, 2);
         $computedOtAmount30 = round($computedOtRate30 * $employee->ot_hours30, 2);
 
-        $computedOtRate100 = round(($employee->per_day / 8) * 2.00, 2); // Assuming double rate for 100%
+        $computedOtRate100 = round(($employee->per_day / 8) * 1.00, 2); // Assuming double rate for 100%
         $computedOtAmount100 = round($computedOtRate100 * $employee->ot_hours100, 2);
 
 
@@ -155,13 +158,13 @@ public function saveRecord(Request $request)
             'rwd_amount' => $employee->rwd_amount,
 
             // Overtimes
-            'ot_rate25' => $employee->ot_rate25,
+            'ot_rate25' => $computedOtRate25,
             'ot_hours25' => $employee->ot_hours25,
             'ot_amount25' => $employee->ot_amount25,
-            'ot_rate30' => $employee->ot_rate30,
+            'ot_rate30' => $computedOtRate30,
             'ot_hours30' => $employee->ot_hours30,
             'ot_amount30' => $employee->ot_amount30,
-            'ot_rate100' => $employee->ot_rate100,
+            'ot_rate100' => $computedOtRate100,
             'ot_hours100' => $employee->ot_hours100,
             'ot_amount100' => $employee->ot_amount100,
             'total_ot' => $employee->total_ot,
@@ -293,7 +296,7 @@ public function saveRecord(Request $request)
 
     public function contributions() {
 
-        $employees = Employee::all();
+        $employees = Employee::whereNull('separation_date')->get();
         $position = PositionType::all();
 
         return view('employees.contributions', compact('employees', 'position'));
@@ -694,6 +697,70 @@ public function saveRecord(Request $request)
          Toastr::error('Failed to send bulk mails '. $e->getMessage(), 'Error');
          return redirect()->back();
       }
+   }
+
+
+   public function employeeDetails() {
+      $employees = Employee::all();
+      return view('employees.employeedetails', compact('employees'));
+   }
+
+   public function employeeDetailsEdit (int $employeeId) {
+        $employee = Employee::find($employeeId);
+        $fullName = $employee->first_name . ' ' . $employee->last_name;
+
+        return view('employees.edit.editemployeedetails', compact('employee', 'fullName'));
+   }
+
+
+   public function employeeDetailsSave(Request $request) {
+      // $employee = Employee::find($employeeId);
+
+       try {
+         $validatedData = $request->validate([
+             'firstname' => 'required|string|max:90',
+             'middlename' => 'nullable|string|max:90',
+             'lastname' => 'required|string|max:90',
+             'phone' => 'nullable|string|max:20',
+             'birthdate' => 'nullable|date',
+             'address' => 'nullable|string|max:255',
+             'resignation_date' => 'nullable|date',
+             'resignation_reason' => 'nullable|string|max:255',
+
+             //emergency contact values
+
+             'emergency_name' => 'nullable|string|max:90',
+             'emergency_phonenumber' => 'nullable|string|max:20',
+             'emergency_address' => 'nullable|string|max:255',
+             'emergency_relationship' => 'nullable|string|max:20'
+         ]);
+
+
+
+           $employee = Employee::find($request->id);
+
+           $employee->first_name = $request->firstname;
+          // $employee->middle_name = $request->middlename;
+           $employee->last_name = $request->lastname;
+           $employee->phone_number = $request->phone;
+           $employee->birth_date = $request->birthdate;
+           $employee->current_address = $request->address;
+           $employee->separation_date = $request->resignation_date;
+           $employee->separation_reason = $request->resignation_reason;
+           $employee->emergency_name = $request->emergency_name;
+           $employee->emergency_phonenumber = $request->emergency_phonenumber;
+           $employee->emergency_address = $request->emergency_address;
+           $employee->emergency_relationship = $request->emergency_relationship;
+
+           $employee->save();
+
+           Toastr::success('Successfully updated employee details', 'Success');
+           return redirect()->back();
+       }
+       catch(\Exception $e) {
+           Toastr::error('Failed to update employee details '. $e->getMessage(), 'Error');
+           return redirect()->back();
+       }
    }
  }
 
