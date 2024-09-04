@@ -71,7 +71,8 @@
      @endauth
 
      @guest
-     <a href="#" data-toggle="modal" data-target="#login" class="btn text-lg">Sign in</a>
+      <a href="#" data-toggle="modal" data-target="#login" class="btn text-lg">Sign in</a>
+      <a href="#" data-toggle="modal" data-target="#register" class="btn text-lg">Register</a>
      @endguest
   </div>
 

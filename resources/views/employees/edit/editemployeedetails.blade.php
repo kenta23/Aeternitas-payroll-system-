@@ -55,7 +55,7 @@
                         <input type="text" name="id" hidden value="{{ $employee->id }}">
                         <div class="col-sm-6 form-group">
                             <div class="form-group">
-                                <label>Employee Name</label>
+                                <label>First Name</label>
                                 <input type="text" id="firstname" name="firstname" value="{{ $employee->first_name }}" class="form-control @error('fullname') is-invalid @enderror">
 
                                  @error('fullname')
