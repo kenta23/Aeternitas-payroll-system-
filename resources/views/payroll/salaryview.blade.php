@@ -345,12 +345,12 @@
 
     <div class="footer" style="text-align: center;">
         <p>Thank you for your hard work!</p>
-        <p>AETERNITAS ETERNAL BRIGHT</p>
+        <p>Eternal Bright Inc.</p>
     </div>
 
     <!-- Export Buttons -->
     <div class="btn-group btn-group-sm no-print">
-        <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button>
+        {{-- <button class="btn btn-white" style="color: green"><i class="fa fa-file-excel-o"></i><a href="/sample"> Excel</a></button> --}}
         <a href="{{ url('payslip/download/'. $employee->id) }}"><button class="btn btn-white" style="color: red"><i class="fa fa-file-pdf-o"></i> PDF</button></a>
         <button onclick="window.print();" class="btn btn-secondary"><i class="fa fa-print fa-lg"></i> Print Payslip</button>
     </div>

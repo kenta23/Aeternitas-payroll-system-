@@ -39,12 +39,11 @@
                         <table class="table table-striped custom-table mb-0" style="width: 100%" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th hidden></th>
                                     <th>Employee ID</th>
                                     <th>Employee</th>
                                     <th>Email</th>
-                                    <th>Pay Type</th>
-                                    <th>Join Date</th>
+
+
                                     <th>Payroll Start date</th>
                                     <th>Payroll End date</th>
                                     <th>Sallary</th>
@@ -55,7 +54,6 @@
                             <tbody>
                              @foreach ($employees as $emp)
                                 <tr>
-                                    <td hidden class="id">{{ $emp->id }}</td>
                                     <td class="employee_id">{{ $emp->employee_id }}</td>
                                     <td>
                                         <h2 class="table-avatar">
@@ -64,17 +62,18 @@
                                         </h2>
                                     </td>
                                     <td>{{ $emp->email }}</td>
-                                    <td>Monthly</td>
-                                    <td>{{$emp->created_at}}</td>
-                                    <td>{{$emp->start_date_payroll}}</td>
-                                    <td>{{$emp->end_date_payroll}}</td>
+
+
+                                    <td class="text-left">{{$emp->start_date_payroll}}</td>
+                                    <td class="text-left">{{$emp->end_date_payroll}}</td>
                                     <td class="salary">{{ $emp->netpay }}</td>
                                     <td>
-                                        @if ($emp->end_date_payroll)
-                                          <a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a>
-                                        @else
-                                          <button class="btn btn-sm btn-primary" disabled>Generate Slip</button>
-                                        @endif
+                                      @if ($emp->end_date_payroll)
+                                        <a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$emp->id) }}" target="_blank">Generate Slip</a>
+                                      @else
+                                        <button class="btn btn-sm btn-secondary" disabled>Generate Slip</button>
+                                      @endif
+
                                     </td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
