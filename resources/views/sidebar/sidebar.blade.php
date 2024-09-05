@@ -10,11 +10,11 @@
                 <li class="{{set_active(['home','em/dashboard'])}}  submenu">
                     <a href="#" class="text-decoration-none {{ set_active(['home','em/dashboard']) ? 'noti-dot' : '' }}">
                         <i class="la la-dashboard"></i>
-                        <span> Dashboard</span> <span class="menu-arrow"></span>
+                        <span> Dashboard</span> <span class="menu-arrow"></span> 
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['home'])}}" href="{{ route('home') }}">Admin Dashboard</a></li>
-                        <li><a class="{{set_active(['em/dashboard'])}}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li>
+                        {{-- <li><a class="{{set_active(['em/dashboard'])}}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li> --}}
                     </ul>
                 </li>
                 @if (Auth::user()->role_name=='Admin')
@@ -46,8 +46,9 @@
                         <li><a class="{{set_active(['employees/contributions'])}}" href="{{ route('employees/contributions') }}">Contributions and Taxes</a></li>
                         <li><a class="{{set_active(['form/departments/page'])}}" href="{{ route('form/departments/page') }}">Departments</a></li>
                         <li><a class="{{set_active(['position.index'])}}" href="{{ route('position.index') }}">Positions</a></li>
-                        <li><a href="{{ route('leave.index') }}" class="{{ set_active(['']) }}">Leave</a></li>
+                        <li><a href="{{ route('leave.index') }}" class="{{ set_active(['leave.index']) }}">Leave</a></li>
 
+                        <li><a href="{{ route('employee/details') }}" class="{{ set_active(['employee/details']) }}">Employee's Details</a></li>
                     </ul>
                 </li>
                 <li class="menu-title"> <span>HR</span> </li>

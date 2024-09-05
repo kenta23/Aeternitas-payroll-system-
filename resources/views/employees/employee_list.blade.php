@@ -2,10 +2,11 @@
 <div class="col-md-4 mt-4 col-sm-6 col-12 col-lg-4 col-xl-3">
     <div class="profile-widget">
         <div class="profile-img">
-            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar">
-                <img class="user-profile" src="{{ URL::to('/assets/img/employee_avatar.png') }}"  alt="Profile employee" >
-                <p>{{ $emp->first_name }}</p>
-            </a>
+           <a href="{{ url('employee/details/edit/'.$emp->id) }}" class="avatar">
+             <img class="" src="{{ URL::to('/assets/img/employee_avatar.png') }}"  alt="Profile employee" >
+
+         </a>
+
         </div>
         <div class="dropdown profile-action">
             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -15,7 +16,11 @@
             </div>
         </div>
         <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{ $emp->first_name }} {{ $emp->last_name }}</a></h4>
-        <div class="small text-muted">{{ $emp->position }}</div>
+        @if ($emp->separation_date)
+          <div class="small text-danger font-bold bold"><strong>Resigned</strong></div>
+        @else
+          <div class="small text-muted">{{ $emp->position }}</div>
+        @endif
     </div>
 </div>
 @endforeach

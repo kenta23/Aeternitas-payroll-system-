@@ -25,21 +25,13 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Company Name <span class="text-danger">*</span></label>
-                                    @if (!empty($companySettings->company_name))
-                                    <input class="form-control" type="text" name="company_name" value="{{ $companySettings->company_name }}">
-                                    @else
-                                    <input class="form-control" type="text" name="company_name" value="">
-                                    @endif
+                                    <input class="form-control" type="text" name="company_name" value="{{ $companySettings ? $companySettings->company_name : '' }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Contact Person</label>
-                                    @if (!empty($companySettings->contact_person))
-                                    <input type="text" class="form-control" name="contact_person" value="{{ $companySettings->contact_person }}">
-                                    @else
-                                    <input type="text" class="form-control" name="contact_person" value="">
-                                    @endif
+                                    <input type="text" class="form-control" name="contact_person" value="{{ $companySettings ?$companySettings->contact_person : '' }}">
                                 </div>
                             </div>
                         </div>
@@ -47,12 +39,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Address</label>
-                                    @if (!empty($companySettings->address))
-                                    <input type="text" class="form-control" name="address" value="{{ $companySettings->address }}">
-                                    @else
-                                    <input type="text" class="form-control" name="address" value="">
-
-                                    @endif
+                                    <input type="text" class="form-control" name="address" value="{{ $companySettings ? $companySettings->address : '' }}">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
@@ -64,33 +51,22 @@
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <label>City</label>
-                                    @if (!empty($companySettings->city))
-                                        <input type="text" class="form-control" name="city" value="{{ $companySettings->city }}">
-                                    @else
-                                        <input type="text" class="form-control" name="city">
-                                    @endif
+                                    <input type="text" class="form-control" name="city" value="{{ $companySettings ?  $companySettings->city : '' }}">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <label>State/Province</label>
                                     <select class="form-control select" name="state_province">
-                                        @if (!empty($companySettings->state_province))
-                                            <option value="Metro Manila" {{ ( $companySettings->state_province == 'Metro Manila') ? 'selected' : '' }}>Metro Manila</option>
-                                        @else
-                                            <option value="Metro Manila" {{ ( $companySettings->state_province == 'Metro Manila') ? 'selected' : '' }}>Metro Manila</option>
-                                        @endif
+                                            <option value="{{ $companySettings ? $companySettings->state_province : 'Metro Manila' }}"
+                                                {{  (isset($companySettings) && $companySettings->state_province === 'Metro Manila') ? 'selected' : '' }}>Metro Manila</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <label>Postal Code</label>
-                                    @if (!empty($companySettings->postal_code))
-                                        <input type="text" class="form-control" name="postal_code" value="{{ $companySettings->postal_code }}">
-                                    @else
-                                        <input type="text" class="form-control" name="postal_code">
-                                    @endif
+                                        <input type="text" class="form-control" name="postal_code" value="{{ $companySettings ? $companySettings->postal_code : '' }}">
                                 </div>
                             </div>
                         </div>
@@ -98,18 +74,14 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    @if (!empty($companySettings->email))
-                                        <input type="email" class="form-control" name="email" value="{{ $companySettings->email }}">
-                                    @else
-                                        <input type="email" class="form-control" name="email">
-                                    @endif
+                                        <input type="email" class="form-control" name="email" value="{{ $companySettings ? $companySettings->email : '' }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                       <div class="input-group mb-3">
                                         <span class="input-group-text" id="mobile-label">+63</span>
-                                        <input type="tel" class="form-control" value="{{ $companySettings->mobile_number }}" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
+                                        <input type="tel" class="form-control" value="{{ $companySettings ?  $companySettings->mobile_number : '' }}" id="mobile_number" placeholder="Phone number" aria-label="Mobile number" aria-describedby="Mobile number">
                                       </div>
                                 </div>
                             </div>
@@ -120,11 +92,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Website Url</label>
-                                    @if (!empty($companySettings->website_url))
-                                    <input type="text" class="form-control" name="website_url" value="{{ $companySettings->website_url }}">
-                                    @else
-                                    <input type="text" class="form-control" name="website_url" value="">
-                                    @endif
+                                    <input type="text" class="form-control" name="website_url" value="{{ $companySettings ? $companySettings->website_url : '' }}">
                                 </div>
                             </div>
                         </div>

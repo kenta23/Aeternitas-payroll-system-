@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Brian2694\Toastr\Facades\Toastr;
 use DB;
-use App\Models\User;
-use App\Models\Employee;
-use App\Models\Form;
-use App\Models\ProfileInformation;
-use App\Models\PersonalInformation;
-use App\Rules\MatchOldPassword;
-use App\Models\UserEmergencyContact;
-use App\Models\BankInformation;
-use Carbon\Carbon;
-use Session;
 use Auth;
 use Hash;
+use Session;
+use Carbon\Carbon;
+use App\Models\Form;
+use App\Models\User;
+use App\Models\Employee;
+use Illuminate\Http\Request;
+use App\Models\BankInformation;
+use App\Rules\MatchOldPassword;
+use App\Models\ProfileInformation;
+use App\Models\PersonalInformation;
+use App\Models\UserEmergencyContact;
+use Brian2694\Toastr\Facades\Toastr;
 
 class UserManagementController extends Controller
 {
@@ -292,11 +292,11 @@ class UserManagementController extends Controller
             $information->save();
             
             DB::commit();
-            Toastr::success('Profile Information successfully :)','Success');
+            Toastr::success('Successfully updated Profile','Success');
             return redirect()->back();
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('Add Profile Information fail :)','Error');
+            Toastr::error('Failed to update Profile','Error');
             return redirect()->back();
         }
     }
@@ -407,12 +407,12 @@ class UserManagementController extends Controller
             DB::table('user_activity_logs')->insert($activityLog);
             User::where('user_id',$request->user_id)->update($update);
             DB::commit();
-            Toastr::success('User updated successfully :)','Success');
+            Toastr::success('Successfully updated Profile','Success');
             return redirect()->route('userManagement');
 
         } catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User update fail :)','Error');
+            Toastr::error('Failed to update Profile','Error');
             return redirect()->back();
         }
     }

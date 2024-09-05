@@ -345,7 +345,7 @@
 
     <div class="footer" style="text-align: center;">
         <p>Thank you for your hard work!</p>
-        <p>AETERNITAS ETERNAL BRIGHT</p>
+        <p>Eternal Bright Inc.</p>
     </div>
 
     <!-- Export Buttons -->
