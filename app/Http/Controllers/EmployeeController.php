@@ -155,7 +155,6 @@ public function saveRecord(Request $request)
             'rwd_amount' => $employee->rwd_amount,
 
             // Overtimes
-            'missing_charges' => $employee->missing_charges,
             'ot_rate25' => $computedOtRate25,
             'ot_hours25' => $employee->ot_hours25,
             'ot_amount25' => $employee->ot_amount25,
