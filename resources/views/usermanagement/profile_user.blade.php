@@ -26,7 +26,7 @@
                                 <div class="profile-img-wrap">
                                     <div class="profile-img">
                                         <a href="#">
-                                            <img class="user-profile" alt="" src="{{ URL::to('/assets/images/'.Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}">
+                                            <img class="user-profile" alt="" src="{{ URL::to('/assets/img/LOGO (1).png')}}" alt="Admin avatar">
                                         </a>
                                     </div>
                                 </div>
@@ -39,7 +39,7 @@
                                                 <small class="text-muted">{{ Session::get('position') }}</small>
                                                 <div class="staff-id">User ID : {{ Session::get('user_id') }}</div>
                                                 <div class="small doj text-muted">Date of Join : {{ Session::get('join_date') }}</div>
-                                               <!-- <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> -->
+
                                             </div>
                                         </div>
                                         <div class="col-md-7">
@@ -85,7 +85,7 @@
                                                         <div class="text">
                                                             <div class="avatar-box">
                                                                 <div class="avatar avatar-xs">
-                                                                    <img src="{{ URL::to('/assets/images/'. Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}">
+                                                                    <img src="{{ URL::to('/assets/img/aeternitas logo with bg.png') }}" alt="{{ Auth::user()->name }}">
                                                                 </div>
                                                             </div>
                                                             <a href="#">
@@ -111,7 +111,7 @@
                                                         <div class="text">
                                                             <div class="avatar-box">
                                                                 <div class="avatar avatar-xs">
-                                                                    <img src="{{ URL::to('/assets/images/'. Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}">
+                                                                    <img src="{{ URL::to('/assets/img/aeternitas logo with bg.png') }}">
                                                                 </div>
                                                             </div>
                                                             <a href="#">
@@ -497,13 +497,6 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="profile-img-wrap edit-img">
-                                        <img class="inline-block" src="{{ URL::to('/assets/images/'. Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}">
-                                        <div class="fileupload btn">
-                                            <span class="btn-text">edit</span>
-                                            <input class="upload" type="file" id="upload" name="upload">
-                                        </div>
-                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">

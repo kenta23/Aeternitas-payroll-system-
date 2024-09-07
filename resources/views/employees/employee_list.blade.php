@@ -15,8 +15,14 @@
                 <a class="dropdown-item" href="{{url('all/employee/delete/'.$emp->id)}}"onclick="return confirm('Are you sure to want to delete it?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
             </div>
         </div>
-        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{ $emp->first_name }} {{ $emp->last_name }}</a></h4>
-        @if ($emp->separation_date)
+        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="{{url('employee/details/edit/'.$emp->id)}}">{{ $emp->first_name }} {{ $emp->last_name }}</a></h4>
+
+        @php
+           $currentDate = \Carbon\Carbon::now();
+           $separationDate = $emp->separation_date ? \Carbon\Carbon::parse($emp->separation_date) : null;
+        @endphp
+
+        @if ($separationDate && $separationDate->lessThanOrEqualTo($currentDate))
           <div class="small text-danger font-bold bold"><strong>Resigned</strong></div>
         @else
           <div class="small text-muted">{{ $emp->position }}</div>

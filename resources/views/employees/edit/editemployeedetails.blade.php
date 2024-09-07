@@ -105,7 +105,7 @@
 
                     <div class="col-sm-6 form-group">
                         <label>Birth Date</label>
-                        <input type="date" id="birthdate" name="birthdate" value="{{ $employee->birth_date }}" class="form-control @error('birthdate') is-invalid @enderror">
+                        <input type="text" id="birthdate" name="birthdate" value="{{ $employee->birth_date }}" class="form-control datetimepicker @error('birthdate') is-invalid @enderror">
 
                         @error('birthdate')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -124,11 +124,16 @@
 
                     <div class="col-sm-6 form-group">
                          <label for="">Resignation Date</label>
-                         <input type="datetime-local" class="form-control @error('resignation_date') is-invalid @enderror" name="resignation_date" value="{{ $employee->separation_date }}">
+                         <div class="cal-icon">
+                            <input class="form-control @error('resignation_date') is-invalid @enderror" type="date" id="resignation_date" name="resignation_date" value="{{ $employee->separation_date }}">
+                            @error('resignation_date')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                         @error('resignation_date')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
+
                     </div>
 
                     <div class="col-sm-6 form-group">

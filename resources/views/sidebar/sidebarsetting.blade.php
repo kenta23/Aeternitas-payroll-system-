@@ -8,7 +8,7 @@
                 <li class="{{set_active(['company/settings/page'])}}"><a href="{{ route('company/settings/page') }}"><i class="la la-building"></i><span>Company Settings</span></a></li>
                 <li class="{{set_active(['localization/page'])}}"><a href="{{ route('localization/page') }}"><i class="la la-clock-o"></i><span>Localization</span></a></li>
                {{-- <li><a href="theme-settings.html"><i class="la la-photo"></i><span>Theme Settings</span></a></li> --}}
-                <li class="{{set_active(['roles/permissions/page'])}}"><a href="{{ route('roles/permissions/page') }}"><i class="la la-key"></i><span>Roles & Permissions</span></a></li>
+                {{-- <li class="{{set_active(['roles/permissions/page'])}}"><a href="{{ route('roles/permissions/page') }}"><i class="la la-key"></i><span>Roles & Permissions</span></a></li> --}}
                {{-- <li class="{{set_active(['email/settings/page'])}}"><a href="{{ route('email/settings/page') }}"><i class="la la-at"></i><span>Email Settings</span></a></li> --}}
                {{--  <li><a href="performance-setting.html"><i class="la la-chart-bar"></i><span>Performance Settings</span></a></li> --}]
                {{-- <li><a href="approval-setting.html"><i class="la la-thumbs-up"></i><span>Approval Settings</span></a></li> --}}

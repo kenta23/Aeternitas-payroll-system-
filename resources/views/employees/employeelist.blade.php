@@ -52,10 +52,22 @@
                             <tbody>
                                 @foreach ($employees as $emp )
                                 <tr>
+                                    @php
+                                     $currentDate = \Carbon\Carbon::now();
+                                     $separationDate = $emp->separation_date ? \Carbon\Carbon::parse($emp->separation_date) :    null;
+                                    @endphp
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"> <img alt="" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
-                                            <a href="{{ url('employee/profile/'.$emp->employee_id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
+                                            <a href="{{ url('employee/details/edit/'.$emp->id) }}" class="avatar"> <img alt="" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
+
+                                            <a href="{{ url('employee/details/edit/'.$emp->id) }}">{{    $emp->first_name }} {{ $emp->last_name }}
+                                                @if ($separationDate && $separationDate->lessThanOrEqualTo($currentDate))
+                                                  <span class="text-primary">Resigned</span>
+                                                @else
+                                                <span>{{ $emp->position }}</span>
+                                                @endif
+                                            </a>
+
                                         </h2>
                                     </td>
                                     <td>{{ $emp->employee_id }}</td>

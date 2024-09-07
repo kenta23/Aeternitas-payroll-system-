@@ -70,6 +70,9 @@ class EmployeeController extends Controller
                 'emergency_address' => 'required|string',
             ]);
 
+            //calculate birthday automatically
+            $age = Carbon::parse($validatedData['birth_date'])->age;
+
             // Generate custom ID
             $latestEmployee = Employee::latest()->first();
             $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
@@ -79,6 +82,7 @@ class EmployeeController extends Controller
             $employee = new Employee;
             $employee->fill($validatedData);
             $employee->employee_id = $newId;
+            $employee->age = $age;
             $employee->save();
 
             Toastr::success('Successully Added employee', 'Success');
@@ -238,11 +242,11 @@ class EmployeeController extends Controller
                 'ot_amount100' => $request->input('ot_amount100'),
                 'total_ot' => $request->input('total_ot'),
 
-            //lates
-            'missing_charges' => $request->input('missing_charges'),
-            'late_rate' => $request->input('deduction_rate'),
-            'late_amount' => $request->input('late_amount'),
-            'number_of_minutes_late' => $request->input('no_of_minutes'),
+                //lates
+                'missing_charges' => $request->input('missing_charges'),
+                'late_rate' => $request->input('deduction_rate'),
+                'late_amount' => $request->input('late_amount'),
+                'number_of_minutes_late' => $request->input('no_of_minutes'),
                 //lates
                 'late_rate' => $request->input('deduction_rate'),
                 'late_amount' => $request->input('late_amount'),
@@ -302,7 +306,7 @@ class EmployeeController extends Controller
     public function contributions()
     {
 
-        $employees = Employee::whereNull('separation_date')->get();
+        $employees = Employee::whereNull('separation_date')->whereNotNull('per_month')->get();
         $position = PositionType::all();
 
         return view('employees.contributions', compact('employees', 'position'));
@@ -711,15 +715,14 @@ class EmployeeController extends Controller
             $pdfStream = $pdf->output();
 
 
-         Mail::mailer('smtp')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
-         Toastr::success('Payslip has been sent to '. $employee->email, 'Success');
-         return redirect()->back();
-
-     } catch (\Exception $e) {
-         Toastr::error('Failed to send email' . $e->getMessage(), 'Error');
-         return redirect()->back();
-     }
- }
+            Mail::mailer('smtp')->to($employee->email)->send(new PayslipMail($employee, $pdfStream));
+            Toastr::success('Payslip has been sent to ' . $employee->email, 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Toastr::error('Failed to send email' . $e->getMessage(), 'Error');
+            return redirect()->back();
+        }
+    }
 
     public function sendBulkMails()
     {
@@ -813,5 +816,5 @@ class EmployeeController extends Controller
             Toastr::error('Failed to update employee details ' . $e->getMessage(), 'Error');
             return redirect()->back();
         }
-   }
+    }
 }
