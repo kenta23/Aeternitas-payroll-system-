@@ -776,6 +776,7 @@ class EmployeeController extends Controller
             $validatedData = $request->validate([
                 'firstname' => 'required|string|max:90',
                 'middlename' => 'nullable|string|max:90',
+                'email' => 'nullable|string|max:90',
                 'lastname' => 'required|string|max:90',
                 'phone' => 'nullable|string|max:20',
                 'birthdate' => 'nullable|date',
@@ -800,6 +801,7 @@ class EmployeeController extends Controller
             $employee->last_name = $request->lastname;
             $employee->phone_number = $request->phone;
             $employee->birth_date = $request->birthdate;
+            $employee->email = $request->email;
             $employee->current_address = $request->address;
             $employee->separation_date = $request->resignation_date;
             $employee->separation_reason = $request->resignation_reason;

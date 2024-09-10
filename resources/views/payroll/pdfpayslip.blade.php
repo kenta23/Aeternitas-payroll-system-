@@ -174,32 +174,32 @@
                     <tr>
                         <td>Reg. days worked</td>
                         <td>{{ number_format($employee->regular_worked_days, 2) }}</td>
-                        <td>₱{{ number_format($employee->rwd_amount, 2) }}</td>
+                        <td>Php {{ number_format($employee->rwd_amount, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Legal Hol.</td>
                         <td> {{ number_format($employee->legal_worked_days, 2) }}</td>
-                        <td>₱{{ number_format($employee->lhd_amount, 2) }}</td>
+                        <td>Php {{ number_format($employee->lhd_amount, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Spcl. Hol.</td>
                         <td>{{ number_format($employee->special_worked_days, 2) }}</td>
-                        <td>₱{{ number_format($employee->special_amount, 2) }}</td>
+                        <td>Php {{ number_format($employee->special_amount, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Total Basic Pay</td>
                         <td></td>
-                        <td>₱{{ number_format($employee->total_basic_pay, 2) }}</td>
+                        <td>Php {{ number_format($employee->total_basic_pay, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Less: Late (mins.):</td>
                         <td>{{ number_format($employee->number_of_minutes_late, 2) }}</td>
-                        <td>₱{{ number_format($employee->late_amount, 2) }}</td>
+                        <td>Php {{ number_format($employee->late_amount, 2) }}</td>
                     </tr>
                     <tr>
                         <td class="total">Net Basic Pay:</td>
                         <td></td>
-                        <td class="total">₱{{ number_format($employee->total_basic_pay - $employee->late_amount, 2) }}</td>
+                        <td class="total">Php {{ number_format($employee->total_basic_pay - $employee->late_amount, 2) }}</td>
                     </tr>
                 </table>
             </div>
@@ -212,27 +212,27 @@
                     </tr>
                     <tr>
                         <td>SSS</td>
-                        <td>₱{{ number_format($employee->sss_premcontribution + $employee->sss_wisp, 2) }}</td>
+                        <td>Php {{ number_format($employee->sss_premcontribution + $employee->sss_wisp, 2) }}</td>
                     </tr>
                     <tr>
                         <td>PHIC</td>
-                        <td>₱{{ number_format($employee->phic, 2) }}</td>
+                        <td>Php {{ number_format($employee->phic, 2) }}</td>
                     </tr>
                     <tr>
                         <td>HDMF</td>
-                        <td>₱{{ number_format($employee->hdmf, 2) }}</td>
+                        <td>Php {{ number_format($employee->hdmf, 2) }}</td>
                     </tr>
                     <tr>
                         <td>WHTax</td>
-                        <td>₱{{ number_format($employee->tax_cutoff, 2) }}</td>
+                        <td>Php {{ number_format($employee->tax_cutoff, 2) }}</td>
                     </tr>
                     <tr>
                         <td>SSS Loans</td>
-                        <td>₱{{ number_format($employee->sss_loan, 2) }}</td>
+                        <td>Php {{ number_format($employee->sss_loan, 2) }}</td>
                     </tr>
                     <tr>
                         <td>HDMF Loans</td>
-                        <td>₱{{ number_format($employee->hdmf_loan, 2) }}</td>
+                        <td>Php {{ number_format($employee->hdmf_loan, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Company Loans</td>
@@ -240,19 +240,19 @@
                     </tr>
                     <tr>
                         <td>Cash Advances</td>
-                        <td>₱{{ number_format($employee->cash_advance, 2) }}</td>
+                        <td>Php {{ number_format($employee->cash_advance, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Absences</td>
-                        <td>₱{{ number_format($employee->absences, 2) }}</td>
+                        <td>Php {{ number_format($employee->absences, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Other Charges</td>
-                        <td>₱{{ number_format($employee->employee_purchase, 2) }}</td>
+                        <td>Php {{ number_format($employee->employee_purchase, 2) }}</td>
                     </tr>
                     <tr>
                         <td class="total">Total Deductions:</td>
-                        <td class="total">₱{{ number_format($employee->sss_premcontribution + $employee->sss_wisp + $employee->phic + $employee->hdmf + $employee->tax_cutoff + $employee->sss_loan + $employee->hdmf_loan + $employee->cash_advance + $employee->absences + $employee->employee_purchase, 2) }}</td>
+                        <td class="total">Php {{ number_format($employee->sss_premcontribution + $employee->sss_wisp + $employee->phic + $employee->hdmf + $employee->tax_cutoff + $employee->sss_loan + $employee->hdmf_loan + $employee->cash_advance + $employee->absences + $employee->employee_purchase, 2) }}</td>
                     </tr>
                 </table>
             </div>
@@ -270,27 +270,27 @@
                     <tr>
                         <td>Reg. OT (hrs):</td>
                         <td>{{ number_format($employee->ot_hours25, 2) }}</td>
-                        <td>₱{{ number_format($employee->ot_amount25, 2) }}</td>
+                        <td>Php {{ number_format($employee->ot_amount25, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Night Diff. (hrs):</td>
                         <td>{{ number_format($employee->nd_hours, 2) }}</td>
-                        <td>₱{{ number_format($employee->nd_amount, 2) }}</td>
+                        <td>Php {{ number_format($employee->nd_amount, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Meal Allowance</td>
                         <td></td>
-                        <td>₱{{ number_format($employee->meal_allowance, 2) }}</td>
+                        <td>Php {{ number_format($employee->meal_allowance, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Transpo Allowance</td>
                         <td></td>
-                        <td>₱{{ number_format($employee->half_allowance, 2) }}</td>
+                        <td>Php {{ number_format($employee->half_allowance, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Incentive Leave:</td>
                         <td>{{ number_format($employee->vlsl, 2) }}</td>
-                        <td>₱{{ number_format($employee->leave_amount, 2) }}</td>
+                        <td>Php {{ number_format($employee->leave_amount, 2) }}</td>
                     </tr>
                     <tr>
                         <td>Adjustments:</td>
@@ -300,7 +300,7 @@
                     <tr>
                         <td class="total">Total Other Pay:</td>
                         <td></td>
-                        <td class="total">₱{{ number_format(($employee->ot_amount25 + $employee->nd_amount + $employee->meal_allowance + $employee->half_allowance + $employee->leave_amount), 2) }}</td>
+                        <td class="total">Php {{ number_format(($employee->ot_amount25 + $employee->nd_amount + $employee->meal_allowance + $employee->half_allowance + $employee->leave_amount), 2) }}</td>
                     </tr>
                 </table>
             </div>
@@ -309,11 +309,11 @@
                 <table>
                     <tr>
                         <td>GROSS PAY:</td>
-                        <td>₱{{ number_format($employee->gross_pay , 2) }}</td>
+                        <td>Php {{ number_format($employee->gross_pay , 2) }}</td>
                     </tr>
                     <tr>
                         <td class="total">NET PAY:</td>
-                        <td class="total">₱{{ number_format($employee->netpay , 2) }}</td>
+                        <td class="total">Php {{ number_format($employee->netpay , 2) }}</td>
                     </tr>
                 </table>
                 <p style="text-align: left;">RECEIVED BY:</p>
@@ -322,7 +322,7 @@
 
         <div class="footer" style="text-align: center;">
             <p>Thank you for your hard work!</p>
-            <p>AETERNITAS ETERNAL BRIGHT</p>
+            <p>Eternal Bright Sanctuary Inc.</p>
         </div>
     </div>
 </body>
