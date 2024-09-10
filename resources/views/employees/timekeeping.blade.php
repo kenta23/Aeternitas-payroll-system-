@@ -67,7 +67,7 @@
 
                                 <td>
                                     <h2 class="table-avatar">
-                                        <a href="{{ url('employee/profile/'.$emp->employee_id) }}" class="avatar"><img alt="employee avatar" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
+                                        <a href="{{ url('employee/details/edit/'.$emp->id) }}" class="avatar"><img alt="employee avatar" src="{{ URL::to('/assets/img/employee_avatar.png') }}"></a>
                                         <a href="{{ url('employee/details/edit/'.$emp->id) }}">{{ $emp->first_name }} {{ $emp->last_name }}<span>{{ $emp->position }}</span></a>
                                     </h2>
                                 </td>
@@ -220,7 +220,7 @@
 
                                 <div class="form-group">
                                     <label for="absences">Absences <i class="text-primary text-body-secondary text" style="font-size: 14px;">Enter any values or 0 first to calculate Total amounts</i></label>
-                                    <input class="form-control" type="number" name="absences" id="absences" value="0">
+                                    <input class="form-control" type="number" name="absences" id="absences" value="0" step="0.01">
                                 </div>
                                 @error('absences')
                                   <span class="invalid-feedback" role="alert">
@@ -675,7 +675,7 @@
      const totalOt = document.getElementById('total_ot');
 
      // ot rate
-     const otRate30 = document.getElementById(' ');
+     const otRate30 = document.getElementById('ot_rate30');
      const otHours30 = document.getElementById('ot_hours30');
      const otAmount30 = document.getElementById('ot_amount30');
 
@@ -979,6 +979,8 @@
          const total = otAmount25Value + otAmount30Value + otAmount100Value;
          totalOt.value = total.toFixed(2);
 
+         calculateRwdAmount();
+         calculateBasicPay();
          calculateBasicPayPlusOT();
     }
      calculateTotalWorkedDays();

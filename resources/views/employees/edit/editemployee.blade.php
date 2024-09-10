@@ -195,15 +195,7 @@
                                             <div class="form-group">
                                                 <label class="col-form-label">Monthly Pay (₱)</label>
 
-                                            <select onchange="calculateTotals()" class="select form-control @error('monthly_pay') is-invalid @enderror" style="width: 100%;" id="monthly_pay" name="monthly_pay">
-                                                <option value="">-- Select --</option>
-                                                <option value="16000.00" {{ $employees[0]->monthly_pay == '16000.00' ? 'selected' : '' }} >₱16,000.00</option>
-                                                <option value="18000.00" {{ $employees[0]->monthly_pay == '18000.00' ? 'selected' : '' }} >₱18,000.00</option>
-                                                <option value="20000.00" {{ $employees[0]->monthly_pay == '20000.00' ? 'selected' : '' }} >₱20,000.00</option>
-                                                <option value="22000.00" {{ $employees[0]->monthly_pay == '22000.00' ? 'selected' : '' }} >₱22,000.00</option>
-                                                <option value="25000.00" {{ $employees[0]->monthly_pay == '25000.00' ? 'selected' : '' }} >₱25,000.00</option>
-                                                <option value="30000.00" {{ $employees[0]->monthly_pay == '30000.00' ? 'selected' : '' }} >₱30,000.00</option>
-                                            </select>
+                                                <input type="number" class="form-control @error('monthly_pay') is-invalid @enderror" id="monthly_pay" name="monthly_pay" value="{{ $employees[0]->monthly_pay }}">
 
                                             @error('monthly_pay')
                                              <span class="invalid-feedback" role="alert">
@@ -374,7 +366,7 @@
     };
 
      //addEventListener Function
-     monthlyPayInput.addEventListener('change', function() {
+     monthlyPayInput.addEventListener('input', function() {
               console.log('Monthly Pay changed:', monthlyPayInput.value);
               calculateTotals();
     });
