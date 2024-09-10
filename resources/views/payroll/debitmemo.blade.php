@@ -65,7 +65,7 @@
              </div>
 
              <div class="card-body">
-               <table id="dataTable" class="table table-bordered table-striped table-hover">
+               <table id="dataTable" class="table table-bordered custom-table table-striped table-hover">
                    <thead>
                        <tr>
                            <th>ID NUMBER</th>

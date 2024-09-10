@@ -31,8 +31,9 @@ use App\Http\Controllers\PersonalInformationController;
 */
 
 /** for side bar menu active */
-function set_active($route) {
-    if (is_array($route )){
+function set_active($route)
+{
+    if (is_array($route)) {
         return in_array(Request::path(), $route) ? 'active' : '';
     }
     return Request::path() == $route ? 'active' : '';
@@ -42,18 +43,15 @@ Route::get('/', function () {
     return view('home.homepage');
 });
 
-Route::group(['middleware'=>'auth'],function()
-{
-    Route::get('home',function()
-    {
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('home', function () {
         return view('home');
     });
 });
 
 Auth::routes();
 
-Route::group(['namespace' => 'App\Http\Controllers\Auth'], function()
-{
+Route::group(['namespace' => 'App\Http\Controllers\Auth'], function () {
     // -----------------------------login----------------------------------------//
     Route::controller(LoginController::class)->group(function () {
         Route::get('/login', 'login')->name('login');
@@ -64,7 +62,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'], function()
     // ------------------------------ register ----------------------------------//
     Route::controller(RegisterController::class)->group(function () {
         Route::get('/register', 'register')->name('register');
-        Route::post('/register','storeUser')->name('register');
+        Route::post('/register', 'storeUser')->name('register');
     });
 
     // ----------------------------- forget password ----------------------------//
@@ -80,8 +78,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'], function()
     });
 })->middleware('auth');
 
-Route::group(['namespace' => 'App\Http\Controllers'],function()
-{
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
     // ----------------------------- main dashboard ------------------------------//
     Route::controller(HomeController::class)->group(function () {
         Route::get('/home', 'index')->name('home');
@@ -90,21 +87,26 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
     // ----------------------------- lock screen --------------------------------//
     Route::controller(LockScreen::class)->group(function () {
-        Route::get('lock_screen','lockScreen')->middleware('auth')->name('lock_screen');
+        Route::get('lock_screen', 'lockScreen')->middleware('auth')->name('lock_screen');
         Route::post('unlock', 'unlock')->name('unlock');
     });
 
     // -----------------------------settings-------------------------------------//
     Route::controller(SettingController::class)->group(function () {
-        Route::get('company/settings/page', 'companySettings')->middleware('auth')->name('company/settings/page'); /** index page */
-        Route::post('company/settings/save', 'saveRecord')->middleware('auth')->name('company/settings/save'); /** save record or update */
+        Route::get('company/settings/page', 'companySettings')->middleware('auth')->name('company/settings/page');
+        /** index page */
+        Route::post('company/settings/save', 'saveRecord')->middleware('auth')->name('company/settings/save');
+        /** save record or update */
         Route::get('roles/permissions/page', 'rolesPermissions')->middleware('auth')->name('roles/permissions/page');
         Route::post('roles/permissions/save', 'addRecord')->middleware('auth')->name('roles/permissions/save');
         Route::post('roles/permissions/update', 'editRolesPermissions')->middleware('auth')->name('roles/permissions/update');
         Route::post('roles/permissions/delete', 'deleteRolesPermissions')->middleware('auth')->name('roles/permissions/delete');
-        Route::get('localization/page', 'localizationIndex')->middleware('auth')->name('localization/page'); /** index page localization */
-        Route::get('salary/settings/page', 'salarySettingsIndex')->middleware('auth')->name('salary/settings/page'); /** index page salary settings */
-        Route::get('email/settings/page', 'emailSettingsIndex')->middleware('auth')->name('email/settings/page'); /** index page email settings */
+        Route::get('localization/page', 'localizationIndex')->middleware('auth')->name('localization/page');
+        /** index page localization */
+        Route::get('salary/settings/page', 'salarySettingsIndex')->middleware('auth')->name('salary/settings/page');
+        /** index page salary settings */
+        Route::get('email/settings/page', 'emailSettingsIndex')->middleware('auth')->name('email/settings/page');
+        /** index page email settings */
     });
 
     // ----------------------------- manage users -------d-----------------------//
@@ -118,9 +120,10 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('change/password', 'changePasswordView')->middleware('auth')->name('change/password');
         Route::post('change/password/db', 'changePasswordDB')->name('change/password/db');
 
-        Route::post('user/profile/emergency/contact/save', 'emergencyContactSaveOrUpdate')->name('user/profile/emergency/contact/save'); /** save or update emergency contact */
-        Route::get('get-users-data', 'getUsersData')->name('get-users-data'); /** get all data users */
-
+        Route::post('user/profile/emergency/contact/save', 'emergencyContactSaveOrUpdate')->name('user/profile/emergency/contact/save');
+        /** save or update emergency contact */
+        Route::get('get-users-data', 'getUsersData')->name('get-users-data');
+        /** get all data users */
     });
 
 
@@ -179,6 +182,9 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('employee/details', 'employeeDetails')->middleware('auth')->name('employee/details');
         Route::get('employee/details/edit/{employeeId}', 'employeeDetailsEdit')->middleware('auth');
         Route::post('employee/details/save', 'employeeDetailsSave')->middleware('auth')->name('employee/details/save');
+
+        //EMPLOYEES REPORTS
+        Route::get('employees/reports', 'employeesReports')->middleware('auth')->name('employees/reports');
     });
 
     // ----------------------------- position  -----------------------------//
@@ -214,7 +220,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
     Route::controller(PayrollController::class)->group(function () {
         Route::get('form/sallary/page', 'sallary')->middleware('auth')->name('form/sallary/page');
         Route::get('employee/sallary/{employeeId}', 'getEmployeeSalary')->middleware('auth')->name('employee/sallary');
-        Route::post('form/salary/save','saveRecord')->middleware('auth')->name('form/salary/save');
+        Route::post('form/salary/save', 'saveRecord')->middleware('auth')->name('form/salary/save');
         Route::post('form/salary/update', 'updateRecord')->middleware('auth')->name('form/salary/update');
         Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
         Route::get('form/salary/view/{user_id}', 'salaryView')->middleware('auth');

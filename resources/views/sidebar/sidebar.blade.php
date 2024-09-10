@@ -10,7 +10,7 @@
                 <li class="{{set_active(['home','em/dashboard'])}}  submenu">
                     <a href="#" class="text-decoration-none {{ set_active(['home','em/dashboard']) ? 'noti-dot' : '' }}">
                         <i class="la la-dashboard"></i>
-                        <span> Dashboard</span> <span class="menu-arrow"></span> 
+                        <span> Dashboard</span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['home'])}}" href="{{ route('home') }}">Admin Dashboard</a></li>
@@ -60,7 +60,7 @@
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/sallary/page'])}}" href="{{ route('form/sallary/page') }}"> Employee's Payroll </a></li>
                         <li><a class="{{set_active(['debitmemo'])}}" href="{{ route('debitmemo') }}">Debit Memo</a></li>
-
+                        <li  class="{{set_active(['debitmemo'])}}"><a  href="{{ url('employees/reports') }}">Reports</a></li>
                     </ul>
                 </li>
 

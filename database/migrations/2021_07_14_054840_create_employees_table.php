@@ -46,6 +46,7 @@ class CreateEmployeesTable extends Migration
 
             //TOTAL AMOUNTS
             $table->decimal('regular_worked_days', 10, 2)->default(13);
+            $table->decimal('total_worked_days', 10, 2)->default(0);
             $table->decimal('rwd_amount', 10, 2)->default(0);
             $table->decimal('legal_worked_days', 10, 2)->default(0);
             $table->decimal('lhd_amount', 10, 2)->default(0);

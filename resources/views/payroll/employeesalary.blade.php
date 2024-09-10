@@ -163,7 +163,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                         <label for="">Start date payroll eriod</label>
+                                         <label for="">Start date payroll period</label>
                                          <input type="date" name="start_date" id="start_date" class="form-control" required>
                                     </div>
                                 </div>

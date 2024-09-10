@@ -76,7 +76,7 @@ class EmployeeController extends Controller
             // Generate custom ID
             $latestEmployee = Employee::latest()->first();
             $latestId = $latestEmployee ? intval(substr($latestEmployee->employee_id, 4)) : 0;
-            $newId = 'PPH_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
+            $newId = 'AE_' . str_pad($latestId + 1, 3, '0', STR_PAD_LEFT);
 
 
             $employee = new Employee;
@@ -224,6 +224,7 @@ class EmployeeController extends Controller
                 'regular_worked_days' => $regulardays,
                 'absences' => $absences,
                 'actual_days_worked' => $request->input('month_rate_paid_days'),
+                'total_worked_days' => $request->input('total_worked_days'),
                 'legal_worked_days' => $request->input('legal_worked_days'),
                 'lhd_amount' => $request->input('lhd_amount'),
 
@@ -244,10 +245,6 @@ class EmployeeController extends Controller
 
                 //lates
                 'missing_charges' => $request->input('missing_charges'),
-                'late_rate' => $request->input('deduction_rate'),
-                'late_amount' => $request->input('late_amount'),
-                'number_of_minutes_late' => $request->input('no_of_minutes'),
-                //lates
                 'late_rate' => $request->input('deduction_rate'),
                 'late_amount' => $request->input('late_amount'),
                 'number_of_minutes_late' => $request->input('no_of_minutes'),
@@ -818,5 +815,12 @@ class EmployeeController extends Controller
             Toastr::error('Failed to update employee details ' . $e->getMessage(), 'Error');
             return redirect()->back();
         }
+    }
+
+    public function employeesReports()
+    {
+        $employees = Employee::all();
+
+        return view('reports.employeereports', compact('employees'));
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employee extends Model
@@ -46,6 +46,7 @@ class Employee extends Model
         'special_rate',
         'special_worked_days',
         'special_amount',
+        'total_worked_days',
         'total_basic_pay',
         'total_basic_pay_plus_ot',
         'gross_pay',
@@ -125,7 +126,8 @@ class Employee extends Model
     {
         return $this->belongsTo(department::class);
     }
-    public function leave(): HasOne {
+    public function leave(): HasOne
+    {
         return $this->hasOne(Leave::class);
     }
 }
